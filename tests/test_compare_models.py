@@ -40,7 +40,7 @@ def _toy_telco_like(n: int = 400, seed: int = 7) -> pd.DataFrame:
 def test_compare_models_holdout_includes_mlp_and_sklearn() -> None:
     df = _toy_telco_like()
     X, y = prepare_telco_features(df)
-    table = compare_models_holdout(
+    table, art = compare_models_holdout(
         X,
         y,
         random_state=42,
@@ -54,7 +54,10 @@ def test_compare_models_holdout_includes_mlp_and_sklearn() -> None:
             seed=42,
         ),
         device="cpu",
+        return_val_artifacts=True,
     )
+    assert "y_val" in art and "scores" in art
+    assert "churn_mlp" in art["scores"]
     assert table.shape[0] == 5
     assert table.shape[1] == 4
     expected_models = {

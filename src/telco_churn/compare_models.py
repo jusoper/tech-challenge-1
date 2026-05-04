@@ -68,9 +68,13 @@ def compare_models_holdout(
     mlp_hidden_dims: tuple[int, ...] = (64, 32),
     mlp_train_config: TrainConfig | None = None,
     device: torch.device | str | None = None,
-) -> pd.DataFrame:
+    return_val_artifacts: bool = False,
+) -> pd.DataFrame | tuple[pd.DataFrame, dict[str, Any]]:
     """
     Holdout estratificado: baselines (dummy + logística + RF + HGB) vs MLP nas mesmas métricas.
+
+    Se `return_val_artifacts=True`, retorna também `{"y_val": ndarray, "scores": {model: proba}}`
+    para análise de custo FP/FN (Etapa 2 — tarefa 4) sem novo split.
     """
     y_array = np.asarray(y).astype(int).ravel()
     X_train, X_val, y_train, y_val = train_test_split(
@@ -84,6 +88,7 @@ def compare_models_holdout(
     prep_template = build_feature_preprocessor(num_cols, cat_cols)
 
     rows: list[dict[str, Any]] = []
+    scores_by_model: dict[str, np.ndarray] = {}
 
     sklearn_models: list[tuple[str, Any]] = [
         ("dummy_stratified", DummyClassifier(strategy="stratified", random_state=random_state)),
@@ -120,6 +125,7 @@ def compare_models_holdout(
         pipe = Pipeline(steps=[("prep", clone(prep_template)), ("model", estimator)])
         pipe.fit(X_train, y_train)
         proba = _sklearn_positive_proba(pipe, X_val)
+        scores_by_model[name] = np.asarray(proba, dtype=np.float64)
         metrics = compute_binary_metrics(y_val, proba)
         rows.append({"model": name, **metrics})
         logger.debug("evaluated %s %s", name, metrics)
@@ -147,9 +153,12 @@ def compare_models_holdout(
     )
     dev = torch.device(str(train_out["device"]))
     proba_mlp = _mlp_positive_proba(mlp, X_val_m.astype(np.float32), dev)
+    scores_by_model["churn_mlp"] = np.asarray(proba_mlp, dtype=np.float64)
     metrics_mlp = compute_binary_metrics(y_val, proba_mlp)
     rows.append({"model": "churn_mlp", **metrics_mlp})
     logger.debug("evaluated churn_mlp %s", metrics_mlp)
 
     out = pd.DataFrame(rows).set_index("model")
+    if return_val_artifacts:
+        return out, {"y_val": y_val, "scores": scores_by_model}
     return out
