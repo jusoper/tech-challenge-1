@@ -10,6 +10,7 @@ from telco_churn.cost_tradeoff import (
     optimal_threshold_min_cost,
     sweep_threshold_costs,
 )
+from telco_churn.mlflow_compare import log_compare_models_to_mlflow
 from telco_churn.mlp import ChurnMLP, churn_binary_loss
 from telco_churn.preprocessing import prepare_telco_features
 from telco_churn.train_mlp import EarlyStopping, TrainConfig, train_churn_mlp
@@ -25,6 +26,7 @@ __all__ = [
     "compare_models_holdout",
     "compare_thresholds_report",
     "compute_binary_metrics",
+    "log_compare_models_to_mlflow",
     "costs_at_threshold",
     "optimal_threshold_min_cost",
     "prepare_telco_features",

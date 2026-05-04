@@ -58,6 +58,8 @@ def test_compare_models_holdout_includes_mlp_and_sklearn() -> None:
     )
     assert "y_val" in art and "scores" in art
     assert "churn_mlp" in art["scores"]
+    assert "mlp_train_out" in art and "mlp_model" in art
+    assert "fitted_sklearn" in art and "split_meta" in art
     assert table.shape[0] == 5
     assert table.shape[1] == 4
     expected_models = {

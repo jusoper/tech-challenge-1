@@ -89,6 +89,7 @@ def compare_models_holdout(
 
     rows: list[dict[str, Any]] = []
     scores_by_model: dict[str, np.ndarray] = {}
+    fitted_sklearn: dict[str, Pipeline] = {}
 
     sklearn_models: list[tuple[str, Any]] = [
         ("dummy_stratified", DummyClassifier(strategy="stratified", random_state=random_state)),
@@ -128,6 +129,7 @@ def compare_models_holdout(
         scores_by_model[name] = np.asarray(proba, dtype=np.float64)
         metrics = compute_binary_metrics(y_val, proba)
         rows.append({"model": name, **metrics})
+        fitted_sklearn[name] = pipe
         logger.debug("evaluated %s %s", name, metrics)
 
     prep_mlp = clone(prep_template)
@@ -160,5 +162,19 @@ def compare_models_holdout(
 
     out = pd.DataFrame(rows).set_index("model")
     if return_val_artifacts:
-        return out, {"y_val": y_val, "scores": scores_by_model}
+        return out, {
+            "y_val": y_val,
+            "scores": scores_by_model,
+            "mlp_train_out": train_out,
+            "mlp_model": mlp,
+            "split_meta": {
+                "n_train": int(len(X_train)),
+                "n_val": int(len(X_val)),
+                "n_features_transformed": input_dim,
+                "random_state": int(random_state),
+                "test_size": float(test_size),
+                "mlp_hidden_dims": tuple(int(x) for x in mlp_hidden_dims),
+            },
+            "fitted_sklearn": fitted_sklearn,
+        }
     return out
