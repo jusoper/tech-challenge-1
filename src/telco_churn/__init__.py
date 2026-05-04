@@ -20,6 +20,10 @@ from telco_churn.evaluation.metrics import compute_binary_metrics
 from telco_churn.modeling.mlp import ChurnMLP, churn_binary_loss
 from telco_churn.tracking.mlflow_compare import log_compare_models_to_mlflow
 from telco_churn.training.train_mlp import EarlyStopping, TrainConfig, train_churn_mlp
+from telco_churn.validation import (
+    validate_telco_feature_matrix,
+    validate_telco_raw_supervised,
+)
 
 __all__ = [
     "ChurnMLP",
@@ -42,6 +46,8 @@ __all__ = [
     "prepare_telco_features",
     "sweep_threshold_costs",
     "train_churn_mlp",
+    "validate_telco_feature_matrix",
+    "validate_telco_raw_supervised",
     "__version__",
 ]
 __version__ = "0.1.0"

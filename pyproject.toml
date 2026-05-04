@@ -22,6 +22,7 @@ dependencies = [
     "jupyter>=1.0",
     "ipykernel>=6.29",
     "pytest>=8.0",
+    "pandera>=0.18",
 ]
 
 [project.optional-dependencies]
