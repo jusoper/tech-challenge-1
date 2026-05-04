@@ -12,7 +12,7 @@ from sklearn.base import clone
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 
-from telco_churn.data.preprocessing import build_feature_preprocessor, infer_column_types
+from telco_churn.data.pipeline import build_telco_feature_transform_pipeline
 from telco_churn.evaluation.baselines import default_churn_sklearn_models
 from telco_churn.evaluation.metrics import compute_binary_metrics
 from telco_churn.modeling.mlp import ChurnMLP
@@ -59,8 +59,7 @@ def compare_models_holdout(
         stratify=y_array,
         random_state=random_state,
     )
-    num_cols, cat_cols = infer_column_types(X_train.columns)
-    prep_template = build_feature_preprocessor(num_cols, cat_cols)
+    feature_template = build_telco_feature_transform_pipeline()
 
     rows: list[dict[str, Any]] = []
     scores_by_model: dict[str, np.ndarray] = {}
@@ -69,7 +68,9 @@ def compare_models_holdout(
     sklearn_models = default_churn_sklearn_models(random_state)
 
     for name, estimator in sklearn_models:
-        pipe = Pipeline(steps=[("prep", clone(prep_template)), ("model", estimator)])
+        pipe = Pipeline(
+            steps=[("prep", clone(feature_template)), ("model", clone(estimator))],
+        )
         pipe.fit(X_train, y_train)
         proba = _sklearn_positive_proba(pipe, X_val)
         scores_by_model[name] = np.asarray(proba, dtype=np.float64)
@@ -78,7 +79,7 @@ def compare_models_holdout(
         fitted_sklearn[name] = pipe
         logger.debug("evaluated %s %s", name, metrics)
 
-    prep_mlp = clone(prep_template)
+    prep_mlp = clone(feature_template)
     X_train_m = prep_mlp.fit_transform(X_train, y_train)
     X_val_m = prep_mlp.transform(X_val)
     input_dim = int(X_train_m.shape[1])

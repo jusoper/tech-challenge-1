@@ -9,7 +9,12 @@ from telco_churn.business.cost_tradeoff import (
     optimal_threshold_min_cost,
     sweep_threshold_costs,
 )
-from telco_churn.data.preprocessing import prepare_telco_features
+from telco_churn.data.pipeline import (
+    build_telco_classifier_pipeline,
+    build_telco_feature_transform_pipeline,
+)
+from telco_churn.data.preprocessing import TelcoTableSanitizer, prepare_telco_features
+from telco_churn.data.transformers import TelcoSklearnFeatureEncoder
 from telco_churn.evaluation.holdout import compare_models_holdout
 from telco_churn.evaluation.metrics import compute_binary_metrics
 from telco_churn.modeling.mlp import ChurnMLP, churn_binary_loss
@@ -21,8 +26,12 @@ __all__ = [
     "DEFAULT_COST_FN",
     "DEFAULT_COST_FP",
     "EarlyStopping",
+    "TelcoSklearnFeatureEncoder",
+    "TelcoTableSanitizer",
     "TrainConfig",
     "business_value_proxy",
+    "build_telco_classifier_pipeline",
+    "build_telco_feature_transform_pipeline",
     "churn_binary_loss",
     "compare_models_holdout",
     "compare_thresholds_report",
