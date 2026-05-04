@@ -1,7 +1,6 @@
-"""Pacote do Tech Challenge — churn Telco (estrutura Etapa 1+)."""
+"""Pacote do Tech Challenge — churn Telco (Etapa 3: módulos por domínio em `src/`)."""
 
-from telco_churn.compare_models import compare_models_holdout, compute_binary_metrics
-from telco_churn.cost_tradeoff import (
+from telco_churn.business.cost_tradeoff import (
     DEFAULT_COST_FN,
     DEFAULT_COST_FP,
     business_value_proxy,
@@ -10,10 +9,12 @@ from telco_churn.cost_tradeoff import (
     optimal_threshold_min_cost,
     sweep_threshold_costs,
 )
-from telco_churn.mlflow_compare import log_compare_models_to_mlflow
-from telco_churn.mlp import ChurnMLP, churn_binary_loss
-from telco_churn.preprocessing import prepare_telco_features
-from telco_churn.train_mlp import EarlyStopping, TrainConfig, train_churn_mlp
+from telco_churn.data.preprocessing import prepare_telco_features
+from telco_churn.evaluation.holdout import compare_models_holdout
+from telco_churn.evaluation.metrics import compute_binary_metrics
+from telco_churn.modeling.mlp import ChurnMLP, churn_binary_loss
+from telco_churn.tracking.mlflow_compare import log_compare_models_to_mlflow
+from telco_churn.training.train_mlp import EarlyStopping, TrainConfig, train_churn_mlp
 
 __all__ = [
     "ChurnMLP",

@@ -6,9 +6,7 @@ import mlflow
 import numpy as np
 import pandas as pd
 
-from telco_churn.mlflow_compare import log_compare_models_to_mlflow
-from telco_churn.preprocessing import prepare_telco_features
-from telco_churn.train_mlp import TrainConfig
+from telco_churn import TrainConfig, log_compare_models_to_mlflow, prepare_telco_features
 
 
 def _tiny_churn_df(n: int = 200, seed: int = 3) -> pd.DataFrame:

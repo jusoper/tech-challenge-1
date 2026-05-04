@@ -10,7 +10,7 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
 
-from telco_churn.mlp import ChurnMLP, churn_binary_loss
+from telco_churn.modeling.mlp import ChurnMLP, churn_binary_loss
 
 logger = logging.getLogger(__name__)
 

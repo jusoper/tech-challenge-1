@@ -3,7 +3,7 @@
 import pytest
 import torch
 
-from telco_churn.mlp import ChurnMLP, churn_binary_loss
+from telco_churn import ChurnMLP, churn_binary_loss
 
 
 @pytest.mark.parametrize("activation", ["relu", "gelu", "tanh"])

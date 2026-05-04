@@ -13,8 +13,8 @@ import mlflow
 import numpy as np
 import pandas as pd
 
-from telco_churn.compare_models import compare_models_holdout
-from telco_churn.train_mlp import TrainConfig
+from telco_churn.evaluation.holdout import compare_models_holdout
+from telco_churn.training.train_mlp import TrainConfig
 
 logger = logging.getLogger(__name__)
 
@@ -70,15 +70,16 @@ def log_compare_models_to_mlflow(
     extra_params: dict[str, Any] | None = None,
     run_name_prefix: str = "",
     log_training_curves: bool = True,
-    log_sklearn_models: bool = False,
-    log_mlp_torch: bool = False,
+    log_sklearn_models: bool = True,
+    log_mlp_torch: bool = True,
     **compare_kwargs: Any,
 ) -> pd.DataFrame:
     """
     Executa `compare_models_holdout` e cria **um run por modelo** com parâmetros e métricas.
 
-    Opcionalmente: curva de loss da MLP (CSV), `mlflow.sklearn.log_model` e
-    `mlflow.pytorch.log_model` (desligados por padrão para runs mais leves).
+    Por padrão grava também **modelos** no store: `mlflow.sklearn.log_model` em cada baseline
+    e `mlflow.pytorch.log_model` no run `churn_mlp` (Etapa 2 — artefatos reprodutíveis).
+    Curva de loss da MLP continua em CSV sob `training/`. Use `False` em testes rápidos.
     """
     kwargs = dict(compare_kwargs)
     kwargs["return_val_artifacts"] = True

@@ -3,8 +3,7 @@
 import numpy as np
 import torch
 
-from telco_churn.mlp import ChurnMLP
-from telco_churn.train_mlp import EarlyStopping, TrainConfig, train_churn_mlp
+from telco_churn import ChurnMLP, EarlyStopping, TrainConfig, train_churn_mlp
 
 
 def test_early_stopping_patience() -> None:

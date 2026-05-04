@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from telco_churn.cost_tradeoff import (
+from telco_churn.business.cost_tradeoff import (
     business_value_proxy,
     compare_thresholds_report,
     confusion_counts,

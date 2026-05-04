@@ -3,9 +3,12 @@
 import numpy as np
 import pandas as pd
 
-from telco_churn.compare_models import compare_models_holdout, compute_binary_metrics
-from telco_churn.preprocessing import prepare_telco_features
-from telco_churn.train_mlp import TrainConfig
+from telco_churn import (
+    TrainConfig,
+    compare_models_holdout,
+    compute_binary_metrics,
+    prepare_telco_features,
+)
 
 
 def test_compute_binary_metrics_four_metrics() -> None:
