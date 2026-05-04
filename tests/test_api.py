@@ -1,5 +1,7 @@
-"""Testes da API FastAPI `/health` e `/predict` (Etapa 3 — tarefa 4)."""
+"""Testes da API FastAPI: rotas (tarefa 4), logging e latência (tarefa 5)."""
 
+import json
+import logging
 from pathlib import Path
 
 import joblib
@@ -8,6 +10,7 @@ import pandas as pd
 import pytest
 from fastapi.testclient import TestClient
 
+from telco_churn.api.logging_config import JsonLogFormatter
 from telco_churn.api.main import app
 from telco_churn.data.pipeline import build_telco_classifier_pipeline
 from telco_churn.data.preprocessing import prepare_telco_features
@@ -17,6 +20,25 @@ from telco_churn.data.preprocessing import prepare_telco_features
 def client() -> TestClient:
     with TestClient(app) as c:
         yield c
+
+
+def test_middleware_adds_latency_and_request_id_headers(client: TestClient) -> None:
+    r = client.get("/health")
+    h = {k.lower(): v for k, v in r.headers.items()}
+    assert "x-process-time" in h and "x-request-id" in h
+    assert float(h["x-process-time"]) >= 0.0
+
+
+def test_json_formatter_includes_extra_fields() -> None:
+    fmt = JsonLogFormatter()
+    rec = logging.LogRecord("telco_churn.test", logging.INFO, __file__, 0, "http_request", (), None)
+    rec.request_id = "abc-123"
+    rec.latency_ms = 4.2
+    line = fmt.format(rec)
+    data = json.loads(line)
+    assert data["message"] == "http_request"
+    assert data["request_id"] == "abc-123"
+    assert data["latency_ms"] == 4.2
 
 
 def test_health_ok(client: TestClient) -> None:

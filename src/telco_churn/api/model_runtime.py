@@ -43,7 +43,10 @@ def fit_default_synthetic_pipeline(*, seed: int = 42) -> Pipeline:
         LogisticRegression(max_iter=2000, random_state=seed, class_weight="balanced"),
     )
     pipe.fit(X, y)
-    logger.info("API: pipeline default treinado em dados sintéticos (n=%s)", n)
+    logger.info(
+        "model_fit_default_synthetic",
+        extra={"n_rows": n, "n_features": int(X.shape[1])},
+    )
     return pipe
 
 
@@ -60,7 +63,13 @@ def load_or_fit_serving_pipeline() -> tuple[Pipeline, str]:
             model = joblib.load(path)
             if not isinstance(model, Pipeline):
                 raise TypeError("TELCO_SKLEARN_PIPELINE_PATH deve apontar para um sklearn.Pipeline")
-            logger.info("API: pipeline carregado de %s", path)
+            logger.info(
+                "model_loaded_joblib",
+                extra={"path": str(path)},
+            )
             return model, "joblib_file"
-        logger.warning("TELCO_SKLEARN_PIPELINE_PATH=%s inexistente; usando baseline sintético", raw)
+        logger.warning(
+            "model_joblib_path_missing",
+            extra={"TELCO_SKLEARN_PIPELINE_PATH": raw},
+        )
     return fit_default_synthetic_pipeline(), "default_synthetic"
