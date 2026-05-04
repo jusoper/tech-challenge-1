@@ -1,0 +1,155 @@
+"""Comparação MLP vs baselines sklearn (linear + árvores) com ≥4 métricas (Etapa 2 — tarefa 3)."""
+
+from __future__ import annotations
+
+import logging
+from typing import Any
+
+import numpy as np
+import pandas as pd
+import torch
+from sklearn.base import clone
+from sklearn.dummy import DummyClassifier
+from sklearn.ensemble import HistGradientBoostingClassifier, RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, average_precision_score, f1_score, roc_auc_score
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+
+from telco_churn.mlp import ChurnMLP
+from telco_churn.preprocessing import build_feature_preprocessor, infer_column_types
+from telco_churn.train_mlp import TrainConfig, train_churn_mlp
+
+logger = logging.getLogger(__name__)
+
+
+def compute_binary_metrics(
+    y_true: np.ndarray,
+    y_score_positive: np.ndarray,
+    *,
+    threshold: float = 0.5,
+) -> dict[str, float]:
+    """
+    Métricas em conjunto de validação: ROC-AUC, PR-AUC, F1, acurácia (≥4).
+    `y_score_positive` é P(y=1) ou score monotônico equivalente.
+    """
+    y_true = np.asarray(y_true).astype(int).ravel()
+    y_score = np.asarray(y_score_positive, dtype=float).ravel()
+    y_pred = (y_score >= threshold).astype(int)
+    out: dict[str, float] = {
+        "roc_auc": float(roc_auc_score(y_true, y_score)),
+        "pr_auc": float(average_precision_score(y_true, y_score)),
+        "f1": float(f1_score(y_true, y_pred, zero_division=0)),
+        "accuracy": float(accuracy_score(y_true, y_pred)),
+    }
+    return out
+
+
+def _mlp_positive_proba(model: ChurnMLP, X: np.ndarray, device: torch.device) -> np.ndarray:
+    model.eval()
+    xt = torch.as_tensor(X, dtype=torch.float32, device=device)
+    with torch.no_grad():
+        logits = model(xt)
+        # Evita torch.Tensor.numpy() quando o build do PyTorch não liga ao NumPy corretamente.
+        p_list = torch.sigmoid(logits).detach().cpu().flatten().tolist()
+    return np.asarray(p_list, dtype=np.float64)
+
+
+def _sklearn_positive_proba(fitted: Pipeline, X: pd.DataFrame) -> np.ndarray:
+    return fitted.predict_proba(X)[:, 1]
+
+
+def compare_models_holdout(
+    X: pd.DataFrame,
+    y: pd.Series | np.ndarray,
+    *,
+    random_state: int = 42,
+    test_size: float = 0.2,
+    mlp_hidden_dims: tuple[int, ...] = (64, 32),
+    mlp_train_config: TrainConfig | None = None,
+    device: torch.device | str | None = None,
+) -> pd.DataFrame:
+    """
+    Holdout estratificado: baselines (dummy + logística + RF + HGB) vs MLP nas mesmas métricas.
+    """
+    y_array = np.asarray(y).astype(int).ravel()
+    X_train, X_val, y_train, y_val = train_test_split(
+        X,
+        y_array,
+        test_size=test_size,
+        stratify=y_array,
+        random_state=random_state,
+    )
+    num_cols, cat_cols = infer_column_types(X_train.columns)
+    prep_template = build_feature_preprocessor(num_cols, cat_cols)
+
+    rows: list[dict[str, Any]] = []
+
+    sklearn_models: list[tuple[str, Any]] = [
+        ("dummy_stratified", DummyClassifier(strategy="stratified", random_state=random_state)),
+        (
+            "logistic_regression_balanced",
+            LogisticRegression(
+                max_iter=2000,
+                random_state=random_state,
+                class_weight="balanced",
+            ),
+        ),
+        (
+            "random_forest",
+            RandomForestClassifier(
+                n_estimators=80,
+                max_depth=10,
+                random_state=random_state,
+                class_weight="balanced",
+                n_jobs=1,
+            ),
+        ),
+        (
+            "hist_gradient_boosting",
+            HistGradientBoostingClassifier(
+                max_iter=120,
+                max_depth=6,
+                random_state=random_state,
+                class_weight="balanced",
+            ),
+        ),
+    ]
+
+    for name, estimator in sklearn_models:
+        pipe = Pipeline(steps=[("prep", clone(prep_template)), ("model", estimator)])
+        pipe.fit(X_train, y_train)
+        proba = _sklearn_positive_proba(pipe, X_val)
+        metrics = compute_binary_metrics(y_val, proba)
+        rows.append({"model": name, **metrics})
+        logger.debug("evaluated %s %s", name, metrics)
+
+    prep_mlp = clone(prep_template)
+    X_train_m = prep_mlp.fit_transform(X_train, y_train)
+    X_val_m = prep_mlp.transform(X_val)
+    input_dim = int(X_train_m.shape[1])
+
+    mlp = ChurnMLP(
+        input_dim=input_dim,
+        hidden_dims=mlp_hidden_dims,
+        dropout=0.1,
+        activation="relu",
+    )
+    cfg = mlp_train_config or TrainConfig()
+    train_out = train_churn_mlp(
+        mlp,
+        X_train_m.astype(np.float32),
+        y_train,
+        X_val_m.astype(np.float32),
+        y_val,
+        config=cfg,
+        device=device,
+    )
+    dev = torch.device(str(train_out["device"]))
+    proba_mlp = _mlp_positive_proba(mlp, X_val_m.astype(np.float32), dev)
+    metrics_mlp = compute_binary_metrics(y_val, proba_mlp)
+    rows.append({"model": "churn_mlp", **metrics_mlp})
+    logger.debug("evaluated churn_mlp %s", metrics_mlp)
+
+    out = pd.DataFrame(rows).set_index("model")
+    return out
