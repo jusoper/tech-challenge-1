@@ -54,7 +54,7 @@ mlflow ui --backend-store-uri file:$(pwd)/mlruns
 | `src/telco_churn/` | Código do pacote (Etapas 2–3) |
 | `data/raw/` | CSV baixado (não versionado) |
 | `notebooks/` | EDA e experimentos |
-| `docs/` | ML Canvas, Model Card (Etapa 4) |
+| `docs/` | ML Canvas, Model Card, [arquitetura de deploy](docs/deploy-architecture.md) (Etapa 4) |
 | `models/` | Artefatos salvos |
 | `tests/` | Pytest |
 
