@@ -23,6 +23,18 @@ pip install -e ".[dev]"   # inclui ruff; pytest já vem na instalação base
 python scripts/download_data.py
 ```
 
+### Makefile (Etapa 3 — lint, teste, API)
+
+Na raiz do repositório (`tech-challenge-1/`). O `Makefile` usa `.venv/bin/python` se existir; caso contrário, `python3`.
+
+| Comando | Descrição |
+|--------|------------|
+| `make dev` | `pip install -e ".[dev]"` (instala **ruff** para `lint`) |
+| `make lint` | `ruff check src tests scripts` |
+| `make test` | `pytest` |
+| `make run` | sobe a API com **uvicorn** em `http://0.0.0.0:8000` |
+| `make check` | `lint` + `test` (útil em CI ou antes de commit) |
+
 ### Notebook e MLflow
 
 ```bash
@@ -48,6 +60,4 @@ mlflow ui --backend-store-uri file:$(pwd)/mlruns
 
 ## Próximas etapas
 
-- **Etapa 2:** MLP PyTorch, early stopping, comparação com baselines.
-- **Etapa 3:** Refatoração `src/`, FastAPI, pytest, ruff, Makefile.
 - **Etapa 4:** Model Card, README final, vídeo STAR, deploy opcional.
