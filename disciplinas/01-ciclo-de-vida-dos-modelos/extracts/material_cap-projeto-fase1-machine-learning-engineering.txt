@@ -1,0 +1,42 @@
+Produtização de Modelos
+Welcome to Machine Learning Engineering 1
+### Machine Learning Engineering
+
+## Fase 1 Produtização De
+
+### Modelos
+Produtização de Modelos
+Welcome to Machine Learning Engineering 2
+### Welcome To Machine Learning Engineering
+Bem-vindo(a) à primeira fase da sua jornada em Machine Learning
+Engineering !
+Este é o ponto de partida para transformar modelos em soluções reais,
+escaláveis e confiáveis. Nesta etapa, você deixará de apenas experimentar em notebooks para aplicar práticas modernas de engenharia que conectam ciência de dados à produção. Prepare -se para aprender conceitos fundamentais e técnicas que são exigidas pelo mercado, garantindo que seus projetos t enham impacto real e possam ser integrados a sistemas corporativos.
+Nesta fase, você irá:
+• Compreender o ciclo de vida completo de um modelo de Machine Learning ,
+do experimento ao deploy.
+• Desenvolver habilidades em engenharia de software aplicada à ciência de dados , incluindo boas práticas de organização, testes e reprodutibilidade.
+• Aprender a criar APIs para inferência de modelos utilizando frameworks modernos como Flask e FastAPI.
+• Garantir modularidade e padronização por meio d a criação de bibliotecas internas e SDKs.
+• Preparar -se para desafios práticos que consolidam o aprendizado teórico e constroem um portfólio relevante.
+E você deve estar se perguntando: por que começar pela produtização?
+Porque é aqui que a ciência de dados encontra o impacto real. Modelos que não chegam à produção não geram valor para o negócio. Esta fase é essencial para que você aprenda a entregar soluções robustas, seguras e escaláveis, alinhadas às boas práticas do mercado. Profissionais que dominam essa etapa são altamente valorizados (as), pois garantem que modelos funcionem além do ambiente experimental, operando com confiabilidade em cenários corporativos.
+Lembrando também que a abordagem pedagógica é baseada em Project
+Based Learning (PBL) , garantindo aprendizado ativo e orie ntado à prática. Cada
+Produtização de Modelos
+Welcome to Machine Learning Engineering 3 disciplina combina teoria e aplicação, com exemplos reais e exercícios hands -on. Ao final da fase, você enfrentará o Tech Challenge , um projeto completo que envolve:
+• Preparação e exploração de dados.
+• Construção e avaliação do modelo.
+• Deploy via API com boas práticas de engenharia.
+• Documentação clara e organização do código.
+Você contará com suporte contínuo via comunidade no Discord e lives semanais com nossos professores e professoras especialistas para esclarecer dúvidas e compartilhar experiências .
+Nessa fase, iremos explorar:
+1. Introdução ao Ciclo de Vida de Modelos: visão geral do ciclo completo e o papel da automação.
+2. Fundamentos de Modelos de ML: construção e avaliação de modelos preditivos.
+3. Engenharia de Software para Cientistas de Dados: boas práticas, testes e reprodutibilidade.
+4. APIs para Inferência de Modelos (Flask e FastAPI): criação de APIs para disponibilização de modelos.
+5. Bibliotecas Internas e SDKs: modularização, documentação e distribuição interna.
+E finalmente, poderá te star seus conhecimentos ao desenvolver um projeto completo de Machine Learning, cobrindo todo o ciclo de vida do modelo, com deploy via API e aplicação de boas prática s de engenharia de software e gerenciamento de modelos. E aí, animado(a)?
+Não deixe de nos procur ar caso tenha qualquer dúvida!
+Produtização de Modelos
+Welcome to Machine Learning Engineering 4

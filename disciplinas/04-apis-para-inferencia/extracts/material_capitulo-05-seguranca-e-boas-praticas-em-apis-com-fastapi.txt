@@ -1,0 +1,233 @@
+Segurança e Boas Práticas em APIs
+## | Aula 05 - Machine Learning Engineering
+
+## Fase 1 Segurança E Boas
+
+### Práticas Em Apis
+Segurança e Boas Práticas em APIs
+### Sumário
+
+### O Que Vem Por Aí? Hands On
+
+### Saiba Mais O Que Você Viu Nesta Aula?
+
+### Referências
+Segurança e Boas Práticas em APIs
+### O Que Vem Por Aí?
+Imagine que você tenha desenvolvido uma API para servir predições de um modelo de Machine Learning. Ela está no ar e qualque r cliente pode fazer requisições,
+mas como garantir que apenas usuários autorizados acessem o serviço, que os dados de entrada não causem falhas ou brechas de segurança e que sua API permaneça estável mesmo sob uso intenso?
+Nesta aula, vamos explorar prát icas essenciais de segurança e robustez em
+APIs desenvolvidas com FastAPI, cobrindo desde autenticação e autorização com tokens JWT, passando por validação de entrada de dados, controle de acesso via
+CORS e medidas de proteção contra abusos (rate limiting) , até boas práticas gerais como logging, uso de HTTPS, manejo de credenciais e, por fim, considerações de produção (escalabilidade, redundância, alta disponibilidade). Tudo isso com exemplos práticos em código para consolidar o aprendizado.
+Segurança e Boas Práticas em APIs
+### Hands On
+Prepa re-se para mais uma aula hands on, onde vamos melhorar nossa API
+FastAPI e explorar práticas essenciais de segurança e robustez em APIs desenvolvidas com FastAPI! Abra seu VSCode e assista os vídeos para auxiliar na parte prática!
+Segurança e Boas Práticas em APIs
+### Saiba Mais
+Autenticação e Autorização (Tokens JWT)
+Em segurança de APIs, autenticação é o processo de verificar quem é o usuário ou sistema que faz a requisição, enquanto a autorização determina o que esse usuário pode fazer. Em aplicações web modernas, especialmente APIs REST stateless, é comum usar token s de acesso para essas tarefas, em vez de sessões tradicionais.
+Um dos padrões mais difundidos é o JWT (JSON Web Token) , um token em formato JSON, assinado criptograficamente, que carrega claims como usuário,
+permissões, validade etc. que o servidor pode verificar sem precisar de armazenamento de sessão.
+Figura 1 – JWT
+Fonte: Google Imagens (2026)
+No FastAPI, podemos proteger endpoints exigindo um token JWT válido ; é uma forma de codificar o objeto JSON em uma string longa e densa sem espaços, como :
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI
+6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36P
+Ok6yJV_adQssw5c
+Segurança e Boas Práticas em APIs
+ Existem bib liotecas e componentes prontos como OAuth2PasswordBearer ,
+mas vamos ilustrar aqui um exemplo simples utilizando a bilioteca PyJWT para decodificar e verificar o token manualmente.
+Pensando na nossa API Iris da aula anterior , criamos um endpoint /predic qu e usava nosso modelo e fazia a previsão do tipo de flor. Isso é um problema em produção pois qualquer pessoa poderia chamar essa rota, tendo muito provavelmente custos descontrolados pois cada chamada utiliza recursos computacionais, dados sensíveis poderi am ser expostos e principalmente nossa API teria vulnerabilidade a ataques.
+É importante termos em mente esses dois conceitos fundamentais:
+Tabela 1 - Autenticação vs Autorização
+Fonte: Elaborado pelo autor (2026)
+Formas comuns de autenticação em APIs:
+• API Key : Token estático enviado no header :
+o Simples de implementar .
+o Bom para comunicação entre serviços.
+• JWT (JSON Web Token) : Token assinado com informações do usuário:
+o Mais seguro .
+o Pode expirar automaticamente .
+Segurança e Boas Práticas em APIs
+• OAuth2 : Protocolo completo para autenticação:
+o Usado por Google, Facebook etc.
+o Mais complexo .
+Vamos implementar as duas primeiras na nossa API Iris.
+Hands On - API Key
+Vamos criar uma versão da API Iris que exige uma API Key no header X-API-
+Key.
+Fluxo:
+• Cliente envia requisição com HEADER X -API-Key: <token>.
+• API valida se o token está correto.
+• Se válido, processa a predição.
+• Se inválido, retorna erro 401 (Unauthorized) .
+Figura 2 – API-KEY
+Fonte: Elaborado pelo autor (2026)
+Segurança e Boas Práticas em APIs
+ Importante reforçar: em produção, use variáveis de ambiente! Nunca deixe tokens no código!
+Figura 3 – Schemas Pydantic
+Fonte: Elaborado pelo autor (2026)
+Os esquemas são os mesmos da aula anterior. A gora, vamos criar uma async def para validação da API Key.
+Figura 4 – Async Def API Key
+Fonte: Elaborado pelo autor (2026)
+Segurança e Boas Práticas em APIs
+ Agora , vamos carregar o modelo:
+Figura 5 – Carregamento do Modelo
+Fonte: Elaborado pelo autor (2026)
+Figura 6 – API e rotas principais
+Fonte: Elaborado pelo autor (2026)
+O nosso endpoint POST /predict vai ser protegido, exigindo header X -API-Key válido :
+Segurança e Boas Práticas em APIs
+Figura 7 – Endpoint Predict
+Fonte: Elaborado pelo autor (2026)
+Se tentarmos acessar o endpoint sem colocar a nossa API -KEY, ele vai dar o erro 401:
+Figura 8 – Swagger 401
+Fonte: Elaborado pelo autor (2026)
+Segurança e Boas Práticas em APIs
+Figura 9 – Terminal 401
+Fonte: Elaborado pelo autor (2026)
+Ao colocar a API -KEY, conseguimos acessar esse endpoint e fazer uma previsão:
+Figura 10 – Predict 200 (1)
+Fonte: Elaborado pelo autor (2026)
+Figura 11 – Predict 200 (2)
+Fonte: Elaborado pelo autor (2026)
+Segurança e Boas Práticas em APIs
+ API Iris agora com JWT
+O JWT é mais seguro que a nossa API -Key por que ele pode expirar automaticamente, contém informações do usuário que fez o login e tem assinatura digital, não sendo possível falsificá -la.
+O fluxo é:
+• Usuario faz login com usuario/senha em `/login` .
+• API retorna um token JWT .
+• Usuario envia o token no header `Authorization: Bearer <token>` .
+• API valida o token e processa a requisição .
+Para começarmos, vamos instalar o PyJWT e ajustar a API.:
+Figura 12 – JWT
+Fonte: Elaborado pelo autor (2026)
+Segurança e Boas Práticas em APIs
+ Também atualizamos nossos SCHEMAS:
+Figura 13 – SCHEMAS
+Fonte: Elaborado pelo autor (2026)
+Segurança e Boas Práticas em APIs
+ Criamos também funções de JWT para criar token e validar usuário:
+Figura 14 – JW-3
+Fonte: Elaborado pelo autor (2026)
+Na sequência a parte de carre gamento do modelo fica igual, mas vamos fazer alguns ajustes nas rotas:
+Segurança e Boas Práticas em APIs
+Figura 15 – JW-4
+Fonte: Elaborado pelo autor (2026)
+Figura 16 – JW-5
+Fonte: Elaborado pelo autor (2026)
+Segurança e Boas Práticas em APIs
+Figura 17 – JW-6
+Fonte: Elaborado pelo autor (2026)
+Figura 18 – JW-7
+Fonte: Elaborado pelo autor (2026)
+Agora, podemos acessar a documentação swagger e , através da rota POST ,
+fazer login:
+Segurança e Boas Práticas em APIs
+Figura 19 – JW-6
+Fonte: Elaborado pelo autor (2026)
+Com o nosso access_token em mãos, na parte superior da docum entação colocamos a autorização para acessar as rotas protegidas:
+Figura 20 – JW-7
+Fonte: Elaborado pelo autor (2026)
+Segurança e Boas Práticas em APIs
+ E agora sim podemos acessar nossa API com mais segurança!
+Figura 21 – JW-8
+Fonte: Elaborado pelo autor (2026)
+Rate Limiting - Protegendo contra Abusos
+Mesmo em rotas protegidas, sem um limite de requisições, um atacante pode derrubar a nossa API com milhares de chamadas ou até mesmo consumir uma quantidade absurda de recursos GPU/CPU, gerando custos extras na cloud.
+Para nos ajudar com isso , o Rate Limiting limita X requisições por Y segundos por cliente. Por exemplo, um usuário do mesmo IP pode fazer no máximo 10 requisições por minuto.
+Segurança e Boas Práticas em APIs
+Figura 22 – Rate Limiting - 1
+Fonte: Elaborado pelo autor (2026)
+O carregamen to do modelo fica igual, mas vamos mudar nossa aplicação com um middleware.
+Figura 23 – Rate Limiting - 2
+Fonte: Elaborado pelo autor (2026)
+Segurança e Boas Práticas em APIs
+Figura 24 – Rate Limiting - 3
+Fonte: Elaborado pelo autor (2026)
+Execute esse programa e teste via swagge r. Ao clicar diversas vezes no endpoint de predição, quando extrapolamos o nosso limite de requisições , ele retorna o erro 429 Too Many Requests.
+Figura 25 – Rate Limiting – 4
+Fonte: Elaborado pelo autor (2026)
+Segurança e Boas Práticas em APIs
+Figura 26 – Rate Limiting - 5
+Fonte: Elaborado pelo autor (2026)
+CORS: Controlando o Acesso de Origens Cruzadas
+APIs podem ser consumidas por diversos clientes, como aplicações web em navegadores, que impõem a política de Same -Origin (requisições AJAX/XHR/fetch apenas para o mesmo do mínio de origem). Para permitir que origens diferentes acessem a API, é necessário habilitar o CORS (Cross -Origin Resource Sharing).
+O CORS é um padrão que permite ao servidor informar ao navegador quais origens externas (domínios) podem acessar seus recur sos. Isso é feito através de cabeçalhos HTTP específicos, como Access -Control -Allow -Origin .
+Quando habilitar CORS?
+• Necessário: se sua API for acessada por um frontend (aplicação web)
+hospedado em um domínio diferente (ex .: API em api.minhaempresa.com e frontend em app.minhaempresa.com).
+• Opcional/Desnecessário: se a API for usada apenas em comunicação server -to-server (sem navegador). Desabilitar o CORS nesse cenário aumenta a segurança, prevenindo chamadas de scripts em páginas web.
+Segurança e Boas Práticas em APIs
+ O FastAPI facilita a co nfiguração do CORS usando um middleware dedicado.
+Você define explicitamente as origens, métodos HTTP e cabeçalhos permitidos .
+Para permitir requisições de um domínio de produção e de um ambiente de desenvolvimento local ( localhost ), utilizando os métodos GET e POST , o código seria:
+from fastapi.middleware.cors import CORSMiddleware from fastapi import FastAPI app = FastAPI()
+# Lista de domínios permitidos
+origins_permitidas = [
+ "https://app.minhaempresa.com",
+ "http://localhost:3000", # Ex: ambiente local de testes do frontend
+]
+app.add_middleware(
+ CORSMiddleware,
+ allow_origins=origins_permitidas,
+ allow_credentials=True, # Permite envio de cookies/autenticação allow_methods=["GET", "POS T"], # Métodos HTTP autorizados allow_headers=["*"], 
+
+# Quais cabeçalhos podem ser enviados (o "*" permite todos)
+)
+Essa configuração fará com que o FastAPI inclua os cabeçalhos CORS necessários nas respostas, autorizando o acesso das origens esp ecificadas.
+Segurança e Boas Práticas em APIs
+ Boas Práticas Gerais em APIs de ML
+Além dos pontos específicos que implementamos, existem várias práticas gerais de segurança e qualidade que devem ser adotas ao construir APIs (seja para
+ML como para outros fins).
+• Logs e Monitoramento: registre as ações da API para detectar erros e ataques. Grave detalhes da requisição (caminho, método, status) sem dados sigilosos (senhas, tokens). Use logs estruturados (JSON) para facilitar a análise. Monitore falhas frequentes.
+• Comunicação Segura (HTTPS): sempre use HTTPS em produção. Ele criptografa o tráfego para proteger dados sensíveis. O certificado é fácil de obter. Use HTTP só para testes internos.
+• Gerenciamento de Segredos: nunca deixe senhas ou chaves de acesso no código. Use variáveis de ambiente, arquivos de configuração protegidos
+(.env não versionado ) ou serviços de gerenciamento de segredos. Não exponha informações sensíveis em URLs ou mensagens de erro.
+• Atualização de Dependências: mantenha suas bibliotecas e frameworks sempre atualizados para corrigir falhas de segurança. Use ferramentas de varredura. A segurança exige atualizações rápidas, mesmo em sistemas funcionando.
+• Princípio do Menor Privilégio: dê a cada parte do sistema apenas as permissões necessárias. Ex: usuário de banco de dados só com acesso de leitura, se for o bastante. Não rode a aplicação como root desnecessariamente.
+• Testes de Segurança e Hardening: inclua testes de segurança (com ferram entas como OWASP Zap) no desenvolvimento. Verifique a proteção de endpoints de administração. Em produção, desabilite recursos desnecessários (como documentação automática ou listagem de diretórios)
+e reforce cabeçalhos HTTP de resposta.
+Segurança e Boas Práticas em APIs
+ Considerações Esse nciais para APIs de Inferência de ML em Produção
+Levar uma API de inferência de Machine Learning (ML) à produção exige uma visão que vai além do código, focando na robustez e resiliência da infraestrutura. Os pilares de um serviço de sucesso são: desempenh o e resiliência da infraestrutura ;
+segurança e operação contínua .
+Segurança e Boas Práticas em APIs
+ Tabela 2 – Conceito, descrição e implementação
+Fonte: Elaborado pelo autor (2026)
+Em produção, a operação exige atenção a outros fatores cruciais:
+• Observabilidade: implementação de logs centralizados, métricas de performance e traços para diagnóstico e auditoria.
+• Segurança em Profundidade: múltiplas camadas de proteção:
+autenticação na API, Web Application Firewall (WAF) e monitoramento ativo.
+• Controle de Custos: uso de rate limiting para prevenir abusos e escalabilidade elástica para evitar gastos com capacidade ociosa.
+• Conformidade: seguir as recomendações de segurança da comunidade,
+como o OWASP API Security Top 10 (ex .: mitigação de autenticação quebrada, vazamento de dados).
+Checklist de Segurança e Boas Práticas para APIs de ML
+Antes do go-live da API, verifique se os seguintes requisitos essenciais foram atendidos:
+Segurança e Boas Práticas em APIs
+Segurança e Boas Práticas em APIs
+Tabela 3 – Requisitos essenciais
+Fonte: Elaborado pelo autor (2026)
+Cumprir este checklist assegura que a API de inferência estará pronta para operar com segurança, estabilidade e confiabilidade no ambiente de produção. A segurança é um ciclo contínuo de aprendizado e melhoria.
+Segurança e Boas Práticas em APIs
+## O Que Você Viu Nesta Aula?
+Nesta aula, você fortaleceu a API construída nas etapas anteriores adicionando as camadas essenciais de segurança e robustez que qualquer serviço de Machine
+Learning precisa para operar em produção. Primeiro, exploramos como proteger endpoints sensíveis com API Keys e tokens JWT, entendendo as difer enças entre autenticação e autorização, além dos riscos de deixar uma API de predição exposta sem controle de acesso.
+Na sequência, você implementou validação de dados com Pydantic, discutiu ataques comuns por entradas malformadas e configurou mecanismos d e proteção operacional, como rate limiting para conter abusos.
+Por fim, ampliamos a visão para o ambiente real de produção, revisando boas práticas como uso de HTTPS, gestão de segredos, logs estruturados, monitoramento e princípios de infraestrutura resi liente.
+O objetivo foi mostrar que expor um modelo não é apenas “colocar o endpoint no ar”, mas construir um serviço confiável, seguro e preparado para escalar .
+Segurança e Boas Práticas em APIs
+### Referências
+GÉRÓN, A. Hands -On Machine Learning with Scikit -Learn, Keras, and
+TensorFlow . Beijing: O’Reilly Media, 2023.
+GIFT, N.; DEZA, A. Practical MLOps: Operationalizing Machine Learning Models.
+Sebastopol: O’Reilly Media, 2021.
+LUBANOVIC, B. FastAPI: Modern Python Web Dev elopment. Sebastopol: O’Reilly
+Media, 2023.
+NEWMAN, S. Building Microservices: Designing Fine -Grained Systems.
+Sebastopol: O’Reilly Media, 2021.
+Segurança e Boas Práticas em APIs
+### Palavras -Chave
+JWT. Token . API. WEB HTTP . REST . API RESTful . GraphQL . gRPC . JSON . MLOps.
+Segurança e Boas Práticas em APIs

@@ -1,0 +1,256 @@
+Melhorando a API: FastAPI e Recursos Avançados
+## | Aula 04 - Machine Learning Engineering
+
+## Fase 1 Melhorando A Api:
+
+### Fastapi E Recursos Avançados
+Melhorando a API: FastAPI e Recursos Avançados
+### Sumário
+
+### O Que Vem Por Aí? Hands On
+
+### Saiba Mais O Que Você Viu Nesta Aula?
+
+### Referências
+Melhorando a API: FastAPI e Recursos Avançados
+### O Que Vem Por Aí?
+Agora que conhecemos o F lask, vamos avançar para o FastAPI, um framework moderno, rápido e muito amigável para APIS de Machine Learning.
+Ao longo da aula você também verá como o FastAPI ficou tão popular para
+APIs de dados/ML e quais são as diferenças principais em relação ao Fl ask. O processo de criação de um aplicativo FastAPI envolve a definição de endpoints
+(usando @app.get , @app.post ), o uso de modelos de dados com Pydantic para validação automática e a geração automática de documentação (Swagger UI,
+acessível em /docs ). É possível realizar a reimplementação da rota /predict utilizando o FastAPI.
+Também serão abordadas noções de assincronicidade (async def ) e quando isso é útil, além de uma visão rápida de middlewares e dependency injection para carregar modelos apenas uma vez.
+Melhorando a API: FastAPI e Recursos Avançados
+### Hands On
+Prepare -se para mais uma aula hands on, na qual veremos na prática a evolução da nossa API para um framework mais robusto e completo. Abram o VSCode e assistam os vídeos para a parte prática!
+Melhorando a API: FastAPI e Recursos Avançados
+### Saiba Mais
+Por que FastAPI
+Por que evoluir de Flask para FastAPI? Na aula anterior implementamos uma
+API simples em Flask para expor um modelo de ML. Isso funcionou, mas esbarramos em limitações importantes. O Flask é minimalista, não oferecendo suporte nativo a requisições assíncronas, nem validação de dados ou documentação automática, fator este determinante para que eu pe ssoalmente sempre utilize FastAPI mesmo em projetos mais simples.
+Figura 1 – FastAPI
+Fonte: Google Imagens (2026)
+O FastAPI é um framework web moderno para Python, lançado em 2018 por
+Sebastián Ramírez. Ele rapidamente ganhou tração por combinar alta performance e facilidade de uso. O FastAPI, em sua essência técnica, não é uma criação totalmente nova. Ele se baseia em elementos já estabelecidos: usa o Starlette, um micro -
+framework ASGI conhecido por sua alta velocidade, e o Pydantic, fundamental para a validação e modelagem de dados.
+Ele ta mbém utiliza type hints do Python para gerar validação e documentação automática e , sem esforço extra, gera uma interface de docs interativa na s rotas /docs
+(Swagger UI) e /redoc(ReDoc) . Para ML isso é ouro, pois você descreve claramente o contrato da API ( inputs/outputs) e o time inteiro ou até mesmo outros serviços conseguem experimentar a API facilmente via Swagger. Os erros também são captura dos automaticamente , como por exemplo no caso de campo ausente, tipo errado etc.
+Melhorando a API: FastAPI e Recursos Avançados
+ Hands On - Criando Nosso Primeiro App FastAPI
+Vamos começar criando um app bem simples, estilo “Hello, FastAPI”.
+Figura 2 –Hello, FastAPI (1)
+Fonte: Elaborado pelo autor (2026)
+Rodando o Servidor com Uvicorn
+O FastAPI em si é só o framework. Para rodar o servidor HTTP usamos um
+ASGI server, como o Uvicorn .
+Passo 1 - Instale as dependências no terminal:
+pip install fastapi uvicorn
+Passo 2 - Rode o servidor apontando o objeto ‘app’ do arquivo que criamos:
+Figura 3 –Hello, FastAPI (2)
+Fonte: Elaborado pelo autor (2026)
+Passo 3 - Abra o navegador em:
+• [http://127.0.0.1:8000/](http://127.0.0.1:8000/) → deve ver o JSON
+{"message": "Hello, FastAPI!"}
+Melhorando a API: FastAPI e Recursos Avançados
+• [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) → Swagger UI gerado automaticamente
+• [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc) → documentação
+ReDoc
+Repare que, sem nenhuma configuração extra, você já ganhou uma UI de documentação fantástica.
+Figura 4 – Fastapi - Json
+Fonte: Elaborado pelo autor (2026)
+Com o Swagger podemos testar a API diretamente, algo que com o Flask só seria possível instalando o Flasgger.
+Melhorando a API: FastAPI e Recursos Avançados
+Figura 5 – Swagger - Hello, FastAPI
+Fonte: Elaborado pelo autor (2026)
+O ReDoc , apesar de ser uma interface apenas leitura, não permitindo testes,
+possui um layout em três colunas estilo documentação pronta p ara o consumidor final,
+muito mais elegante e clean. Resumindo:
+• Swagger = para você testar a API.
+• ReDoc = para você compartilhar a documentação bonita com outros times.
+Melhorando a API: FastAPI e Recursos Avançados
+Figura 6 – ReDoc - Hello, FastAPI
+Fonte: Elaborado pelo autor (2026)
+Modelos de dados com Pydantic
+Uma das maiores melhorias do FastAPI em relação ao Flask é o uso de
+Pydantic para modelar e valid ar dados. No Flask, recebíamos um request.json e precisávamos manualmente extrair campos, verificar tipos, tratar ausências etc. Com
+FastAPI, definimos classes que herdam de pydantic .BaseModel representando o esquema dos dados esperados e o framework faz a magia.
+Melhorando a API: FastAPI e Recursos Avançados
+Tabela 1 - Vantagens do Pydantic
+Fonte: Elaborado pelo autor (2026)
+Agora vamos reimplementar a API de classificação Iris usando o modelo que treinamos na aula anterior!
+Melhorando a API: FastAPI e Recursos Avançados
+Tabela 2 - Reimplementando a API de classificação Iris
+Fonte: Elaborado pelo autor (2026)
+Depois de instaladas e importadas as bibliotecas, vamos criar as classes que descrevem a estrutura dos dados que a API recebe e retorna. Se alguém enviar “texto” onde deveria ser número , graças ao Pydantic , o FastAPI retorna erro 422 automaticamente. O melhor é que toda essa documentação vai aparecer de maneira automatizada no Swagger/Redoc , além d e ajuda r também a IDE.
+Melhorando a API: FastAPI e Recursos Avançados
+Figura 7 – FastAPI -IRIS-1
+Fonte: Elaborado pelo autor (2026)
+Melhorando a API: FastAPI e Recursos Avançados
+Figura 8 – FastAPI -IRIS-2
+Fonte: Elaborado pelo autor (2026)
+Figura 9 – FastAPI -IRIS-3
+Fonte: Elaborado pelo autor (2026)
+Melhorando a API: FastAPI e Recursos Avançados
+ Agora, vamos carregar o modelo treinado do disco para a memória e criar a instância principal da aplicação.
+Figura 10 – FastAPI -IRIS-4
+Fonte: Elaborado pelo autor (2026)
+Começamos pelo endpoint GET /, rota principal que retorna as informações sobre a API . É útil para verificar se ela está no ar e ver os endpoints disponíveis .
+Figura 11 – FastAPI -IRIS-5
+Fonte: Ela borado pelo autor (2026)
+Melhorando a API: FastAPI e Recursos Avançados
+Agora temos a rota GET /health, para verificarmos em produção o monitoramento de se a API está funcionando corretamente.
+Figura 12 – FastAPI -IRIS-6
+Fonte: Elaborado pelo autor (2026)
+Agora , para a rota POST /predict, vamos seguir quatro passos:
+• Verificar se o modelo está carregado.
+• Preparar os dados para o modelo.
+• Fazer a predição.
+• Montar a resposta usando os modelos Pydantic.
+Melhorando a API: FastAPI e Recursos Avançados
+Figura 13 – FastAPI -IRIS-7
+Fonte: Elaborado pelo autor (20 26)
+Testando a API
+Vamos iniciar o servidor . No terminal , navegue até a pasta da aula e execute o seguinte: python -m uvicorn app_fastapi_iris:app --reload
+Agora, abra no navegador: http://127.0.0.1:8000/docs . Você verá o Swagger UI com a descrição da API que preenchemos no FastAPI, todos os endpoints
+Melhorando a API: FastAPI e Recursos Avançados documentados, os Schemas dos modelos Pydantic e um botão “Try it out” para testar cada endp oint.
+Figura 14 – FastAPI -IRIS-8
+Fonte: Elaborado pelo autor (2026)
+Melhorando a API: FastAPI e Recursos Avançados
+Figura 15 – FastAPI -IRIS-9
+Fonte: Elaborado pelo autor (2026)
+Melhorando a API: FastAPI e Recursos Avançados
+Figura 16 – FastAPI -IRIS-10
+Fonte: Elaborado pelo autor (2026)
+Retorno com a predição:
+Figura 17 – FastAPI -IRIS-11
+Fonte: Elaborado pelo autor (2026)
+Melhorando a API: FastAPI e Recursos Avançados
+Agora, tente enviar dados inválidos e veja a mágica do Pydantic:
+Figura 18 – FastAPI -IRIS-12
+Fonte: Elaborado pelo autor (2026)
+E, por fim , observe a documentação de alto nível que temos com o ReDoc:
+Melhorando a API: FastAPI e Recursos Avançados
+Figura 19 – FastAPI -IRIS-13
+Fonte: Elaborado pelo autor (2026)
+Ao comparar com o Flask , é impossível não perceber o poder da FastAPI : antes precisa ríamos escrever diversas linhas de código só para validação, se o JSON existe,
+campos obrigatórios, verificar tipos, retornar erros apropriados… No FastAPI com
+Pydantic: 0 linhas de validação manual. Tudo é declarativo!
+Endpoints síncronos vs assíncronos (def vs async def)
+O FastAPI tem suporte nativo a assincronicidade com async def. Isso significa que, se você tiver operações IO-bound (chamadas a banco, outros serviços, leitura de arquivos etc ), pode ganhar desempenho atendendo múltiplas requisições em paralelo.
+Em resumo:
+• IO-bound: o gargalo é espera de I/O (rede, disco etc.). Async pode ajudar muito.
+Melhorando a API: FastAPI e Recursos Avançados
+• CPU -bound: o gargalo é processamento pesad o (ex.: modelo de ML muito grande). Aí, o ganho v em mais de múltipl os workers/processos do que async.
+Vamos ver um exemplo simples com um endpoint síncrono e um assíncrono.
+app = FastAPI (title="Exemplo FastAPI Async" )
+@app.get("/sync -wait" )
+def sync_wait ():
+ """Espera 2 segundos de forma bloqueante (síncrona)."""
+ import time time.sleep (2)
+ return {"message" : "Resposta síncrona depois de 2 segundos" }
+@app.get("/async -wait" )
+async def async_wait ():
+ """Espera 2 segundos de forma assíncrona.
+ Enquanto isso, o servidor pode atender outras requisições.
+ """
+ await asyncio .sleep (2)
+ return {"message" : "Resposta assíncrona depois de 2 segundos" }
+Melhorando a API: FastAPI e Recursos Avançados
+ Quando async ajuda (e quando não)
+Se seu endpoint faz chamadas a serviços externos, consulta bancos de dados, lê arquivos e essas bibliotecas suportam async, vale muito a pena usar async def.
+ Se o seu endpoint só faz um cálculo pesado em CPU como a inferência de um modelo grande sem I/O, o async não vai trazer grande benefício. Nesse caso, o caminho é rodar o servidor com mais workers:
+uvicorn app_fastapi_predict:app --workers 4
+Middlewares no FastAPI
+Um middleware é um componente que intercepta a requisição antes de chegar no endpoint e/ou a resposta antes de voltar para o cliente. Você pode usar middlewares para logar tempo de resposta, adicionar headers, fazer autenticação,
+CORS etc.
+Vamos criar um exemplo simples de middleware que adiciona um header X-
+Process -Time com o tempo de processamento da requisição:
+import time from fastapi import FastAPI , Request app = FastAPI (title="Exemplo de Middleware no FastAPI" )
+@app.middleware ("http" )
+async def add_process_time_header (request : Request , call_next ):
+ start_time = time.time()
+ response = await call_next (request )
+ process_time = time.time() - start_time
+Melhorando a API: FastAPI e Recursos Avançados response .headers[ "X-Process -Time" ] = str(process_time )
+ return response
+@app.get("/")
+def read_root ():
+ return {"message" : "Hello with middleware" }
+No terminal:
+python -m uvicorn app_fastapi_middleware:app --reload
+Ao rodar este app e fazer um a requisição, você verá na resposta HTTP um header extra: - `X-Process -Time: <algum valor em segundos>`
+Conseguimos ver com F12 no navegador a partir d as ferramentas de dese nvolvedor ou pelo Postman , onde fica ainda mais fácil : após fazer uma requisição
+GET para http://127.9.9.1:8000/, na resposta clique na aba Headers e procure por x -
+process -time:
+Figura 20 – FastAPI -Postman x -process -time
+Fonte: Elaborado pelo autor (2026)
+Melhorando a API: FastAPI e Recursos Avançados
+ Dependency Injection e Carregamento do Modelo
+O problema: recarregar o modelo a cada requisição. Imagine que seu modelo leva 5 segundos para carregar do disco. Se você carregar a cada requisição, para uma seria m apenas 5 segundos, mas para 100 seri am 500 segundos desperdiçados!
+A solução: Dependecy Injection com Cache ! O FastAPI tem um sistema elegante de
+Dependency Injection que resolve isso:
+from functools import lru_cache from fastapi import Depends
+@lru_cache # ← Cacheia o resultado!
+def get_classifier ():
+ return IrisClassifier() # Carrega UMA VEZ
+@app.post ("/predict" )
+def predict ( payload : IrisRequest ,
+ classifier : IrisClassifier = Depends (get_classifier) # ← Injetado!
+):
+Dependency Injection
+Requisição 1:
+predict(payload) -> Depend ência: get_classifier -> Criação do IrisClassifier
+(carrega o modelo) .
+Melhorando a API: FastAPI e Recursos Avançados
+ Requisições 2, 3, 4...:
+predict(payload) -> Depend ência: get_classifier -> Retorno do CACHE!
+(instantâneo) .
+Figura 21 – FastAPI -Dependency Injection
+Fonte: Elaborado pelo autor (2026)
+Tabela 3 - Vantagens do padrão Dependency Injection
+Fonte: Elaborado pelo autor (2026)
+Melhorando a API: FastAPI e Recursos Avançados
+ Predição em Lote (Batch)
+Vamos aproveitar e adicionar um endpoint /predict -batch que aceita múltiplas flores no json:
+{
+ "amostras" : [
+ {"sepal_length" : 5.1, "sepal_width" : 3.5, "petal_length" : 1.4, "petal_width" :
+0.2},
+ {"sepal_length" : 6.3, "sepal_width" : 3.3, "petal_length" : 6.0, "petal_width" :
+2.5}
+ ]
+}
+Figura 22 – FastAPI -Predict -Batch
+Fonte: Elaborado pelo autor (2026)
+Melhorando a API: FastAPI e Recursos Avançados
+ Considerações Finais
+O FastAPI representa o estado da arte para o desenvolvimento de APIs de
+Machine Learning em Python. Não é só “porque está na moda”. Ele resolve, de forma concreta, vários problemas que você teria que ficar remendando no Flask:
+• Você escreve menos código para chegar no mesmo resultado e a validação automática com Pydantic transforma aq uele caos de if campo not in body em modelos tipados, com erros claros e previsíveis.
+• A documentação interativa vem de graça: /docs e /redoc já mostram seus endpoints, modelos e exemplos. Não tem aquele ritual de “um dia eu documento”, que na prática nunca chega .
+• Em termos de performance, ele não fica devendo: roda em cima de um stack
+ASGI moderno (Starlette + Uvicorn), entregando throughput digno de linguagem compilada para a maioria dos cenários de API de ML.
+Se você quiser ir além, os pr óximos passos naturais são mergulhar na documentação oficial do FastAPI, do Pydantic, do Starlette e do Uvicorn : essas são as peças que, juntas, sustentam essa experiência mais moderna de APIs para
+Machine Learning.
+Melhorando a API: FastAPI e Recursos Avançados
+## O Que Você Viu Nesta Aula?
+Nesta aula, evoluímos do Flask para o FastAPI, um framework moderno pensado justamente para APIs de alto desempenho em Python. Vimos como criar uma aplicação FastAPI desde o zero, definir e explorar endpoints na prática e a documentação automática em /docs, que já nas ce integrada com os modelos de entrada e saída.
+Você aprendeu a usar Pydantic para descrever e validar os dados da requisição, substituindo if manuais por modelos tipados e mais seguros.
+Reimplementamos a rota /predict que já existia em Flask, agora com tipagem explícita,
+validação automática e respostas estruturadas , além de discuti rmos rapidamente onde entram os endpoints async e quando isso faz diferença em APIs de ML.
+Não se esqueça de revisar o código da aula, expl orar a documentação oficial do FastAPI e brincar com seus próprios modelos usando Pydantic : é assim que essa
+“mágica” de tipos, validação e docs automáticas começa a ficar natural no seu dia a dia.
+Melhorando a API: FastAPI e Recursos Avançados
+### Referências
+GÉRÓN, A. Hands -On Machine Learning with Scikit -Learn, Keras, and
+TensorFlow . Beijing: O’Reilly Media, 2023.
+GIFT, N.; DEZA, A. Practical MLOps: Operationalizing Machine Learning Models.
+Sebastopol: O’Reilly Media, 2021.
+LUBANOVIC, B. FastAPI: Modern Python Web Development. Sebastopol: O’Reilly
+Media, 2023.
+NEWMAN, S. Building Microservices: Designing Fine -Grained Systems.
+Sebastopol: O’Reilly Media, 2021.
+Melhorando a API: FastAPI e Recursos Avançados
+### Palavras -Chave
+FastAPI . API. WEB HTTP . REST . API RESTful . Pydantic . Model . Batch .
+Melhorando a API: FastAPI e Recursos Avançados

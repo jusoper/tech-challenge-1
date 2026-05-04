@@ -1,0 +1,198 @@
+Construindo uma API de ML com Flask
+## | Aula 03 - Machine Learning Engineering
+
+## Fase 1 Construindo Uma Api
+
+### De Ml Com Flask
+Construindo uma API de ML com Flask
+### Sumário
+
+### O Que Vem Por Aí? Hands On
+
+### Saiba Mais O Que Você Viu Nesta Aula?
+
+### Referências
+Construindo uma API de ML com Flask
+### O Que Vem Por Aí?
+Nesta aula vamos finalmente tirar o modelo do notebook e disponibilizá -lo com o Flask. Você va i ver, passo a passo, como criar uma aplicação web mínima: instanciar o app, definir rotas com @app.route, subir um “Olá, mundo” local e entender onde cada parte do código entra no fluxo HTTP. A partir daí, avançamos para o que realmente importa: carregar um modelo de ML já treinado, criar um endpoint /predict que recebe JSON, faz a inferência e devolve o resultado em formato estruturado.
+Ao longo da aula você também verá como tratar erros básicos (entrada inválida,
+campos faltando), como testar a API e qua is cuidados tomar para não transformar seu servidor local em uma gambiarra difícil de manter. A ideia é que, ao final, você tenha sua primeira API de ML em Flask rodando no localhost, entendendo exatamente o que está acontecendo em cada linha e pronto (a) para evoluir esse código posteriormente para algo mais robusto em produção.
+Construindo uma API de ML com Flask
+### Hands On
+Prepare -se para colocar a mão na massa! Nesta aula, vamos além da teoria e partiremos para um Hands On completo, onde você aprenderá, passo a passo, a tirar um modelo de M achine Learning do ambiente do notebook e disponibilizar como uma
+API funcional usando Flask.
+Veremos desde a criação de uma aplicação web mínima com rotas básicas,
+como o clássico "Olá, mundo", até a construção do endpoint /predict que carrega nosso mode lo treinado, recebe dados via JSON, realiza a inferência e retorna o resultado estruturado, garantindo que ao final você tenha sua primeira API de ML rodando em localhost.
+Construindo uma API de ML com Flask
+### Saiba Mais
+Introdução ao FLASK
+Expor os modelos de ML como serviços web é essencial para gerar valor real com IA. Um modelo treinado parado em um jupyter notebook é apenas uma análise :
+para que ele tenha impacto, precisamos disponibilizá -lo via API para integração em aplicações do mundo real.
+Como vimos na s aulas ateriores , uma API fornece uma interface padronizada para que softwares se comuniquem e troquem dados ou funcionalidades . Isso significa que, ao transformar o nosso modelo em um endpoint HTTP, ele pode enviar requisições e receber previsões em formato JSO N. Isso permite a reutilização e integração do modelo em múltiplos sistemas de forma consistente.
+Figura 1 – Flask
+Fonte: Flask (2026)
+O Flask é um microframework web em Python famoso por sua simplicidade e flexibilidade. O termo “ microframework” significa que ele oferece apenas o essencial para construir aplicações web, sem impor uma estrutura pesada ou camadas complexas, deixando a pessoa desenvolvedor a com total liberdade para escolher componentes adicionais conforme a necessidade do projeto.
+Construindo uma API de ML com Flask
+ Criado por Armin Ronacher em 2010, o Flask nasceu exatamente da necessidade de uma alternativa mais leve aos frameworks maiores (como o Django)
+para criar desde APIs RESTful simples até aplicações web completas.
+Por sua abordagem minimalista, o Flask tornou -se popular para prototipação rápida e projetos de pequeno a médio porte. É como montar um Lego: você adiciona apenas o que precisa, mantendo o projeto enxuto. Isso traz vantagens práticas para
+APIs de Machine Learning pois , em poucos minutos , é possível ter um serviço de inferência rodando.
+De fato, o Flask é muito indicado quando o objetivo é criar protótipos ágeis,
+serviços simples ou microsserviços especializados, evitando a sobrecarga de frameworks mais robustos. Em outras palavras, se a meta é expor rapidamente um modelo treinado para teste ou demonstração, o Flask costuma ser a primeira escolha.
+Além disso, a curva de aprendizado é suave e , com poucas linhas de código,
+já conseguimos definir rotas e o que o serviço deve retornar. Essa co mbinação de facilidade e poder faz do Flask uma ferramenta valiosa para Data Scientists e engenheiros (as) que precisam "empacotar" modelos em APIs sem precisar virar especialistas em desenvolvimento web.
+A Anatomia de uma API Básica com Flask
+Vamos entende r os componentes fundamentais de uma API Flask e como eles se encaixam .
+Depois de instalarmos e importarmos o Flask, nós vamos criar uma instância da aplicação com app = Flask(__name__). Essa instância será nossa aplicação web,
+responsável por registrar ro tas e configurar o servidor. O parâmetro __name__ é passado para ajudar o Flask a encontrar recursos relativos como templates ou arquivos estáticos, mas não vamos nos aprofundar nisso agora. O importante é que app será usado como um decorador para criar ro tas e por fim para rodar a aplicação.
+Construindo uma API de ML com Flask
+ Definição de rotas (@app.route)
+As rotas são os endpoints (URLs) da API. Com o decorador
+@app.route(“/caminho”, methods=[...]) associamos uma função Python a um caminho
+URL e aos métodos HTTP suportados (GET, POST, etc .). Por exemplo,
+@app.route("/hello", methods=["GET"]) poderia acionar uma função hello() que retorna um texto "Olá".
+Ao receber uma requisição em /hello, o Flask invoca a função correspondente e envia sua resposta de volta. Podemos definir múltiplas rota s para diferentes funcionalidades e a ideia -chave é: cada rota mapeia uma URL para uma função seguindo o estilo REST, em que endpoints representam recursos ou ações.
+Retorno em JSON
+Em APIs de Machine Learning, é prática comum trabalhar com dados em format o JSON tanto na entrada quanto na saída, pela facilidade de integrar com diversos sistemas. O Flask facilita isso através da função utilitária jsonify(), que converte automaticamente dicionários (ou listas) Python para JSON e já configura o cabeçalho de re sposta (Content -Type: application/json). Assim, em vez de retornar
+HTML como no exemplo anterior, podemos retornar objetos JSON. Exemplo: return jsonify({"mensagem": "Olá, mundo!"}). O Flask serializa o dicionário para
+{"mensagem": "Olá, mundo!"} e o clien te receberá esses dados estruturados.
+O uso de JSON torna a API própria para consumo por outros sistemas:
+diferentemente de HTML (feito para humanos), o JSON é facilmente lido por aplicativos, linguagens diversas e até outros serviços. Com nossas rotas retornando
+JSON, abrimos caminho para que um app mobile, um frontend JavaScript ou outro microsserviço consumam diretamente as previsões do modelo, de forma simples e estruturada.
+Construindo uma API de ML com Flask
+ Hands ON - Criando sua primeira API: “Olá Mundo”
+VSCode
+Figura 2 – Hello Flask
+Fonte: Elaborado pelo a utor (2026)
+Podemos rodar nosso código e testar no navegador acessando:
+http://127.0.0.1:8000/
+Para testar a saudação dos nomes, podemos colocar no caminho:
+http://127. 0.0.1:8000/saudacao/Ioannis
+Figura 3 – Hello Flask - Terminal
+Fonte: Elaborado pelo autor (2026)
+Podemos testar também via CURL ; nesse caso, pode ser tanto pelo terminal do VSCode como o CMD:
+Construindo uma API de ML com Flask
+Figura 4 – Hello Flask - Curl
+Fonte: Elaborado pelo autor (2026)
+Trabalhando com JSON
+JSON (JavaScript Object Notation) é o formato padrão para troca de dados em
+APIs REST, pois ele é leve e fácil de ler, suportado nativamente em praticamente todas as linguagens e tem estrutura de chave -valor, assim como no s dicionários
+Python.
+O Flask oferece ferramentas para trabalhar com JSON:
+Tabela 1 – Ferramentas do Flask para JSON
+Fonte: Elaborado pelo autor (2026)
+Construindo uma API de ML com Flask
+Figura 5 – jsonfy -vs
+Fonte: Elaborado pelo autor (2026)
+Figura 6 – jsonfy -output
+Fonte: Elaborado pelo autor (2026)
+Agora temos a estrutura básica de uma API!
+Integração com Modelo de ML
+Chegamos ao coração da aula: colocar um modelo de Machine Learning para funcionar dentro de uma rota Flask. Suponha que você já tem um modelo treinado
+(por exemplo, um classificador de sklearn) salvo em disco – geralmente em formato pickle (.pkl) ou joblib (.joblib). A integração consiste nos seguintes passos: carregar o modelo, receber os dados de entrada da requisição, usar o modelo para predizer e retornar o resultado ao cliente. Vamos por partes:
+Construindo uma API de ML com Flask
+ Treinando um Modelo de ML Simples
+Antes de criar a API, p recisamos de um modelo treinado. Vamos criar um modelo simples de classificação que preverá se uma flor é da espécie Iris Setosa,
+Versicolor ou Virginica. O dataset Iris é um dos datasets mais famosos em ML:
+• 150 amostras de flores Iris .
+• 4 features: comprim ento/largura da sépala e pétala .
+• 3 classes: Setosa, Versicolor, Virginica .
+Figura 7 – IRIS DATASET
+Fonte: Elaborado pelo autor (2026)
+Na sequência , dividimos o dataset em treino e teste:
+Construindo uma API de ML com Flask
+Figura 8 – IRIS TRAIN/TEST
+Fonte: Elaborado pelo autor (2026)
+Agora, treinamos o modelo com RandomForestClassifier e avaliamos os resultados:
+Figura 9 – IRIS Model
+Fonte: Elaborado pelo autor (2026)
+E, por fim, vamos exportar nosso modelo com o formato pickle .pkl, para disponibilizar ele e os nomes das classes na nossa API:
+Construindo uma API de ML com Flask
+Figura 10 – IRIS Model
+Fonte: Elaborado pelo autor (2026)
+Construindo a API de ML
+Agora que temos um modelo no nosso arquivo .pkl, vamos criar uma API completa que carregue esse modelo trein ado e , através de uma rota POST , recebe os dados JSON, faz a previsão conforme o modelo treinado e nos retorna o resultado também em JSON. É importante também adequar a API para tratamento de erros.
+A estrutura da nossa API será essa:
+Construindo uma API de ML com Flask
+Tabela 2 – Estrutura da API
+Fonte: Elaborado pelo autor (2026 )
+Tratamento de ERROS
+Nenhuma API é completa sem considerar o que fazer quando algo dá errado.
+No contexto de nossa API Flask de ML, os erros mais prováveis são: (a) problemas na requisição do cliente (JSON malformado, campos faltantes, tipos errados) ou (b)
+exceções internas d o servidor (falha ao carregar modelo, erro inesperado durante a inferência etc.). Cada categoria deve ser tratada de forma adequada, retornando códigos HTTP coerentes e mensagens úteis.
+Lembre -se da convenção HTTP: códigos na faixa 400 indicam erro do clie nte
+(requisição inválida), enquanto 500 indicam erro do servidor (problema interno).
+Erros de cliente (Bad Request – 400): se o JSON de entrada estiver ausente ou inválido (por exemplo, sintaxe JSON incorreta), ou se estiver bem formado , mas faltarem camp os obrigatórios, retornaremos o código 400 Bad Request.
+No Flask, podemos fazer isso simplesmente retornando jsonify({"error":
+"descrição"}) junto com o código 400, assim: return jsonify({"error": "JSON inválido"}),
+400. Similarmente, se detectarmos que u m campo essencial não foi fornecido,
+podemos retornar algo como {"error": "Campo 'sepal_length' ausente"} com status
+Construindo uma API de ML com Flask
+ 400. Essa prática informa ao cliente que ele fez algo errado na requisição, permitindo correção. É interessante enviar mensagens claras par a facilitar a vida de quem integra com sua API. No nosso código de exemplo, isso significará checar if data is None: e if 'tal_campo' not in data: e retornar esses erros adequados.
+Erros internos do servidor (Internal Server Error – 500): apesar de todos os cuidados, podem ocorrer exceções durante o processamento : por exemplo, o modelo não consegue calcular a predição por algum motivo inesperado, ou ocorre um erro de tipo em tempo de execução. Nesses casos, o problema não é culpa do cliente, então o certo é retornar código 500. Podemos usar um try/except Exception envolvendo a lógica de predição e, em caso de qualquer exceção não prevista, fazer return jsonify({"error": "erro interno na predição"}), 500.
+Em ambiente de produção, talvez teríamos um lo g do erro completo no servidor para depuração, mas não enviar dados ao cliente por segurança. Para propósitos de debugging em desenvolvimento, às vezes se envia o traceback no JSON, mas em produção real é melhor não expor detalhes.
+Para implementar isso no Flask, temos duas abordagens: lidar manualmente nas funções de rota (usando condicionais e try/except como descrito) ; ou u sar error handlers globais do Flask (@app.errorhandler). Em APIs simples, a primeira abordagem basta. Já handlers globais são úteis p ara capturar exceções específicas em toda a aplicação . No nosso exemplo, faremos manualmente para clareza.
+Hands ON - api_ml.py
+Passo 1 - Criar aplicação e carregar o modelo :
+Construindo uma API de ML com Flask
+Figura 11 – Criar aplicação Flask
+Fonte: Elaborado pelo autor (2026)
+Passo 2 - Criando as Rotas :
+Construindo uma API de ML com Flask
+Figura 12 – Rotas Principais
+Fonte: Elaborado pelo autor (2026)
+Construindo uma API de ML com Flask
+Figura 13 – Rotas Predict -1
+Fonte: Elaborado pelo autor (2026)
+Construindo uma API de ML com Flask
+Figura 14 – Rotas Predict -2
+Fonte: Elaborado pelo autor (2026)
+Por fim , a execução do app:
+Construindo uma API de ML com Flask
+Figura 15 – Executar API
+Fonte: Elaborado pelo autor (2026)
+Agora vamos trabalhar com o POSTMAN para testarmos nossa API! Depois de criarmos uma conta e instalarmos o Postman Desktop Agent, podemos utilizar ele para testarmos as rot as da nossa API local. Vamos primeiro testar a saúde da API.
+Figura 16 – Testando GET Postman
+Fonte: Elaborado pelo autor (2026)
+Agora , vamos criar uma nova requisição POST Predict . Na aba “Body”, vamos selecionar “raw” e “JSON” , colocar nosso JSON com as FEATURES e tentar prever o tipo de flor.
+Construindo uma API de ML com Flask
+Figura 1 7 – Testando POST - PREDICT
+Fonte: Elaborado pelo autor (2026)
+Perfeito! A nossa API foi servida dos dados da flor e nos retornou a previsão identificando que era a flor do tipo virgínica! Durante os testes, fique de olho no console onde o Flask está rodando, ele loga cada requisição (método, endpoint,
+código de status e tempo). Isso ajuda a depurar se a rota está sendo atingida e o resultado obtido.
+FLASK em Produção
+Agora que temos uma API integra da a um modelo, é importante trazermos algumas considerações sobre o ambiente de produção. Esse app Flask construído da forma que foi feita não é o ideal para ser exposto na internet. Quando executamos
+`app.run()`, o Flask usa o servidor Werkzeug , que é sing le-threaded por natureza e feito apenas para desenvolvimento , não sendo capaz de lidar com alta carga ou
+Construindo uma API de ML com Flask múltiplas conexões simultâneas. Em produção precisamos de uma solução mais robusta.
+ As práticas recomendadas são utilizar um servidor WSGI (Web Server
+Gateway Interface), como Gunicorn (Linux) ou Waitress (Windows), para servir a aplicação Flask.
+Servidores WSGI, como o Gunicorn, utilizam workers paralelos, gerenciando melhor tráfego alto e requisições concorrentes, ao contrário do servidor interno do
+Flask, que não é para produção.
+Arquitetura Padrão (Nginx + Gunicorn + Flask): coloque um reverse proxy (ex:
+Nginx ou Apache) na frente do Gunicorn. O Nginx lida com requisições HTTP (portas
+80/443), encaminha para o Gunicorn (porta interna 5000) e gerencia arquivos estáticos, SSL/TLS e load balance. Essa arquitetura é padrão e garante resiliência e escalabilidade.
+Considerações sobre performance e sincronismo: o Flask utiliza WSGI síncrono: um worker é bloqueado por requisição. Se o modelo de Machin e Learning for lento, isso pode limitar a taxa de transferência de requisições.
+Soluções de performance: escalonamento horizontal (aumentar o número de workers Gunicorn) ; migrar para frameworks assíncronos como FastAPI , pois o Flask não suporta nativamente assincronismo.
+Para a maioria das aplicações de ML de pequena/média escala, o escalonamento via workers Gunicorn é geralmente suficiente.
+Para as próximas aulas, vamos refatorar e aprimorar nossa API, utilizando justamente o FastAPI, um framework moderno e com mais recursos que vão nos ajudar .
+Construindo uma API de ML com Flask
+## O Que Você Viu Nesta Aula?
+Nesta aula, o foco foi a transição do modelo de Machine Learning treinado, que estava em um notebook, para um ambiente operacional via API RESTful utilizando o microframework Flask. Vimos a importância de expor modelos como serviços web para que possam ser integrados a aplicações reais.
+Aprendemos a anatomia de uma aplicação Flask básica, desde a sua instanciação e a definição de rotas com decoradores, até a utilização do formato JSON para entrada e saída de dados, o que é fundamental para a comunicação en tre sistemas.
+Não se esqueçam de assistir às videoaulas e também se aprofundar na documentação do FLASK para continuar praticando e evoluindo sua API.
+Construindo uma API de ML com Flask
+### Referências
+FLASK -PTBR.READTHEDOCS.IO. Documentação do Flask (em português) . [s.d.]
+Disponível em: https://flask -ptbr.readthedocs.io/en/latest/ . Acesso em: 14 jan. 2026.
+GÉRÓN, A. Hands -On Machine Learning with Scikit -Learn, Keras, and
+TensorFlow . Beijing: O’Reilly Media, 2023.
+GIFT, N.; DEZA, A. Practical MLOps: Operationalizing Machine Learning Models.
+Sebastopol: O’Reilly Media, 2021.
+LUBANOVIC, B. FastAPI: Modern Python Web Development. Sebastopol: O’Reilly
+Media, 2023.
+NEWMAN, S. Building Microservices: Designing Fine -Grained Systems.
+Sebastopol: O’Reilly Media, 2021.
+Construindo uma API de ML com Flask
+### Palavras -Chave
+FLASK . API. WEB HTTP . REST . API RESTful . GraphQL . gRPC . JSON . MLOps.
+Construindo uma API de ML com Flask

@@ -1,0 +1,355 @@
+Entendendo o Problema de Negócio e os Dados
+
+## | Aula 01 - Machine Learning Engineering
+
+## Fase 1 Entendendo O
+
+### Problema De Negócio
+Entendendo o Problema de Negócio e os Dados
+
+### Sumário
+
+### O Que Vem Por Aí? Hands On
+
+### Saiba Mais Mercado, Cases E Tendências
+
+## O Que Você Viu Nesta Aula? Referências
+Entendendo o Problema de Negócio e os Dados
+
+### O Que Vem Por Aí?
+Iniciar um projeto de desenvolvimento de modelo de Machine Learning (ML)
+pela compreensão aprofundada do problema de negócio e dos dados disponíveis é,
+sem dúvida, o passo mais fundamental e, ironicamente, o mais frequentemente subestimado. Antes que qualquer linha de código seja escrita, antes de selecionar um algoritmo ou de começar o pré -processamento de dados, a equipe de Data Science deve mergulh ar na realidade e nos objetivos da organização. Este alinhamento inicial não é um mero pro forma ; é o alicerce que sustentará toda a estrutura do projeto.
+A tentação de pular direto para a fase de modelagem é grande, impulsionada pela empolgação tecnológica. Contudo, a experiência de mercado demonstra que muitos projetos de Inteligência Artificial (IA) falham não por limitações técnicas ou pela complexidade dos algoritmos, mas por um desalinhamento fundamental com os objetivos de negócio.
+As equipes de Data Science de sucesso dedicam um tempo significativo
+(muitas vezes, 20% a 30% do cronograma inicial) para as etapas de Descoberta,
+Alinhamento e Levantamento de Requisitos .
+Esta aula introdutória serve justamente para refletir sobre a importância dessa etapa inicial , que engloba a escuta ativa com stakeholders, a documentação clara de requisitos de negócio e técnicos e o conhecimento profundo dos dados. Veremo s que essa não é apenas uma boa prática recomendada em ambiente acadêmico, mas uma necessidade real e impulsionada pelas tendências de mercado . Empresas que conseguem extrair valor real de seus projetos de Machine Learning são aquelas que tratam o entendim ento do negócio e dos dados como a primeira e mais crítica fase de todo o ciclo de vida do modelo. Ignorar essa etapa é como construir uma casa começando pelo telhado — o colapso é iminente.
+Entendendo o Problema de Negócio e os Dados
+
+### Hands On
+Nas videoaulas correspondentes a este material, você ve rá na prática como aplicar os conceitos teóricos das fases de Business Understanding e Data
+Understanding. O foco desta atividade hands on não é escrever código, mas sim realizar o exercício mais crucial de um (a) Cientista de Dados: a tradução de requisito s de negócio em especificações técnicas . Muitas vezes, um stakeholder apresenta um desejo vago, como "queremos usar IA para melhorar nosso marketing"; nosso trabalho é converter isso em um projeto tangível e mensurável.
+ Vamos aplicar esses conceitos em um exercício prático para fixar a ideia de entendimento do problema e dos dados antes da modelagem. Considere o caso hipotético a seguir e realize a atividade proposta , exercitando as etapas iniciais de um projeto de Machine Learning:
+Caso Hipotético : a FIAP Mobile , uma operadora de telefonia móvel fictícia, está enfrentando uma alta taxa de cancelame nto de clientes (churn). A diretoria decidiu investir em Machine Learning para prever quais clientes estão propensos a cancelar o serviço, a fim de realizar ações preventivas e reduzir o churn. Você foi contratado(a)
+como cientista de dados do projeto.
+Atividade: com base no caso, reflita e responda:
+• Definição do problema de negócio: formule claramente o objetivo de negócio do projeto. O que exatamente a FIAPMobile deseja alcançar com esta iniciativa de ML? (Exemplo: “Reduzir em 15% a taxa de churn trimestral, identificando clientes em risco de cancelamento com antecedência.”)
+2. Métrica de sucesso (KPI): estabeleça um critério mensurável de sucesso para o projeto, alinhado ao objetivo do negócio. Que indicador -
+chave (KPI) será usado para avaliar se o projeto gerou resultado? (Ex.:
+diminuição da taxa de churn ou aumento da taxa de retenção de clientes após ações preventivas).
+• Levantamento de requisitos e re strições: liste perguntas que você faria aos stakeholders da FIAPMobile para levantar requisitos , restrições e expectativas . Considere prazos (quando precisam de resultados?), recursos
+Entendendo o Problema de Negócio e os Dados disponíveis (equipe, orçamento), restrições legais (LGPD para dados de clientes) e quaisquer premissas já definidas (ex.: “quais dados de clientes temos disponíveis e com que qualidade?”).
+• Dados e variáveis relevantes: identifique quais dados/variáveis podem ser úteis para prever churn. Pense em variáveis co mo tempo de uso do serviço,
+histórico de reclamações, padrão de consumo, pagamentos em atraso etc.
+Quais fontes de dados seriam necessárias? Há dados externos que podem agregar valor (por ex., cobert ura de sinal na região do cliente ou ofertas da concorrência)?
+• Envolvimento dos stakeholders: indique quais stakeholders você envolveria no início do projeto e como. Quem detém conhecimento sobre o comportamento dos clientes (e.g., equipe de CRM, suporte t écnico,
+marketing)? Quem irá agir sobre as previsões (e.g., equipe de retenção de clientes)? Como garantir que essas áreas apoiem o projeto e utilizem os resultados?
+Dica : se possível, realize esta atividade com outras pessoas da área, discutindo cada ite m. Depois, compare suas definições e listas com as de outros colegas. O objetivo é praticar a formulação do problema e o diálogo com stakeholders antes de pensar em algoritmos. Lembre -se: perguntas bem formuladas agora evitam dores de cabeça depois!
+Entendendo o Problema de Negócio e os Dados
+
+### Saiba Mais
+Uma das lições mais repetidas em Machine Learning (e infelizmente ainda aprendida da forma mais difícil) é: entender profundamente o problema de negócio antes de sair modelando . A tentação de pular direto para os dados e algoritmos pode levar a pro jetos que, apesar de tecnicamente impecáveis, não resolvem o problema certo ou não geram impacto. Em outras palavras, falta de entendimento do negócio pode fazer até o melhor modelo fracassar em entregar valor.
+Por que isso é tão crucial? Primeiro, compreender o problema de negócio mantém o projeto focado nos objetivos certos. Ao esclarecer qual decisão ou processo queremos melhorar com ML, evitamos definições vagas ou metas conflitantes. Isso define o norte do p rojeto , alinhando esforços da equipe com o resultado esperado pela organização. Segundo, esse entendimento inicial aumenta o envolvimento dos stakeholders e o apoio da liderança, pois eles se sentem parte da solução e confiam que o trabalho da equipe de da dos atenderá às necessidades reais. Terceiro, investir tempo nessa fase reduz riscos de falha: obstáculos e limitações vêm à tona cedo (por exemplo, dados insuficientes, objetivos irreais), permitindo ajustes de rota antes de grandes investimentos.
+Há dive rsos exemplos de equívocos evitáveis quando se negligencia essa etapa. Um caso ilustrativo citado na literatura: um líder de negócio solicitou um algoritmo para definir o preço ideal de produtos e a equipe técnica construiu um modelo que maximizava o volum e de vendas – mas o real objetivo do negócio era maximizar a margem de lucro. Esse desalinhamento só foi percebido tardiamente,
+quando o modelo não gerou o lucro esperado. Situações assim reforçam a importância de alinhar métricas técnicas com KPIs de negó cio desde o início .
+Em suma, compreender o problema de negócio é garantir que estamos fazendo as perguntas certas – condição básica para que o Machine Learning entregue respostas úteis.
+Entendendo o Problema de Negócio e os Dados
+
+Principais elementos da fase de Business Understanding do CRISP -DM
+Uma forma estruturada de garantir esse alinhamento inicial é seguir metodologias de projeto de data science. A mais tradicional e ainda amplamente utilizada é o CRISP -DM (Cross -Industry Standard Process for Data Mining), que define etapas claras para conduzi r projetos de mineração de dados e ML.
+A fase 1 do CRISP -DM é Business Understanding , justamente dedicada a entender os objetivos e requisitos do negócio. Vamos detalhar os principais elementos
+(ou tarefas) desta fase, conforme definidos no modelo:
+• Determ inar os objetivos do negócio: nesta primeira tarefa, buscamos
+“entender a fundo, do ponto de vista de negócio, o que o cliente realmente quer alcançar”. Isso envolve conversar com os solicitantes do projeto para captar a motivação por trás da iniciativa. Q uais problemas ou oportunidades a organização está enfrentando? Por exemplo, o objetivo pode ser reduzir churn, aumentar vendas em 10% ou melhorar a acurácia de diagnósticos médicos. É importante também definir critérios de sucesso do negócio:
+como saberem os se atingimos o objetivo? Pode ser uma métrica quantitativa (por exemplo, aumentar 5% a retenção de clientes). Essa clareza inicial mantém o projeto focado em entregar valor relevante.
+• Avaliar a situação (assess situation): cumprida a visão macro do obje tivo,
+entramos em um levantamento mais detalhado do contexto e dos recursos disponíveis. Nesta etapa, fazemos um inventário de recursos, listando tudo que pode influenciar o projeto. Isso inclui pessoas (quem poderá contribuir?
+precisamos de especialistas de domínio ou engenheiros de dados?), dados disponíveis (bases internas, externas), infraestruturas (hardware, software,
+orçamento) e tempo. Também documentamos requisitos, premissas e restrições: prazos a cumprir, políticas legais e de segurança de dados,
+exigências de compli ance, necessidade de interpretabilidade do modelo etc.
+Aqui, já verificamos por exemplo se teremos acesso aos dados necessários e em que condição (se os dados estão nos silos, se há restrição de uso).
+Adicionalmente, identificamos ris cos e contingências – o que pode dar errado e como mitigar. Ex.: “E se determinada fonte de dados não estiver disponível a tempo?” Te nha um plano B ou de contingência preparado.
+Entendendo o Problema de Negócio e os Dados
+
+Outro ponto recomendado é construir um glossário de termos do negócio e técnic os, para alinhar a linguagem entre equipe de dados e stakeholders. E por fim, realizar uma análise de custos e benefícios esperados,
+assegurando que o esforço vale a pena para o negócio. Essa avaliação situacional detalhada evita surpresas mais adiante e a juda a planejar de forma realista.
+• Determinar os objetivos de data science (ou data mining): com o alvo de negócio claro e os recursos mapeados, traduz -se agora o objetivo empresarial em objetivos técnicos de data science. Muitas vezes, o objetivo do negóc io é abrangente e envolve várias ações além da análise de dados em si. Então devemos definir: o que exatamente o projeto de análise/predição entregará para contribuir com o objetivo de negócio? Por exemplo, se o objetivo de negócio é reduzir fraudes em 20% , o objetivo de data science pode ser “ desenvolver um modelo preditivo que detecte transações possivelmente fraudulentas, com pelo menos 90% de acurácia”.
+Nessa etapa definimos os entregáveis técnicos: modelos a treinar, relatórios a gerar, dashboard etc. e estabelecemos critérios de sucesso técnicos (as métricas de performance do modelo, como acurácia mínima, AUC, erro médio etc.). É importante quantificar esses critérios técnicos e também identificar quem irá julgar a qualidade caso seja algo subjetivo.
+Essencialmente, aqui garantimos que o sucesso técnico está alinhado ao sucesso do negócio. Por exemplo, um critério técnico poderia ser “modelo de churn com pelo menos 85% de precisão na identificação de clientes que de fato irão cancelar o produto/serviço” , pois isso suportaria a meta de negócio de retenção. Essa tradução alinha expectativas entre time técnico e gestão: todos passam a entender o que será entregue concretamente.
+• Elaborar o plano de projeto: com objetivos claros e entendimento do contexto, o passo final da fase de business understanding é planejar o trabalho necessário para atingir as metas. Construímos um plano de projeto detalhando as etapas seguintes (coleta e compreensão dos dados,
+preparação, modelagem, avaliação, deployment), atribuindo cronogramas,
+responsáveis e recursos para cada etapa. Aqui, explicitamos dependências
+(ex.: “não dá para iniciar a modelagem antes de termos os dados limpos e
+Entendendo o Problema de Negócio e os Dados tratados da fase X”), o que ajuda a visualizar riscos n a timeline e comunicar real expectativas d e duração. Vale reforçar que projetos de data science são inerentemente iterativos – frequentemente voltamos em etapas para ajustes. Então, no plano deve -se prever iterações (por exemplo, ciclos de refinar o modelo) e pontos de checagem com stakeholders. Junto do plano,
+é sugerido fazer uma avaliação inicial de ferramentas e técnicas a serem usadas: decidir se usaremos Python ou R, qual plataforma de deploymen t,
+se há necessidade de algum software específico etc., já sinalizando se algo crítico está faltando (por exemplo, orçamento para uma ferramenta de BI ou contratação de um especialista). O resultado é um “mapa” para guiar o projeto, que deve ser compartilh ado e acordado com todos os envolvidos.
+Ele também serve como contrato: delimita escopo e ajuda a gerenciar mudanças ou novas demandas fora do planejado.
+Em resumo, a fase de Business Understanding do CRISP -DM estabelece as bases do projeto de Machine Lear ning. Determina -se o rumo (o quê e por que do negócio), mapeia -se o terreno (quem, quando, com o quê), define -se o destino técnico
+(metas de data science) e traça -se o caminho (plano de ação) . Equipes que seguem rigorosamente esses passos tendem a ter proj etos mais focados e bem -sucedidos,
+pois desde cedo conectam os aspectos técnicos aos objetivos estratégicos da empresa.
+Como levantar requisitos, restrições e expectativas do projeto
+Ao conduzir a fase de entendimento do negócio, um dos elementos -chave é capturar todos os requisitos, restrições e expectativas logo no início. Esse levantamento funciona como um “contrato social” entre a equipe de data science e os stakeholders, deixando claro o escopo e as co ndições do projeto.
+• Requisitos do projeto: são as necessidades ou condições que devem ser atendidas para o sucesso. Incluem prazos de entrega (ex.: modelo pronto em 3 meses para pegar a próxima campanha de vendas), níveis de desempenho esperados (ex.: 95% de precisão mínima), requisitos de usabilidade ou interpretabilidade do modelo (ex.: a área regulatória precisa entender os fatores da decisão do modelo). Envolve também requisitos de
+Entendendo o Problema de Negócio e os Dados compliance e legais – por exemplo , atender à LGPD no uso de dados pessoa is, ou critérios éticos de IA. Listar requisitos significa esclarecer o que é obrigatório para o projeto ser aceito.
+• Restrições: são limites e impedimentos com os quais devemos trabalhar.
+Por exemplo, restrições de dados (talvez os dados disponíveis são li mitados a um período ou não incluem certas informações desejadas), restrições de orçamento (não poder comprar dados externos ou ferramentas caras),
+restrições tecnológicas (sistemas legados que dificultam acesso a dados,
+ou necessidade de rodar o modelo em um hardware específico). Inclui também restrições de prazo (deadline fixo) e de pessoal (equipe reduzida,
+ou divisão de tempo com outras funções). Documentar restrições ajuda a gerenciar expectativas – se todos sabem dos limites desde o início, fica mais fácil compreender eventuais concessões no resultado.
+• Pressupostos: embora não citados explicitamente, na prática sempre assumimos algumas coisas. Por exemplo: assumimos que determinados dados estarão disponíveis, ou que a taxa de churn histórica continuará semelhante no próximo trimestre. É importante listar essas assunções e validá -las com stakeholders . Assim , evitamos basear todo o projeto em algo que depois pode se provar falso. Um pressuposto típico é sobre colaboração: “pressupomos que a área X irá for necer os dados Y até tal data” – isso precisa ser combinado com o responsável. Identificar estas situações também convida a pensar em planos de contingência caso elas não se confirmem.
+• Expectativas dos stakeholders: aqui entramos em um aspecto mais subjeti vo, porém crucial. Envolve entender o que os patrocinadores e usuários finais esperam ver ou obter do projeto. Muitas vezes, diferentes stakeholders têm expectativas distintas: um diretor pode esperar um dashboard de alto nível, um gerente operacional pode querer listas de casos prioritários geradas pelo modelo, a TI espera que o modelo rode sem interromper sistemas. Uma boa prática é perguntar diretamente: “O que você imagina como entrega deste projeto? Como você usaria o resultado?”.
+Entendendo o Problema de Negócio e os Dados
+
+Registrar essas expe ctativas (mesmo que algumas estejam fora do escopo possível) permite alinhar comunicação. Se algo não for possível, gerencie essa expectativa explicando as razões e propondo alternativas. Por outro lado, ao atender a uma expectativa específica (ex.: “preci so que o modelo aponte os 10 clientes mais suscetíveis a churn por semana”), isso deve constar como requisito no projeto.
+Levantar requisitos, restrições e expectativas não é uma atividade passiva – requer entrevistas, reuniões e, muitas vezes, negociação com stakeholders. Uma técnica comum é realizar sessões de discovery ou kick -off meetings onde todas as partes discutem abertamente esses pontos. Cabe à equipe de dados fazer as perguntas certas e documentar as respostas. Ferramentas como checklists e formu lários podem ajudar a não esquecer nada importante (por exemplo, uma checklist de requisitos poderia incluir: dados necessários estão acessíveis? Há restrições de privacidade? Qual frequência de atualização do modelo esperada?).
+Ao final desse processo, de ve-se produzir um documento resumindo os acordos : quais são os entregáveis, em que prazo, com quais critérios de sucesso, sob quais condições. Esse documento (às vezes chamado project charter ou requirement specification) deve ser validado e assinado (mesm o que informalmente) pelos patrocinadores do projeto. Assim, todos entram na fase seguinte com uma visão unificada. Além disso, esse registro serve de referência durante o projeto para evitar escopo variável – se novas solicitações surgirem, pode -se compar á-las com o acordado inicialmente e negociar ajustes de prazo ou escopo.
+Em suma, levantar requisitos, restrições e expectativas é exercer uma postura proativa de gerenciamento do projeto desde o início . Significa dizer, em linguagem clara: “Aqui está o qu e vamos fazer, com o que temos e até onde podemos ir.” Essa transparência constrói confiança com os stakeholders e protege a equipe de surpresas. Projetos de Machine Learning bem -sucedidos frequentemente são aqueles em que todo mundo soube, desde cedo, o q ue esperar (e o que não esperar) dos resultados. Como nos lembra o guia CRISP -DM, é nessa hora que confirmamos, por exemplo, se teremos acesso aos dados apropriados e se há alguma obrigação legal ou de segurança que possa limitar a solução. Melhor descobri r esses pontos já no começo do que com o projeto em andamento.
+Entendendo o Problema de Negócio e os Dados
+
+Identificação de variáveis e KPIs
+Uma ponte essencial entre o problema de negócio e a solução técnica é a definição das variáveis -chave e dos KPIs (Key Performance Indicators) relevantes.
+Essa identificação começa já na fase de entendimento do problema e continua durante a compreensão dos dados. Trata -se de decidir o que exatamente vamos prever ou analisar (variável alvo) e como o sucesso será medido em termos de negócio (KPI),
+além de mapear quais variáveis explicativas (features) podem influenciar o resultado.
+KPIs (Indicadores -Chave de Desempenho): são métricas de negócio que quantificam o objetivo. No contexto de projetos de ML, um KPI representa o impacto ou valor que a sol ução deve gerar. Por exemplo, se o problema de negócio é reduzir churn, o KPI principal pode ser taxa de churn mensal. Se o objetivo é otimizar logística,
+um KPI pode ser custo de transporte por entrega. Definir o KPI é crucial porque ele conecta diretamen te o trabalho técnico ao resultado do negócio. Um bom KPI deve ser específico, mensurável e alinhado com os objetivos estratégicos .
+Organizações diferentes terão KPIs distintos mesmo para problemas similares.
+Uma provedora de saúde pode focar no tempo méd io de espera do paciente, enquanto um varejista se concentra em aumento percentual de vendas devido a recomendações de produto. No contexto de Machine Learning, às vezes o próprio desempenho do modelo se torna um KPI intermediário (como acurácia de detecçã o de fraude), mas o
+KPI final de negócio seria algo como redução das perdas financeiras por fraude. É importante distinguir essas duas coisas: métricas de performance técnica vs.
+indicadores de resultado de negócio – ambos devem ser definidos e relacionado s. Um projeto bem alinhado costuma ter uma cadeia clara: métrica técnica atingida X -> impacto no KPI de negócio Y. Por exemplo, “Acurácia do modelo de 90% (métrica técnica) permitirá interceptar 30% mais fraudes, resultando em redução de 20% nas perdas (K PI de negócio)”. Durante o Business Understanding, garantir um acordo sobre o KPI evita o cenário do exemplo anterior em que a equipe otimizou vendas quando o que importava era lucro.
+Variáveis (features) e fontes de dados: paralelamente à definição de KPI s,
+iniciamos um brainstorming das variáveis potencialmente relevantes para o problema.
+Aqui, o conhecimento de domínio é valiosíssimo – frequentemente especialistas do negócio já sabem, por experiência, quais fatores influenciam o resultado. Por exemplo,
+Entendendo o Problema de Negócio e os Dados em um problema de churn em telecom, variáveis como número de chamadas ao suporte técnico, uso de dados 4G/5G, valor da fatura, tempo com o cliente e existência de reclamações recentes podem ser indicativos importantes do risco de cancelamento. Já em um prob lema de previsão de vendas no varejo, podemos listar variáveis como vendas semanais históricas, promoções em vigor, feriados,
+sazonalidade, condições meteorológicas etc.
+O ato de identificar variáveis já na fase inicial ajuda de duas formas: (1)
+esclarece que dados precisarão ser coletados ou estão disponíveis e (2) permite engajar os stakeholders a pensar nas causas do problema, não só no sintoma. Muitas vezes, nessa conversa, descobre -se que certos dados essenciais não estão sendo armazenados – o que pod e virar um requisito (ex.: começar a registrar um tipo de interação do cliente dali em diante).
+Uma ferramenta mental útil é categorizar variáveis em grupos: demográficas
+(quem é o cliente), comportamentais (como ele usa o produto/serviço), históricas
+(passado de eventos), contextuais (fatores externos, econômicos, ambientais). No caso da saúde, por exemplo, ao modelar risco de reinternação de pacientes, variáveis clínicas (idade, diagnóstico, comorbidades), variáveis de atendimento (dias de internação, pro cedimentos realizados) e variáveis sociais (condições ao voltar para casa) podem todas ter relevância. Listar essas dimensões orienta a busca e coleta inicial de dados – que é a próxima fase (Data Understanding) no CRISP -DM.
+Variável alvo (target) e tarefa de ML: identificar variáveis também significa definir claramente qual é a variável de interesse a ser prevista ou explicada. Esse é o target do modelo. Pode ser um evento binário (cliente cancelar ou não, paciente foi readmitido ou não), uma categoria (se gmento de cliente, tipo de produto a recomendar) ou um valor numérico (vendas em R$, tempo de espera em minutos).
+Definir a variável target é essencial para enquadrar o tipo de modelo apropriado
+(classificação, regressão, clusterização etc.). Durante o en tendimento do problema, é preciso confirmar, por exemplo, como medimos essa variável target. No churn:
+consideramos churn se o cliente cancelou de fato ou também quem parou de usar?
+Em saúde: readmissão em até 30 dias conta, e 60 dias? Essas definições imp actam diretamente o rótulo usado no modelo e devem vir do contexto do negócio ou critérios padronizados (às vezes há definições oficiais, como churn = 90 dias de inatividade em certos setores).
+Entendendo o Problema de Negócio e os Dados
+
+Alinhando variáveis aos KPIs: um ponto importante é ligar as v ariáveis analisadas ao KPI de negócio. Por exemplo, um modelo pode prever uma variável intermediária (ex.: propensão de churn), mas o KPI final é o churn real observado no próximo mês. Precisamos garantir que essa ligação faz sentido: um score de churn alto deve correlacionar com o churn efetivo, pois é assim que medimos o sucesso
+(redução do churn real). Do contrário, estaríamos otimizando algo desconectado do resultado. Essa preocupação deve ser discutida com stakeholders. Muitas vezes,
+inclusive, define -se variáveis derivadas que são proxies de KPIs. Exemplo: Lifetime
+Value (LTV) de cliente é um KPI importante, mas difícil de observar diretamente; então cria-se uma variável preditiva de LTV para o modelo, alinhada ao KPI de valor gerado por cliente.
+Duran te a fase de Data Understanding (que segue a de Business
+Understanding no CRISP -DM), o time vai coletar dados iniciais e explorar essas variáveis . Porém, chegar nessa fase já com um blueprint do que se procura agiliza muito o trabalho. Significa, por exemp lo, que na coleta de dados iniciais você já sabe quais tabelas do banco acessar, quais novas fontes solicitar (quem sabe dados externos, como indicadores econômicos para um modelo financeiro) e quais características sumarizar.
+A etapa de Descrever os dado s envolve verificar se aquelas variáveis levantadas têm as propriedades esperadas (ex.: “temos 5 anos de histórico de vendas? Qual o volume de registros?”). A Exploração dos dados vai além e busca padrões iniciais, relações entre variáveis, outliers etc. j ustamente para confirmar hipóteses de relevância ou descartar algumas variáveis. E a verificação da qualidade dos dados permite descobrir problemas que podem inviabilizar alguma variável (dados faltantes demais, inconsistências).
+Resumindo, a identificação de variáveis e KPIs é onde conectamos o mundo do negócio (indicadores de sucesso) com o mundo dos dados (atributos mensuráveis).
+Essa conexão garante que o Machine Learning ataque o problema certo com as informações certas.
+Como conselho prático, sempre pergunte no início: “Qual métrica de negócio queremos mover? E o que nos diz, nos dados, que essa métrica vai se mover?”. Essa linha de pensamento ajudará a definir tanto o que prever/otimizar quanto com quais variáveis alimentar o modelo. Organizações maduras em data science investem
+Entendendo o Problema de Negócio e os Dados bastante nessa etapa, pois sabem que modelos podem ser reajustados rapidamente,
+mas escolher a variável alvo errada ou ignorar um KPI crítico pode condenar o projeto desde o começo.
+Envolvimento de st akeholders
+Projetos de Machine Learning não acontecem em laboratório isolado – eles existem para resolver problemas de alguém (stakeholders de negócio) e frequentemente dependem de conhecimento e dados que estão espalhados pela organização. Por isso, o envolvimento a tivo dos stakeholders desde o início é apontado como um dos fatores decisivos de sucesso em data science. No contexto da fase de Business Understanding, isso significa trazer para a conversa as pessoas certas e manter uma comunicação próxima durante todo o projeto.
+Por que envolver stakeholders? Em primeiro lugar, stakeholders (partes interessadas) incluem tanto quem tem poder de decisão sobre o projeto (sponsor,
+gestores) quanto quem tem conhecimento de domínio e quem será usuário ou impactado pela solução . Envolvê -los cedo garante alinhamento com as necessidades do negócio e aumenta o engajamento e “compra” da ideia por parte deles .
+Quando stakeholders participam da definição do problema e veem suas preocupações consideradas, eles passam a apoiar ativamen te o projeto. Isso pode se traduzir em facilitar acesso a dados (um (a) gestor (a) de outra área vai priorizar aquele pedido de extração de dados porque entende o valor do projeto) e em uso efetivo dos resultados (se um (a) diretor (a) participou desde o iníci o, ele dificilmente irá ignorar o relatório final – pelo contrário, estará ansioso pelos insights).
+Quem envolver? Depende do contexto , mas alguns stakeholders típicos na etapa inicial:
+• Sponsor executivo: a pessoa que requisitou ou aprovou o projeto (ex .:
+diretor de marketing, gerente de operações). Deve estar engajada para validar objetivos de negócio, fornecer orientação estratégica (como “esse resultado tem que apoiar tal iniciativa estratégica”) e destravar recursos se necessário.
+Especialistas de domín io: indivíduos com experiência no assunto do
+Entendendo o Problema de Negócio e os Dados problema. Em uma indústria financeira, pode ser um analista de risco de crédito; na saúde, um médico ou gestor clínico. Eles ajudam a interpretar variáveis, sugerir hipóteses causais, explicar anomalias nos dado s e validar se os resultados “fazem sentido” no mundo real. Envolvê -los evita soluções desconectadas da prática.
+• Donos dos dados (Data owners): gerentes ou equipes que administram as bases de dados relevantes. Por exemplo, o pessoal de TI que cuida do data warehouse, ou a área de CRM que gerencia os dados de clientes.
+Trazer essas pessoas ao projeto facilita a obtenção de dados e também ajuda a entender a qualidade e limitações dos dados . Além disso, garante conformidade – eles poderão alertar sobre questõe s de privacidade ou segurança.
+• Usuários finais/Operacionais: quem vai usar a saída do modelo ou implementar ações com base nele. Por exemplo, o time de vendas que vai receber leads prioritários do modelo, ou a equipe de suporte que receberá alertas de prev isão de defeitos. Incluir representantes desses usuários permite adaptar a solução à realidade de uso – talvez o formato de entrega do modelo precise ser um dashboard diário, ou integrar em um sistema existente. Também gera buy -in: se o usuário final sente que fez parte da construção, terá mais confiança e disposição em usar o que for entregue.
+• Parceiros ou fornecedores: em alguns casos, projetos de ML envolvem terceiros (consultorias, startups fornecedoras de tecnologia etc.). Se for o caso, eles também sã o stakeholders importantes para alinhar expectativas contratuais e responsabilidades.
+Como envolver? As formas de envolvimento variam. No mínimo, deve -se realizar entrevistas e reuniões iniciais individuais com os principais stakeholders para coletar as vi sões de cada um (no estilo levantamento de requisitos citado antes). Isso pode culminar em uma reunião de kick -off com todos, para nivelar entendimento e registrar acordos. Ao longo do projeto, recomenda -se manter comunicação constante
+– checkpoints regula res onde a equipe técnica apresenta progresso e obtém feedback dos stakeholders. Por exemplo, após explorar os dados, compartilhar descobertas
+Entendendo o Problema de Negócio e os Dados preliminares com especialistas de domínio pode validar se os padrões encontrados fazem sentido.
+Durante a modelagem, envolver o usuário final para mostrar um protótipo de dashboard e ajustar à preferência dele evita retrabalho depois. Essa iteração contínua garante que escolhas técnicas permaneçam alinhadas à intenção original do negócio.
+Documentar decisões e pressupostos e enviá -los aos stakeholders (como atas ou breves reports) também promove transparência.
+Cuidado com barreiras de comunicação : nem todos os stakeholders entendem jargão de data science, e cientistas de dados nem sempre compreendem a fundo o j argão do negócio. Por isso é papel da equipe atuar como “tradutores”. Evite apresentações super técnicas para executivos – foque em impacto. Por outro lado,
+ouça atentamente os usuários – termos que eles usam podem esconder variáveis importantes (ex.: se u m médico fala em “paciente de alto risco”, investigue o que define
+“alto risco” em termos de dados). Criar um glossário comum pode ajudar todos a falarem a mesma língua.
+Benefícios comprovados : estudos indicam que projetos de dados têm mais chance de suce sso quando (1) as necessidades dos stakeholders são descritas precisamente, (2) os resultados são bem comunicados aos usuários finais e (3) há colaboração efetiva da equipe com outras áreas. Não por acaso, esses pontos todos envolvem interação com stakehol ders, ou seja, falhar em engajar os stakeholders nas fases iniciais está diretamente relacionado a falhas do projeto.
+Portanto, envolva os stakeholders desde o Dia 1 . Faça -os se sentir parte da solução e mantenha -os próximos durante toda a jornada. Quando um projeto de
+Machine Learning é construído em parceria com quem tem o problema e com quem usará a resposta, ele deixa de ser um experimento isolado e vira uma solução realmente incorporada ao negócio. Esse engajamento não apenas aumenta as chances de suce sso do projeto, mas também ajuda na implementação dos resultados
+– pois os stakeholders estarão prontos para agir sobre as recomendações do modelo,
+em vez de resistirem ou ignorarem. Em resumo: Machine Learning é um esporte em equipe e stakeholders são jogadores -chave do time, não meros espectadores.
+Entendendo o Problema de Negócio e os Dados
+
+Exemplo Aplicado: Setor de Saúde (Previsão de Readmissão Hospitalar)
+Para ilustrar como aplicar todos esses conceitos na prática, vejamos um exemplo no setor de saúde. Considere um hospital ou rede de saúde que deseja utilizar Machine Learning para melhorar os cuidados aos pacientes e reduzir custos desnecessários. O problema do negócio escolhido : reduzir a taxa de readmissões hospitalares de pacientes dentro de 30 dias após a alta. Readmissões frequentes indica m potenciais falhas no cuidado ou na recuperação e geram custos adicionais
+(além de penalizações financeiras em alguns sistemas de saúde).
+• Objetivo de negócio: diminuir as readmissões em 30 dias (por ex., de 15% para 10%) através de intervenções preventiva s nos pacientes de alto risco.
+Isso melhora a qualidade do cuidado prestado e evita multas associadas a hospitalizações. O KPI principal é a taxa de readmissão 30 dias pós -alta.
+Outros KPIs relevantes: custo médio por paciente (espera -se reduzir com menos internações repetidas) e satisfação dos pacientes.
+• Business Understanding: a equipe de ciência de dados começa entrevistando gestores (as) clínicos (as) e médicos (as) para entender as causas comuns de readmissão. Eles descobrem, por exemplo, que pacientes co m certas condições crônicas (como insuficiência cardíaca,
+diabetes) têm maior probabilidade de voltar, especialmente se não há acompanhamento próximo no pós -alta. Também aprendem que uma transição mal feita (alta hospitalar sem orientação clara ou sem agen damento de retorno) contribui para o problema.
+• Requisitos e restrições : O projeto precisa se adequar às normas de privacidade (dados de saúde são sensíveis – HIPAA, LGPD), então os dados usados devem ser anonimizados e bem protegidos. Há restrição de que o modelo precisa ser interpretável para os médicos confiarem (isso é um requisito explícito da diretoria clínica). Também se define que o modelo deve ser integrado ao sistema de prontuário eletrônico já existente,
+alertando a equipe de cuidado. Um desafio (restrição de dados) identificado:
+nem todos os pacientes fazem acompanhamento pelo mesmo sistema,
+então dados de alguns podem estar incompletos.
+Entendendo o Problema de Negócio e os Dados
+• Identificação de variáveis e coleta de dados: com a ajuda de especialistas, levantam -se variáveis potencialmen te preditivas de readmissão:
+o Dados demográficos: idade do paciente, sexo, condições socioeconômicas (se disponíveis).
+o Histórico médico: diagnóstico principal da internação, comorbidades
+(outras doenças crônicas que o paciente tem), número de internações no último ano, número de idas ao pronto -socorro.
+o Dados da internação recente: duração da estadia, procedimentos realizados, necessidade de UTI, se houve complicações.
+o Cuidados pós -alta: se o paciente já tem consulta de retorno agendada, se recebeu visita de acompanhamento domiciliar, se foi encaminhado a algum programa (por ex., reabilitação cardíaca).
+o Adesão e suporte: histórico de adesão a medicamentos, presença de um cuidador ou familiar engajado.
+• Os dados vêm de várias fontes : do sistema de prontuário eletrônico
+(informações clínicas), de um sistema de agendamento (ver se consultas pós-alta foram marcadas) e talvez de ligações de acompanhamento (que indicam se o paciente relatou dificuldades). A variável alvo será binária: se o paciente foi r eadmitido (sim/não) em 30 dias. Essa definição é acordada com time clínico e administração (30 dias é um padrão comum para medir readmissão).
+● Stakeholders envolvidos: além da equipe de dados, participam desse projeto médicos (que entendem os fatores de risco clínico), enfermeiros da coordenação de cuidado (que sabem sobre as altas e seguimento), o gestor do departamento de qualidade (interessado em reduzir penalizações p or readmissão) e TI hospitalar (para acesso aos dados). Em uma reunião inicial,
+cada um trouxe inputs: os médicos listaram condições críticas a observar (como determinados resultados de exame de laboratório anormais na alta); a enfermagem destacou a import ância de saber se o paciente compreendeu as instruções de alta (talvez difícil de quantificar, mas se há nota qualitativa ou
+Entendendo o Problema de Negócio e os Dados questionário de entendimento, pode virar uma variável); TI alertou sobre algumas limitações de integração de sistemas.
+● Modelagem e implementação (resumido): após compreensão do problema e dos dados, a equipe parte para a fase de Data Understanding e encontra, por exemplo, que pacientes acima de 80 anos com múltiplas doenças têm alta taxa de readmissão. Constrói -se um modelo de classif icação (por exemplo, uma árvore de decisão ou um modelo de gradient boosting) para prever o risco de cada paciente ser readmitido. Durante o desenvolvimento, os médicos são consultados para validar se as relações fazem sentido (“o modelo está dando muito p eso para tal exame – clinicamente isso procede?”). A interpretabilidade é garantida possivelmente via uso de árvores de decisão ou via ferramentas como SHAP values se fosse um modelo mais complexo, para explicar cada predição. O resultado final: uma lista gerada no momento da alta indicando pacientes de alto risco (por exemplo, pontuação de risco) para que a equipe de gerenciamento de casos faça intervenções – ligações adicionais, visitas domiciliares, ajuste de medicação etc.
+● Resultados e avaliação: após i mplementar esse fluxo, o hospital mede em alguns meses o impacto: conseguiu reduzir a taxa de readmissão para,
+digamos, 11%, perto da meta de 10%. Os stakeholders avaliam que o projeto foi bem sucedido – a diretoria viu valor (menos custo, menos multa), os médicos viram melhores desfechos para pacientes e a equipe de enfermagem preventiva conseguiu priorizar quem mais precisava de atenção. Vale notar que, se não houvesse um entendimento inicial claro, o projeto poderia ter focado no alvo errado (por ex., pr ever todas as futuras internações em vez de readmissões específicas de 30 dias, o que não teria o mesmo significado no contexto de custo/qualidade). Também, se não tivessem envolvido os clínicos,
+o modelo poderia ter considerado variáveis irrelevantes ou i mpraticáveis (ex.:
+um algoritmo “cego” poderia sugerir algo como “pacientes do médico X têm mais readmissões” , o que poderia ser uma correlação espúria com casos mais graves que caem com aquele médico – sem o contexto, poder -se-ia tirar conclusões equivoca das). Com o engajamento apropriado, evitou -se esse tipo de armadilha e garantiu -se que as ações derivadas do modelo estavam integradas ao fluxo de trabalho do hospital .
+Entendendo o Problema de Negócio e os Dados
+
+Esse exemplo em saúde mostra a importância de todo o ciclo: começou -se entendendo o pro blema de negócio (reduzir readmissões, melhorar cuidados),
+traduziu -se isso para um problema de dados (prever risco individual de readmissão),
+envolveu -se quem entende dos pacientes, identificaram -se variáveis clinicamente relevantes e definiu -se clarament e o sucesso (queda na taxa de readmissão). O modelo foi apenas um componente dentro de uma solução maior de processo,
+apoiada pelos stakeholders. Em muitos projetos de Machine Learning, especialmente na área da saúde, esse alinhamento interdisciplinar é de terminante para adoção – modelos puramente técnicos, sem validação clínica e sem fluxo de implementação,
+acabam “engavetados” mesmo que tenham boa acurácia. Por isso, este caso reforça:
+entender o problema e os dados no contexto certo faz toda a diferença.
+Exemplo Aplicado: Setor de Varejo (Previsão de Demanda de Vendas)
+Agora vamos a um exemplo no varejo , um contexto bem distinto, para ver como se aplicam os mesmos princípios. Suponha uma grande rede de lojas (por exemplo,
+um supermercado ou varejista de m oda) que queira utilizar Machine Learning para melhorar sua previsão de vendas e, com isso, otimizar a gestão de estoque e compras.
+O problema de negócio pode ser enunciado como: reduzir rupturas de estoque e excesso de inventário por meio de previsões mai s acuradas de demanda de produtos.
+• Objetivo de negócio: a diretoria de operações quer melhorar a eficiência logística. O objetivo é aumentar a acurácia das previsões de vendas semanais em, digamos, 20%, comparado ao método atual (que pode ser uma projeção simples baseada no ano anterior). Com previsões mais confiáveis, a empresa espera reduzir casos de falta de produto (stockout,
+que prejudica vendas e a satisfação do cliente) e também evitar super estoques de itens encalhados (que geram custo de armazenagem ou necessidade de liquidações). Os KPIs a serem impactados incluem:
+precisão da previsão (medida talvez em termos de erro médio percentual),
+nível de serviço (percentual de vezes que a loja atende plenamente a demanda, sem faltar produto) e giro de estoque (velocidade de renovação do estoque, indicando menor capital parado). Em última instância, espera -
+se que melhores previsões elevem as vendas e diminuam perdas, mas
+Entendendo o Problema de Negócio e os Dados esses são efeitos indiretos difíceis de isolar – portanto, focar nos KPIs operacionais faz sentido.
+• Business Understanding: o projeto envolve entender as dinâmicas de vendas no varejo. A equipe de data science se reúne com gerentes de categorias de produto, pessoal do plan ejamento de demanda e do abastecimento. Descobre -se que as vendas são influenciadas por diversos fatores: promoções e descontos, sazonalidade (datas festivas, clima),
+região da loja, tendências de moda (no caso de vestuário), campanhas de marketing, entre outros. Também identificam que cada categoria de produto tem comportamento diferente (por exemplo, perecíveis em supermercado têm ciclos distintos de eletrônicos ou roupas). Requisitos levantados: a previsão deve ser feita por loja e por produto , semanalme nte, com horizonte de 8 semanas à frente. Isso é um requisito crítico dado pelo time de operações – eles planejam reposição com esse detalhe. Outra expectativa:
+o sistema deve destacar incertezas ou intervalo de confiança, para a equipe saber lidar com mar gem de erro.
+• Restrições : o projeto tem prazo de 6 meses para entregar um piloto funcional antes da temporada de vendas do fim do ano. Além disso, há restrição de granularidade de dados – alguns dados de promoção futura podem não estar totalmente definidos com antecedência, o que adiciona incerteza (e potencialmente precisará de integração com o calendário de marketing). O orçamento não permite comprar uma ferramenta cara de previsão pronta, então será desenvolvido internamente usando Python.
+o Identificação de variáveis e dados necessários: com base nas conversas:
+Histórico de Vendas: obviamente, a principal fonte é o histórico de vendas por produto, por loja, dia a dia ou semana a semana. Esse dado existe no data warehouse da empresa.
+o Calendário promocional: informações sobre períodos de promoção,
+descontos aplicados a cada produto em cada semana (variável binária ou percentual de desconto). Esse dado virá da área de marketing/comercial.
+Sazonalidade temporal: indicar semanas que antecedem grandes datas
+Entendendo o Problema de Negócio e os Dados
+
+(ex.: Natal, Black Friday, Dia das Mães) – pode ser uma variável categórica ou numérica (ex .: "semana 48 do ano" etc. e dummies para eventos).
+Clima: para algumas categorias, temperatura e chuva influenciam (ex ..:
+vendas de sorvete sobem com calor; vendas de ca pa de chuva sobem em épocas chuvosas). Pode -se integrar dados meteorológicos históricos e previsões meteorológicas futuras.
+o Características da loja: localização (cidade, região), tamanho da loja,
+perfil econômico da região. Podem servir para modelos aprend erem diferenças regionais.
+o Estoque disponível: se possível, saber se faltou produto (pois vendas zero podem significar falta, não ausência de demanda). Se o sistema registra ruptura, isso deve entrar (ex.: um indicador de stockout na semana).
+Tendências de busca online: talvez a empresa tenha e -commerce ou monitoramento de buscas no site – isso pode antecipar aumento de demanda de certos produtos.
+• A variável target é a quantidade vendida de cada produto na próxima semana (por loja) sendo assim um problema d e regressão (valor contínuo).
+Em alguns casos, pode -se modelar a demanda mesmo que não tenha venda (ex .: se faltou, demanda > venda), mas geralmente usa -se a série de vendas realizada ajustada pelos stockouts. A coleta de dados envolve extrair várias tabel as: vendas históricas (um volume grande de dados),
+calendário promocional (planilhas ou sistema de trade marketing), dados externos de clima (via APIs públicas, por exemplo) e possivelmente dados macroeconômicos (inflação, etc., se acharem relevante). Trat a-se de um projeto intensivo em dados e o time de data engineering ajuda a consolidar isso em um dataset unificado para análise.
+Stakeholders envolvidos: gerente de Supply Chain (sponsor do projeto),
+equipe de planejamento de demanda (usuários diretos das previsões),
+gerentes de categoria (especialistas que conhecem as peculiaridades de produtos), equipe de TI/dados (para infraestrutura). Logo de início, eles
+Entendendo o Problema de Negócio e os Dados definem juntos as unidades de previsão (produto -loja-semana) e output esperado (talvez uma aplicaçã o ou relatório semanal com as previsões). A área de planejamento expressa expectativa de poder ajustar manualmente as previsões em casos excepcionais (isso é interessante: eles não querem caixa -preta 100%, querem controle se o modelo não “souber” de algo, como uma promoção emergencial não prevista nos dados). Essa expectativa é anotada para possivelmente incluir no design do sistema (ex.: permitir ajustes manuais).
+• Modelagem e resultados esperados: após a fase de entendimento, a equipe passa a explorar os dados. Notam padrões como: efeito dia da semana (segunda sempre vende menos que sábado), efeito sazonal
+(janeiro baixo para roupas, dezembro alto etc.) e identificam que promoções causam picos claros nas séries d e venda. Eles optam por abordar o problema com técnicas de time series forecasting. Poderiam usar um modelo clássico (ARIMA) para cada série, mas dado o volume de produtos e variáveis, partem para modelos mais modernos: por exemplo, modelos de aprendizagem de máquina (como Random Forest ou Gradient Boosting regressors) que incluam todas as features ou até uma rede neural LSTM se houver expertise para isso. Durante o desenvolvimento, validam periodicamente com os stakeholders: “a previsão para a Páscoa fez sentido?”; “o modelo está reagindo bem quando há promoção de 50%?”. A área de marketing fornece o calendário futuro de promoções para alimentar as previsões. Ao final, conseguem um modelo que, testado em dados passados (validação retroativa), mostra erros m édios 25% menores que o método antigo – superando a meta de 20%. Por exemplo, para um produto que vendia 120 unidades por semana, o erro caiu de 15 unidades para 10 em média. Isso se traduz em estoques mais ajustados.
+• Implementação: as previsões geradas pe lo modelo são integradas ao sistema de gestão de estoque semanal da empresa. Toda segunda -feira,
+por exemplo, o modelo atualiza as previsões das próximas 8 semanas para cada combinação produto -loja e o time de planejamento revê essas sugestões, ajusta manu almente se necessário (por política ou conhecimento específico) e então define quantidades a repor/comprar. Nas
+Entendendo o Problema de Negócio e os Dados primeiras semanas de uso, os stakeholders acompanham atentamente:
+identificam que para alguns produtos novíssimos (lançamentos) o modelo teve di ficuldade por falta de histórico – então incorporam uma regra de negócio complementar (ex.: “para produtos novos, usar média de categoria até ter 4 semanas de dados”). Esse fine -tuning é resultado do engajamento dos usuários e da flexibilidade do processo definido.
+• Benefícios observados: após alguns meses, a empresa nota redução significativa de falta de produtos em loja (nível de serviço subiu, digamos,
+de 92% para 96%) e, ao mesmo tempo, uma leve redução de excesso de estoque em itens com baixa venda (poi s a previsão identificou queda de demanda e o abastecimento foi contido). Financeiramente, isso representou economias e aumento de vendas não perdidas. O sponsor do projeto considera um sucesso e planeja estender a outras linhas de produto.
+Novamente, o fa tor crítico foi que a solução de ML nasceu de uma compreensão clara do problema: não era “prever qualquer coisa”, mas sim uma previsão operacionalmente acionável – focada nas unidades de decisão (loja/produto semanal) e integrada ao fluxo de abastecimento. Se o projeto tivesse iniciado sem envolver o time de operações, talvez a equipe de dados tivesse previsto vendas globais mensais (mais fácil, talvez), o que não seria tão útil para comprar estoque; ou poderia ignorar as restrições de estoque físico (geran do previsões inalcançáveis porque a loja não comporta mais que X unidades). Com a colaboração, todos esses detalhes foram incorporados.
+Este exemplo de varejo destaca que, embora o contexto seja diferente do hospitalar, os princípios permanecem os mesmos : um entendimento profundo do negócio (objetivos, processos, limitações) guiou a definição do problema de ML; foram identificados os drivers relevantes (variáveis como promoção, clima etc.); e stakeholders de várias áreas trabalham juntos para que a solução seja viável e adotada. Em particular, reforça -se a importância de traduzir a necessidade de negócio em um problema de ML bem especificado (no caso, previsão granular de demanda) e de medir o sucesso em termos do negócio (nível de serviço, redução de erros de previsão). Assim como no exemplo anterior, o valor do projeto só se concretizou
+Entendendo o Problema de Negócio e os Dados porque houve alinhamento entre o modelo preditivo e as decisões que a empresa precisava tomar.
+Entendendo o Problema de Negócio e os Dados
+
+### Mercado, Cases E Tendências
+Os desafios e práticas discutidos nesta aula refletem lições aprendidas amplamente no mercado de data science e analytics. Nos últimos anos, diversas pesquisas, cases de empresas e análises de consultorias vêm reforçando a importância da etapa de entendime nto do problema e dos dados para o sucesso de projetos de IA/ML:
+Altas taxas de falha por falta de alinhamento com o negócio: estatísticas de mercado mostram que a maioria dos projetos de data science não consegue entregar valor ou ir para produção. Em 201 9, um painel da VentureBeat revelou que apenas cerca de 13% dos projetos de Data Science chegam à produção . Executivos da IBM e da Gap atribuíram isso, em grande parte, à falta de apoio e entendimento do negócio – muitas empresas investem em tecnologia ach ando que isso basta, mas sem o engajamento da liderança e clareza de propósito, “o sucesso não aparece do outro lado”. Da mesma forma, o Gartner estimou que até 2022 somente 20% das iniciativas analíticas efetivamente entregaram resultados de negócio , indicando que uma enorme parcela dos projetos gera insights que nunca se convertem em ação ou melhoria tangível. Esses números alarmantes serviram de chamado à ação: organizações perceberam que não adianta ter os melhores modelos se eles não estiverem resolven do um problema relevante e sendo incorporados aos processos de negócio.
+Etapas iniciais são críticas para evitar fracassos: estudos acadêmicos corroboram que falhas em projetos de IA e analytics estão ligadas, antes de tudo, a deficiências no entendimento inicial. Em uma pesquisa de 2021, profissionais relataram que os principais fatores em projetos fracassados foram relacionados à compreensão inadequada do negócio e das necessidades do usuário – bem acima de questões técnicas. Isso se reflete no dado de qu e “compreensão do negócio” foi mencionada em 38% das vezes como etapa crítica onde ocorreram problemas em projetos malsucedidos e “compreensão dos dados” em 24%. Ou seja, mais da metade dos problemas deriva de um início mal conduzido . Outra análise apontou causas como objetivos de negócio incertos e expectativas mal definidas entre os maiores motivos de falha. Esses achados reforçam para as empresas a necessidade de investir esforço nas fases iniciais (como Business Understanding do CRISP -DM) para mitigar riscos.
+Entendendo o Problema de Negócio e os Dados
+
+Práticas de sucesso - Discovery e Product Management : como resposta a esses desafios, muitas organizações estão adotando práticas e novos papéis focados justamente em alinhar projetos de dados aos objetivos de negócio. Uma tendência recente é envolver “Data Product Managers” – profissionais híbridos que entendem tanto de negócio quanto de dados – para gerenci ar o ciclo de vida de projetos de ML.
+Esse papel ajuda a estabelecer um processo de discovery antes do desenvolvimento técnico, onde equip e técnica e stakeholders juntos esclarecem o real problema de negócio, como o sucesso será medido e quais soluções alt ernativas existem.
+Empresas inovadoras têm implementado checkpoints de discovery e design thinking em projetos de IA, o que previne a situação de times técnicos trabalharem meses em algo desalinhado. Além disso, manter comunicação constante e iterações curtas com feedback dos stakeholders (em metodologia ágil) tem se mostrado eficaz para garantir valor contínuo. Em resumo, está surgindo uma cultura de tratar projetos de ML não apenas como desenvolvimento de modelos, mas como produtos de dados que precisam satisfazer usuários e atingir metas de negócio – o que demanda gerenciamento ativo e multifuncional.
+Frameworks e metodologias evoluindo: no ecossistema de data science,
+metodologias tradicionais como o CRISP -DM permanecem populares, porém estão sendo estendidas para contemplar desafios modernos. Um exemplo é o framework
+CRISP -ML(Q) proposto em 2021, que atualiza o CRISP -DM para projetos de Machine
+Learning com garantia de qualidade. Notavelmente, o CRISP -ML(Q) combina as fases de Business Understanding e D ata Understanding em uma só fase inicial ,
+reconhecendo que as duas andam juntas e têm impacto decisivo na viabilidade do projeto.
+Essa unificação reforça que compreender o contexto de negócio e explorar os dados disponíveis são atividades interligadas e d evem ocorrer em paralelo no começo. O CRISP -ML(Q) também enfatiza a definição de critérios de sucesso claros e requisitos (incluindo aspectos de robustez, escalabilidade etc.) já no início, bem como documentação extensiva dessas etapas. Outro movimento é i ntegrar práticas de MLOps desde cedo – por exemplo, pensar já na fase de Business Understanding como o modelo será implantado e mantido para alinhar expectativas de infraestrutura e suporte contínuo. Organizações líderes combinam frameworks: usam CRISP -DM
+Entendendo o Problema de Negócio e os Dados
+
+(ou suas evoluções) para a parte analítica e mesclam com metodologias ágeis de gerenciamento de projetos para iterar e ajustar objetivos continuamente.
+Cases de mercado exemplares: podemos citar alguns casos conhecidos que ganharam divulgação e que enfatiz am esse princípio de começar pelo problema:
+• A Netflix , famosa por suas recomendações, atribui parte de seu sucesso em data science ao foco nos product metrics: antes de construir modelos,
+definem claramente qual métrica de engajamento do usuário querem mov er
+(por ex., aumento de horas assistidas) e testam hipóteses simples. Muitas vezes, realizam A/B tests com soluções mais simples (regras de negócio)
+antes de investir em modelos complexos – validando que o problema de fato vale a pena e é compreendido.
+• Na indústria de varejo (supermercados) , a Walmart compartilhou que um de seus projetos de IA mais bem -sucedidos – otimização de rotas logísticas – começou com meses de estudo do problema logístico, entrevistas com gerentes de centro de distribuição e motorist as, mapeamento de restrições
+(janelas de entrega, capacidades) antes mesmo de pensar em algoritmos.
+Quando partiram para a modelagem de roteirização, tinham tão claro o problema que conseguiram implementar rapidamente e economizar milhões em custos de tran sporte. Esse relato coincide com a ideia de que 80% do esforço é preparação (entendimento e dados) e 20% é modelagem.
+Em síntese, a tendência no mercado de Machine Learning é valorizar cada vez mais a etapa de entendimento do problema de negócio e dos dado s, reconhecendo -a como o alicerce de qualquer projeto de IA de sucesso. Empresas e líderes estão aprendendo com erros passados : ao ver projetos tecnicamente brilhantes que encalharam por falta de propósito claro, o foco está voltando ao básico – começo bem planejado, objetivos alinhados, stakeholders engajados.
+As organizações que adotam essa abordagem estruturada (seja via CRISP -
+DM, CRISP -ML(Q) ou outros frameworks) relatam entregas de resultados mais consistentes e uma maior confiança dos executivos em i niciativas de IA. A mensagem é clara e contemporânea: “IA não é magia; é gestão bem feita do problema, dos dados e das pessoas envolvidas.” Com essa mentalidade, o hype cede lugar à aplicação
+Entendendo o Problema de Negócio e os Dados prática e aos benefícios reais que o Machine Learning pode propo rcionar nos negócios.
+Entendendo o Problema de Negócio e os Dados
+
+## O Que Você Viu Nesta Aula?
+Nesta aula, reforçamos fundamentos cruciais para o sucesso em projetos de
+Machine Learning, especialmente na fase inicial de compreensão. A seguir, temos os principais aprendizados.
+Importância do entendimento de negócio ; Fase de Business Understanding
+(CRISP -DM; levantamento de requisitos e expectativas ; identificação de variáveis e
+KPIs ; envolvimento dos stakeholders ; exemplos práticos ; e v isão de mercado e tendências .
+Em suma, você deve ter perce bido que um projeto de Machine Learning bem -
+sucedido começa muito antes de treinar modelos . Começa entendendo profundamente o problema a ser resolvido, o contexto do negócio e o significado dos dados. Com esse entendimento, cientistas de dados conseguem di recionar seus esforços de forma muito mais eficaz, evitando “achismos” e alinhando seu trabalho às metas da empresa.
+Ao longo das próximas aulas, você aplicará técnicas de exploração de dados,
+modelagem e avaliação – mas sempre se lembre : o fio condutor q ue deve guiar todas essas etapas é o problema de negócio que desejamos solucionar e os dados que nos ajudarão nisso. Esse é o alicerce que construímos aqui e sobre o qual edificaremos todo o restante do curso.
+Entendendo o Problema de Negócio e os Dados
+
+### Referências
+BARROS , M. C. Além do hype : Por que 80% dos projetos de inteligência artificial falham? 2023. Disponível em:
+https://mediu m.com/@matheusbarrosgrowth/al%C3%A9m -do-hype -por-que-80-dos-
+projetos -de-intelig%C3%AAncia -artificial -falham -2d301957c40e . Acesso em: 27 jan.
+2026.
+BROWN, M. S. Data Mining for Dummies . Hoboken: John Wiley & Sons, 2014.
+CARNEY, S. CRISP -DM In Depth : Busines s Understanding. 2020. Disponível em:
+https://www.seancarney.ca/2020/10/09/crisp -dm-in-depth -business -understanding/ .
+Acesso em: 27 jan. 2026.
+DATA SCI ENCE PM. Project Failures in Data Science : Why 85% of AI and Big Data
+Projects Fail. 2019. Disponível em: https://www.datascience -pm.com/project -failures/ .
+Acesso em: 27 jan. 2026.
+DATA SCIENCE PM. CRISP -DM 2.0 – The Business Understanding Phase . 2023.
+Disponível em: https://www.datascience -pm.com/crisp -dm-2/. Acesso em: 27 jan.
+2026.
+ERMAKOVA, T.; FABIAN, B.; BABINA, E.; HEINE, G. Beyond the Hype : Why Do
+Data -Driven Projects Fail? 2021. Disponível em: https://aisel.aisnet.org/hicss -
+54/digital_transformation/data_science_analytics/7/. Acesso e m: 27 jan. 2026.
+FARIAS , T. As principais falhas em projetos de Ciência de Dados . 2022.
+Disponível em: https://medium.com/@fa rias.thiago/as -principais -falhas -em-projetos -
+de-ci%C3%AAncia -de-dados -6e570bd9878f . Acesso em: 27 jan. 2026.
+ILUMEO. Por que 87% dos projetos de Data Science não saem do papel? 2019.
+Disponível em: https://ilumeo.com.br/categorias/2019 -07-29-por-que-87-dos-projetos -
+de-data-science -nao-saem -do-papel/ . Acesso em: 27 jan. 2026.
+JOSHI, M. P.; SU, N.; AUSTIN, R. D.; SUNDARAM, A. K. Why So Many Data Science
+Projects Fail to Deliver . 2021. Disponível em: https://sloanreview.mit.edu/article/why -
+so-many -data-science -projects -fail-to-deliver/ . Acesso em: 27 jan. 2026.
+PROVOST, F.; FAWCETT, T. Data Science for Business : What You Need to Know
+About Data Mining and Data -Analytic Thinking. Sebastopol: O’Reilly Media, 2013.
+STUDER, S.; BUI, T. B.; DRESCHER, C.; et al. Towards CRISP -ML(Q ): A Machine
+Learning Process Model with Quality Assurance Methodology. 2021. Disponível em:
+https://doi.org/10.3390/make3020020 . Acesso em: 27 jan. 2026.
+TOWARDS AI. Key Performance Indicators (KPIs) in Machine Learning . 2023.
+Disponível em: https://pub.towardsai.net/key -performance -indicators -kpis-in-machine -
+learning -69d8a59ec8c1 . Acesso em: 27 jan. 2026.
+Entendendo o Problema de Negócio e os Dados
+
+WIRTH, R.; HIPP, J. CRISP -DM: Towards a Standard Process Model for Data Mining.
+2000. Disponível em: https://www.the -modeling -agency.com/crisp -dm.pdf. Acesso em: 27 jan. 2026.
+YENNHI, T. Why Business Understanding is C rucial in CRISP -DM: A Detailed
+Discussion. 2023. Disponível em: https://medium.com/@yennhi95zz/1 -why-business -
+understanding -is-crucial -in-crisp -dm-a-detailed -discussion -88890f03fb88 . Acesso em:
+27 jan. 2026.
+Entendendo o Problema de Negócio e os Dados
+
+### Palavras -Chave
+CRISP -DM. Business Understanding . Ciclo de vida de modelos .
+Entendendo o Problema de Negócio e os Dados

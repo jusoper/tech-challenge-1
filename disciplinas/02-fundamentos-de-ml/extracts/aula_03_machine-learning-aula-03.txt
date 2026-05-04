@@ -1,0 +1,293 @@
+Modelos Generalizados e Logístico
+Modelos Generalizados e Logísticos
+## | Aula 03 - Machine Learning Engineering
+
+## Fase 1 Modelos
+
+### Generalizados E Logístico
+Modelos Generalizados e Logístico
+Modelos Generalizados e Logísticos
+### Sumá Rio
+
+### O Que Vem Por Aí? Hands On
+
+### Saiba Mais Mercado, Cases E Tendências
+
+## O Que Você Viu Nesta Aula? Referências
+Modelos Generalizados e Logístico
+Modelos Generalizados e Logísticos
+### O Que Vem Por Aí ?
+Nesta aula abordaremos os fundamentos da regressão linear, começando pela hipótese linear e os componentes do modelo: intercepto e coeficientes
+(inclinações/pesos). V amos deduzir a função de custo baseada no erro quadrático médio (MSE) e o método dos mínimos quadrados ordinários (OLS) para ajuste dos parâmetros. A visualização geométrica será explorada por meio da reta que melhor se ajusta aos dados em regressão simple s.
+Discutiremos suposições fundamentais (linearidade, homoscedasticidade ,
+independência e normalidade dos resíduos), porque elas importam , e o que ocorre quando são violadas (sesgo, variância elevada, inferência inválida). Em seguida,
+conectaremos esses conceitos à prática de negócios e à ciência de dados,
+enfatizando o papel da interpretabilidade na comunicação com stakeholders.
+A aula tamb ém mostrará como regressão linear se conecta a extensões como regularização (Ridge/Lasso) e Modelos Lineares Generalizados (GLMs), preparando terreno para módulos seguintes. Finalizaremos com uma aplicação prática de predição de preço de casas e uma reflex ão sobre limites da abordagem linear e motivação para modelos mais complexos quando necessário.
+Modelos Generalizados e Logístico
+Modelos Generalizados e Logísticos
+### Hands On
+Nesta aula, vamos tornar tangível o funcionamento de um GLM binomial com link logit (ou simplesmente regressão logística) por meio de pequenos “simula dores” em Python. A ideia é: dado um conjunto de dados com variáveis explicativas X,
+estimamos parâmetros β que conectam a média da resposta (probabilidade de evento) a um previsor linear Xβ via função de link. No caso binário, usamos:
+g(μ)=logit(μ)=log⁡(μ
+1−μ)=Xβ⇒μ=σ(Xβ)
+onde σ(⋅)⁡é a função sigmoide:
+σ(z)=1
+1+e−z.
+Essa função mapeia qualquer número real em um valor entre 0 e 1,
+interpretado como uma probabilidade. Vamos calcular alguns valores para entender seu comportamento:
+1 import numpy as np
+3 def sigmoid(z):
+4 return 1 / (1 + np.exp( -z))
+6 # Valores de exemplo para z
+7 valores = np.array([ -4, -1, 0, 1, 4])
+8 probs = sigmoid(valores)
+9 print("Valores de z: ", valores)
+10 print("Probabilidades σ(z):", np.round(probs, 4))
+Código -fonte 1 - import numpy as np
+Fonte: Elaborado pelo autor (202 6)
+Ao executar este código, obtemos algo como:
+1 Valores de z: [ -4 -1 0 1 4]
+2 Probabilidades σ(z): [0.0179 0.2689 0.5 0.7311
+0.9820]
+Código -fonte 2 - Valores de z e Probabilidades σ(z) (Python)
+Fonte: Elaborado pelo autor (202 6)
+Modelos Generalizados e Logístico
+Modelos Generalizados e Logísticos
+Figura 3 - Exemplo visual Função Sigmóide
+Fonte: Elaborado pelo autor (2026)
+Observe que valores negativos de z produzem probabilidades próximas de 0,
+valor neutro (0) produz probabilidade 0,5 e valores positivos elevam a saída para próximo de 1. Isso reflete pro priedades importantes da sigmoide:
+σ(z)⁡=⁡1/(1⁡+⁡e^(−z))
+Limites:
+lim_{z⁡→⁡−∞}⁡σ(z)⁡=⁡0 lim_{z⁡→⁡+∞}⁡σ(z)⁡=⁡1
+Valor⁡central:
+σ(0)⁡=⁡½
+Interpretação ⁡(p⁡=⁡σ(z)):
+z⁡≪⁡0⁡⇒⁡p⁡≈⁡0 ⁡(evento⁡muito⁡improvável )
+Modelos Generalizados e Logístico
+Modelos Generalizados e Logísticos z⁡≫⁡0⁡⇒⁡p⁡≈⁡1 ⁡(evento⁡muito⁡provável)
+z⁡=⁡0⁡⇒⁡p⁡=⁡0,5⁡(chance⁡de⁡50%)
+Conforme z tende a -∞, σ se aproxima de 0, e conforme z tende a +∞, σ se aproxima de 1. Em outras palavras, z muito negativo implica em eventos extremamente improváveis (p ≈ 0) e z muito positivo implica em eventos extremamente prováveis (p ≈ 1), enquanto z = 0 indica uma chance de 50%.
+Na regressão logística binária, interpretamos σ como a probabilidade estimada de Y=1 (ocorrência do eve nto de interesse) dado o vetor de características
+X. Assim, o modelo logístico prevê P(Y=1|X) e então pode -se estabelecer um limiar
+(tipicamente 0,5) a partir do qual se decide prever a classe 1 ou 0. Por exemplo, se
+P(Y=1|X) ≥ 0,5, classifica -se como “sim ” (classe positiva); caso contrário, “não”
+(classe negativa).
+Odds e log -odds
+A regressão logística não modela diretamente a probabilidade P(Y=1) em função das variáveis independentes de forma linear. Em vez disso, ela modela o logit, que é o logaritmo do odds . O odds (chances) de um evento é definido como a razão $ \displaystyle \frac{P(Y=1)}{1 - P(Y=1)}$, ou seja, a proporção entre a probabilidade do evento ocorrer e a probabilidade de não ocorrer. O logaritmo natural desse odds é o log -odds (também chamad o de logit):
+logit(p)⁡=⁡log(p
+1−p).
+Na regressão logística, assumimos que o log -odds é dado por um modelo linear nas variáveis de entrada:
+log(P(Y=1)
+1−P(Y=1))⁡=⁡β0⁡+⁡β1⁡X1⁡+⁡β2⁡X2⁡+⁡…⁡+⁡βn⁡Xn onde β0, β1, ..., βn⁡são os coeficientes (parâmetros) do modelo. Essa equação mostra que a regressão logística pertence à família dos Modelos Lineares
+Modelos Generalizados e Logístico
+Modelos Generalizados e Logísticos
+Generalizados (GLM): temos uma função de ligação (link function ) que relaciona linearmente o preditor linear ($ \beta^T X$) com o parâmetro da dist ribuição da variável resposta (no caso, o parâmetro $p$ da distribuição Binomial/Bernoulli). A consequência prática dessa suposição de linearidade em termos de log -odds é que o modelo só é adequado se as variáveis independentes tiverem relação linear (no sentido do logit) com o log -odds do evento : se a relação real for muito não -linear, a regressão logística simples pode não ajustar bem os dados.
+Para entender melhor o conceito de odds e log -odds, veja este pequeno exemplo em Python:
+1 import math
+3 # Suponha uma probabilidade estimada
+4 p = 0.8 # 80% de chance do evento ocorrer
+5 # Calcula o odds e o log -odds correspondentes
+6 odds = p / (1 - p)
+7 log_odds = math.log(odds)
+8 print(f"Probabilidade = {p}")
+9 print(f"Odds = {odds:.2f}")
+10 print(f"Log -odds = {log_odds:.3f}")
+Código -fonte 3 - import math (Python)
+Fonte: Elaborado pelo autor (202 6)
+Este código calcula o odds e o log-odds para uma probabilidade de 0,8 (80%).
+O resultado seria:
+Probabilidade = 0.8
+Odds = 4.00
+Log-odds = 1.386
+Uma probabilidade de 0,8 corresponde a um odds de 4 para 1 (ou seja, a chance de sucesso é quatro vezes a chance de fracasso). O log-odds de aprox imadamente 1,386 significa que, nesse exemplo, o preditor linear ($z$) vale
+1,386 para produzir 80% de probabilidade. Essa transformação logarítmica é útil porque converte multiplicações em somas: note que se um determinado fator aumenta o odds multiplicat ivamente, seu efeito no log -odds será aditivo e capturado pelo coeficiente $ \beta$ correspondente. Por exemplo, se $ \beta_1 = 0,5$, então aumentar $X_1$ em uma unidade multiplica o odds por $e^{0,5} \approx 1,65$, ou
+Modelos Generalizados e Logístico
+Modelos Generalizados e Logísticos seja, um aumento de 65% na chance do ev ento ocorrer, assumindo as outras variáveis constantes. Essa interpretabilidade dos coeficientes em termos de impacto nas chances é uma das vantagens da regressão logística.
+Treinando um modelo logístico simples
+Agora vamos treinar e avaliar um modelo de r egressão logística usando
+Python e a biblioteca scikit -learn. Suponha que queremos prever se um cliente irá comprar um produto (variável target binária, 1 = comprou, 0 = não comprou) com base em duas características: renda mensal e idade . Primeiro, vamos c riar um conjunto de dados sintético para simulação:
+1 import numpy as np
+2 import pandas as pd
+4 # Configurar uma semente para reprodutibilidade
+5 np.random.seed(42)
+6 # Gerar 100 clientes com idade entre 18 e 60 anos e renda mensal entre 1000 e 10000
+7 idades = np.random.randint(18, 61, size=100)
+8 rendas = np.random.randint(1000, 10001, size=100)
+9 # Gerar variável alvo: probabilidade de compra aumenta com renda e idade
+10 prob_compra = 1 / (1 + np.exp( -( -8 + 0.0003*rendas
++ 0.05*idades )))
+11 y = (prob_compra >= 0.5).astype(int)
+12 # Montar DataFrame
+13 dados = pd.DataFrame({'idade': idades, 'renda':
+rendas, 'comprou': y})
+14 dados.head()
+Código -fonte 4 - import numpy as np // import pandas as pd
+Fonte: Elaborado pelo autor (202 6)
+No código anterior , simulamos um cenário em que a probabilidade de um cliente comprar aumenta com a renda (cada aumento de R$1.000 na renda mensal influencia positivamente) e com a idade (cada ano de idade também aumenta a chance, talvez refletindo maior estabilidade financeira). Utilizamos uma fórmula logística para gerar prob_compra com base nessas variáveis (note o termo linear -8
++ 0.0003*renda + 0.05*idade dentro da sigmoide). Em seguida, definimo s a classe de compra (y) como 1 se a probabilidade estimada for ≥ 0,5, simulando uma etiqueta de classe binária.
+Modelos Generalizados e Logístico
+Modelos Generalizados e Logísticos
+Agora, vamos usar scikit -learn para ajustar uma regressão logística a esses dados e avaliar seu desempenho:
+1 from sklearn.linear_model import LogisticRegression
+2 from sklearn.metrics import accuracy_score,
+confusion_matrix, classification_report
+4 # Separar variáv eis independentes (X) e dependente
+(y)
+5 X = dados[['idade', 'renda']]
+6 y = dados['comprou']
+8 # Instanciar e treinar o modelo de Regressão
+Logística
+9 modelo = LogisticRegression()
+10 modelo.fit(X, y)
+12 # Fazer pre visões no próprio conjunto (apenas para demonstração)
+13 y_pred = modelo.predict(X)
+15 # Avaliar o desempenho do modelo
+16 acc = accuracy_score(y, y_pred)
+17 mat_conf = confusion_matrix(y, y_pred)
+18 relatorio = classification_r eport(y, y_pred,
+output_dict=False)
+20 print(f"Acurácia: {acc:.3f}")
+21 print("Matriz de Confusão:")
+22 print(mat_conf)
+23 print("Relatório de Classificação:")
+24 print(relatorio)
+Código -fonte 5 - from sklearn.linear_model import LogisticRegression
+Fonte: Elaborado pelo autor (202 6)
+Após treinar o modelo e realizar as predições, imprimimos a acurácia e a matriz de confusão, bem como um relatório com métricas completas (que inclui precisão, revocação e F 1-score para cada classe). Podemos obter uma saída semelhante a esta:
+1 Acurácia: 0.90
+2 Matriz de Confusão:
+3 [[45 5]
+4 [ 5 45]]
+5 Relatório de Classificação:
+Modelos Generalizados e Logístico
+Modelos Generalizados e Logísticos
+6 precision recall f1 -score support
+7 0 0.90 0.90 0.90
+8 1 0.90 0.90 0.90
+9 accuracy 0.90
+10 macro avg 0.90 0.90 0.90
+11 weighted avg 0.90 0.90 0.90
+Código -fonte 6 – Saída prevista (Python)
+Fonte: Elaborado pelo autor (202 6)
+No nosso exemplo simulado, o modelo teve uma acurácia de 90%, com 45 acertos em cada classe e 5 erros em cada (a matriz de confusão indica 45 verdadeiros negativos, 45 verdadeiros positivos, 5 falsos positivos e 5 falsos negativos). As métricas de precisão (precision) e revocação (recall) para ambas as classes são 0,90, assim como o F1 -score.
+Essas métricas nos ajudam a avalia r o modelo de forma mais abrangente: por exemplo, se as classes estivessem desbalanceadas (uma muito mais frequente que a outra), a acurácia sozinha poderia ser enganosa, sendo necessário olhar para precisão e revocação de cada classe para entender se o mo delo está cobrindo bem os casos positivos e negativos. Outros indicadores úteis incluem a curva ROC
+(Receiver Operating Characteristic ) e a AUC (Área Sob a Curva), que medem a capacidade de um modelo distinguir entre as classes em vários limiares de probab ilidade ; no entanto, esses tópicos serão aprofundados em aulas futuras.
+Modelos Generalizados e Logístico
+Modelos Generalizados e Logísticos
+### Saiba Mais
+Modelos Lineares Generalizados (GLM)
+A Regressão Logística é um caso particular de Modelo Linear Generalizado
+(GLM). Os GLMs são uma classe de modelos estatísticos que estendem a regressão linear para permitir que a variável resposta tenha distribuições de probabilidade diferentes da normal, através do uso de funções de ligação ( link functions ). Em um
+GLM, temos dois componentes principais:
+• Componente si stemático: a combinação linear das variáveis independentes (preditor linear), similar à regressão linear tradicional; e
+• Componente aleatório: a distribuição probabilística da variável dependente (por exemplo, Bernoulli para eventos binários, Poisson para contagens, Gaussiana para resultados contínuos etc.).
+A função de ligação conecta o valor esperado da variável dependente (no caso de um evento binário, a probabilidade $P(Y=1)$) ao preditor linear. No caso da regressão logística, a função de ligação é a fu nção logit, e a distribuição assumida para $Y$ é a Bernoulli (ou Binomial), apropriada para variáveis de resposta binárias.
+Outros tipos de GLM incluem, por exemplo, a regressão de Poisson (usando função de ligação logarítmica e suposição de distribuição P oisson para modelar contagens)
+e a regressão Gamma (para dados positivos assimétricos), entre diversos modelos.
+Essa estrutura unificadora dos GLMs foi formalizada por Nelder &
+Wedderburn (1972) e permite que utilizemos métodos de estimação de parâmetros baseados em máxima verossimilhança de forma genérica para diversos tipos de dados . Por exemplo, a técnica de Iteratively Reweighted Least Squares (IRLS) é um procedimento genérico de ajuste de GLMs que utiliza iterações de mínimos quadrados ponderados para encontrar o ponto de máximo da verossimilhança.
+No caso da regressão logística, algoritmos de otimização numérica como
+Newton -Raphson (que é equivalente ao IRLS neste contexto) ou métodos de gradiente descendente podem ser usados para encontrar os coefici entes $ \beta$ que maximizam a probabilidade de observar os dados de treino. Diferentemente da regressão linear, aqui não existe uma fórmula fechada para os coeficientes ótimos,
+Modelos Generalizados e Logístico
+Modelos Generalizados e Logísticos sendo necessário resolver iterativamente (ou seja, por aproximação sucessiva) o problema de otimização da função de log -verossimilhança.
+Máxima verossimilhança e estimação dos parâmetros
+O procedimento padrão para estimar os parâmetros $ \beta$ da regressão logística é o Método da Máxima Verossimilhança ( Maximum Likelihood Estimation -
+MLE). Intuitivamente, o MLE busca os parâmetros que tornam os resultados observados “mais prováveis” de ocorrer.
+No contexto binário (Y=0 ou 1), a função de verossimilhança de n observações para a regressão logística pode ser escrita como:
+𝐿(𝛽)⁡=⁡∏[𝑃(𝑦𝑖)]𝑦𝑖⁡(1⁡−⁡𝑃(𝑦𝑖))1⁡−⁡𝑦𝑖𝑛 𝑖=1 onde 𝑃(𝑦𝑖)⁡é a probabilidade predita pelo modelo de que a i -ésima observação seja da classe 1. Tomando o logaritmo (para converter produtos em somas), obtém -se a log -verossimilhança:
+ℓ(𝛽)⁡=⁡∑[𝑦𝑖⁡𝑙𝑜𝑔⁡𝑃(𝑦𝑖)⁡+⁡(1⁡−⁡𝑦𝑖)⁡𝑙𝑜𝑔(1⁡−⁡𝑃(𝑦𝑖))]𝑛 𝑖=1
+Maximizar ℓ(𝛽)⁡em relação aos parâmetros 𝛽 fornece os coeficientes que melhor se ajustam aos dados. Não há solução analítica simples para esse sistema de equações (diferentemente dos mínimos quadrados na regressão linear). Por isso,
+usa-se um algoritmo iterativo de otimização. Newton -Raphson, por exemplo, é um método que utiliza a derivada segunda (Hessiana) para acelerar a convergência e,
+aplicado à log -verossimilhança de GLMs, resulta no algoritmo IRLS mencionado . Já métodos de primeira ordem, como o Gradiente Descendente ou sua variante gradiente descendente estocástico , também podem ser empregados para maximizar a verossimilhança ajustando 𝛽 incrementalmente.
+A boa notícia é que pacotes de software de Machine Learning fazem esse trabalho pesado automaticamente. Por exemplo, ao usar LogisticRegression do
+Modelos Generalizados e Logístico
+Modelos Generalizados e Logísticos scikit -learn , o algoritmo de otimização padrão é uma versão do método LIBLINEAR
+(que efetua otimização convex a) ou LBFGS , ambos métodos eficientes para encontrar os coeficientes que maximizam a verossimilhança. Portanto, raramente precisamos implementar o IRLS manualmente, mas compreender seu funcionamento ajuda a entender o comportamento do algoritmo de regressã o logística.
+Regularização e cuidados de modelagem
+Assim como outros modelos de aprendizado de máquina, a regressão logística pode sobreajustar ( overfit ) se houver muitas variáveis explicativas em relação à quantidade de dados ou se houver correlações espú rias. Regularização é uma técnica essencial para prevenir overfitting , adicionando uma penalização aos coeficientes grandes. As formas mais comuns são a Regularização L2 (Ridge) e L1
+(Lasso), que adicionam penalidades $|| \beta||^2$ ou $|| \beta||_1$ ao otim izar a função de custo da regressão logística. Em termos intuitivos, a regularização
+“desencoraja” pesos muitos grandes, forçando o modelo a encontrar uma solução mais simples que generaliza melhor. No scikit -learn, por exemplo, a regularização L2 é aplica da por padrão no LogisticRegression (controlada pelo parâmetro C, que é o inverso da intensidade da regularização).
+Outro cuidado importante é verificar a presença de multicolinearidade – quando variáveis independentes estão altamente correlacionadas entre si. A multicolinearidade pode tornar os coeficientes instáveis e dificultar a interpretação,
+pois o modelo tem dificuldade em atribuir corretamente a importância de cada variável correlacionada. Nesse caso, estratégias incluem remover ou combinar variávei s correlacionadas ou usar técnicas como Análise de Componentes Principais
+(PCA) para reduzir a dimensionalidade do problema.
+Além disso, apesar de robusta, a regressão logística pode apresentar limitações. Ela pressupõe uma relação monotônica (em forma de logit linear) entre as variáveis preditoras e o output . Se a relação real for altamente não -linear, o modelo logístico pode falhar em capturá -la de forma acurada. Também é fundamental estar atento (a) a outliers : valores atípicos podem influenciar despropor cionalmente a estimativa dos coeficientes e prejudicar o mod. Nestes
+Modelos Generalizados e Logístico
+Modelos Generalizados e Logísticos casos, convém avaliar técnicas de detecção e tratamento de outliers ou considerar modelos alternativos (como árvores de decisão ou métodos baseados em mediana).
+Por fim, é imprescindível avaliar o modelo em dados não vistos (conjunto de teste ou por validação cruzada) para verificar sua capacidade de generalização e evitar surpresas ao colocar o modelo em produção. Ferramentas como curvas de aprendizado, validação cruzada e análise de erro s (resíduos) ajudam a identificar se o modelo está subajustando ou sobreajustando os dados, guiando eventuais ajustes na complexidade do modelo ou no volume de dados necessário.
+Modelos Generalizados e Logístico
+Modelos Generalizados e Logísticos
+### Mercado, Cases E Tendências
+A regressão logística possui um longo histórico de uso em diversas indústrias e continua sendo um padrão de referência (baseline) em problemas de classificação binária. Sua combinação de eficácia preditiva e interpretabilidade faz com que seja amplamente adotada em setores como saúde, finanças , marketing e ciências sociais. Vamos discutir alguns casos de uso e tendências relativas a esse modelo .
+Na medicina, regressões logísticas são utilizadas para estimar riscos e diagnosticar doenças. Por exemplo, um médico pode usar um modelo logístico para prever a probabilidade de um paciente ter diabetes com base em indicadores como idade, IMC e nível de glicose. Se o modelo indica uma probabilidade alta (digamos,
+85%), isso auxilia o médico na tomada de decisão, permitindo intervenções preventivas mais c edo. Modelos logísticos também destacam quais fatores contribuem mais para o risco (por exemplo, nível de glicose elevado), oferecendo insights interpretáveis sobre a saúde do paciente.
+Em marketing digital, a regressão logística é muito empregada para pre ver conversão de clientes e rotatividade (churn). Por exemplo, pode -se modelar a probabilidade de um usuário clicar em um anúncio ou assinar um serviço de streaming, usando dados de comportamento de navegação, engajamento com e -
+mails ou características dem ográficas. Empresas de comércio eletrônico usam modelos logísticos para prever a chance de compra de um produto com base no histórico de navegação do usuário, tempo no site e itens visualizados. Esses modelos fornecem um percentual de chance de conversão, permitindo ações segmentadas – como oferecer cupons de desconto direcionados aos usuários com menor probabilidade de compra – para aumentar as vendas.
+Bancos e fintechs tradicionalmente utilizam regressão logística em modelos de credit scoring para estimar a probabilidade de inadimplência de um cliente.
+Variáveis como renda, histórico de crédito e padrão de pagamentos entram como preditores e o modelo retorna a chance de default ( dívida ). Devido à natureza regulada do setor financeiro, a interpretabil idade dos coeficientes é altamente valorizada – por exemplo, o modelo pode revelar que ter um histórico de atrasos de pagamento aumenta em X% as chances de inadimplência. Além disso, na detecção
+Modelos Generalizados e Logístico
+Modelos Generalizados e Logísticos de fraude, modelos logísticos assistem na identificação de tr ansações suspeitas,
+calculando a probabilidade de uma transação ser fraudulenta com base no comportamento do usuário (valor, local e horário incomuns etc.). Transações com alta chance de fraude pode m ser sinalizadas ou bloqueadas automaticamente,
+contribui ndo para a segurança do sistema bancário.
+Institutos de pesquisa e equipes de campanha empregam regressão logística para prever resultados eleitorais. Com dados demográficos e de histórico de votação dos eleitores, o modelo pode calcular a probabilidade de um determinado candidato receber o voto de um indivíduo ou grupo específico. Por exemplo, a análise pode indicar que jovens de 18 –25 anos têm 70% de probabilidade de votar no Candidato
+A. Esses insights permitem direcionar estratégias de campanha de forma mais eficaz, focando em grupos com maior probabilidade de apoiar ou indecisos.
+Em quase todos os domínios onde é preciso tomar decisões binárias com base em dados, há exemplos de regressão logística em ação. Em ciência de dados moderna, apesar da ascensão de algoritmos mais complexos (como redes neurais profundas e ensembles), a regressão logística mantém -se relevante. Ela é frequentemente usada como baseline pelo seu rápido treinamento e pelo fato de fornecer uma referência simples para comparar com model os mais sofisticados.
+Além disso, há um movimento em direção a Modelos Explicáveis (Explainable
+AI), o que traz a regressão logística de volta aos holofotes devido à facilidade de interpretação de seus coeficientes (por exemplo, usando odds ratio para com unicar impacto de variáveis). Em contextos em que a interpretabilidade é tão importante quanto a acurácia – como em saúde, finanças e aplicações regulatórias – modelos lineares generalizados (incluindo a regressão logística) permanecem como uma escolha de confiança.
+Modelos Generalizados e Logístico
+Modelos Generalizados e Logísticos
+## O Que Você Viu Nes Ta Aula ?
+Nesta aula, mergulhamos nos Modelos Lineares Generalizados (GLM) com foco em Regressão Logística, um modelo estatístico para prever probabilidade de eventos binários (sim/não) com base em variáveis explica tivas. Começamos apresentando a função sigmoide e entendendo como ela transforma combinações lineares de variáveis em probabilidades entre 0 e 1. Vimos que o modelo logístico modela o log -odds de um evento como uma função linear das entradas, o que confere interpretabilidade: cada coeficiente $ \beta_i$ indica a influência de sua variável nas chances (odds) do evento, sendo possível convertê -lo em efeitos multiplicativos nas probabilidades (odds ratio). Discutimos o conceito de odds e log -
+odds e como eles se relacionam com a probabilidade, bem como a escolha de um limiar de decisão (ex.: 0,5) para realizar a classificação binária (prever 0 ou 1) a partir da probabilidade predita.
+Também implementamos a função sigmoide e interpretamos seus valores de saída par a diferentes entradas, reforçando suas propriedades. Em seguida,
+construímos e treinamos um modelo de regressão logística em Python com dados simulados, observando na prática como obter métricas de avaliação do modelo,
+incluindo acurácia, precisão, revocaç ão e F1 -score, além de examinarmos a matriz de confusão. Destacamos a importância de utilizar essas métricas, especialmente em casos de classes desbalanceadas, e mencionamos brevemente o uso de curvas
+ROC e AUC para avaliar modelos de classificação.
+Além d isso, conectamos a regressão logística ao quadro mais amplo dos
+GLMs. Discutimos como os GLMs fornecem uma estrutura unificadora para diversos tipos de modelos de regressão com diferentes distribuições de erro e funções de ligação. Vimos que a regressão lo gística é um GLM com função de ligação logit e distribuição Bernoulli e mencionamos outras instâncias de GLMs (como modelos para contagem e tempo de vida). Abordamos o método de Máxima Verossimilhança
+(MLE) como técnica de estimação dos parâmetros do model o, deduzindo a função de verossimilhança para dados binários e explicando que, por não haver solução analítica direta, utilizam -se métodos iterativos (Newton -Raphson, IRLS ou gradiente descendente) para encontrar os coeficientes que melhor se ajustam aos d ados.
+Discutimos ainda a Regularização L1 e L2 como formas de combater o overfitting ,
+Modelos Generalizados e Logístico
+Modelos Generalizados e Logísticos penalizando coeficientes muito altos e simplificando o modelo, e enfatizamos cuidados ao lidar com multicolinearidade e outliers que podem afetar negativamente o desempen ho e a interpretabilidade da regressão logística.
+Por fim, exploramos aplicações práticas da regressão logística em diferentes setores. Na saúde, vimos seu uso em modelos de diagnóstico e prognóstico médicos; no marketing, entendemos como ela apoia a previ são de conversões de clientes e churn; nas finanças, avaliamos seu papel crítico na análise de crédito e detecção de fraudes bancárias; na política, discutimos como auxilia em previsões eleitorais e pesquisas de opinião. Também discutimos as vantagens da r egressão logística – como simplicidade, rapidez e interpretabilidade – e suas limitações,
+incluindo a necessidade de linearidade no log -odds e dificuldades com relações altamente não lineares ou dados muito complexos.
+Observamos que, embora existam modelo s mais complexos (como redes neurais e árvores de decisão), a regressão logística continua relevante e frequentemente é utilizada em conjunto com técnicas modernas, especialmente quando se busca transparência e facilidade de explicação nos resultados . Em s uma,
+esta aula forneceu uma visão abrangente do que são modelos generalizados e,
+particularmente, do papel fundamental da regressão logística na ciência de dados e em aplicações do mundo real.
+Modelos Generalizados e Logístico
+Modelos Generalizados e Logísticos
+### Referências
+BARROS, L. Regressão Logística: Entendendo um dos Modelos de
+Classificação Mais Utilizados . 2024. Disponível em:
+https://alemdosdados.tech/regressao -logisti ca-entendendo -um-dos-modelos -de-
+classificacao -mais -utilizados/ . Acesso em: 23 fev. 2026.
+EBAC. Regressão Logística: O que é, tipos, vantagens, desvantagens e casos de uso . 2025. Disponível em: https://ebaconline.com.br/blog/o -que-e-regressao -
+logistica . Acesso em: 23 fev. 2026.
+GOMES, P. C. T. Regressão Logística: Um Guia Detalhado para Machine
+Learning . 2024. Disp onível em: https://www.datageeks.com.br/regressao -logistica/ .
+Acesso em: 23 fev. 2026.
+HASTIE, T.; TIBSHIRANI, R.; FRIEDMAN, J. The Elements of Statistical Learning:
+Data Mining, I nference, and Prediction . 2. ed. New York: Springer, 2009.
+Disponível em: https://hastie.su.domains/ElemStatLearn/ . Acesso em: 23 fev. 2026.
+HONÓRIO, R. Entendendo a regressão logística: conceitos, aplicações e exemplos práticos . 2024. Disponível em:
+https://hub.asimov.academy/blog/entendendo -a-regressao -logistica/ . Acesso em: 23 fev. 202 6.
+HOSMER, D. W.; LEMESHOW, S.; STURDIVANT, R. X. Applied Logistic
+Regression . 3. ed. Hoboken: Wiley, 2013. DOI: 10.1002/9781118548387.
+Disponível em: https://www.wiley.com/en -
+us/Applied+Logistic+Regression%2C+3rd+Edition -p-9780470582473 . Acesso em: 23 fev. 2026.
+JAMES, G.; WITTEN, D.; HASTIE, T.; TIBSHIRANI, R. An Introduction to
+Statistical Learning . New York: Springer, 2013. Disponível em:
+https://www.statlearning.com/ . Acesso em: 23 fev. 2026.
+NELDER, J. A.; WEDDERBURN, R. W. M. Generalized Linear Models. Journal of the Royal Statistical Society: Series A , v. 135, n. 3, p. 370 –384, 1972. DOI:
+10.2307/2344614. Disponível em:
+https://academic.oup.com/jrsssa/article/135/3/370/7110572 . Acesso em: 23 fev.
+2026.
+WIKIPEDIA. Iterat ively Reweighted Least Squares . 2023. Disponível em:
+https://en.wikipedia.org/wiki/Iteratively_reweighted_least_squares . Acesso em: 23 fev. 2026.
+Modelos Generalizados e Logístico
+Modelos Generalizados e Logísticos
+### Palavras -Chave
+Regressão Logística . Odds . Logit Link .
+Modelos Generalizados e Logístico
+Modelos Generalizados e Logísticos

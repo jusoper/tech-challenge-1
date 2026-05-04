@@ -1,0 +1,506 @@
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+## | Aula 06 - Machine Learning Engineering
+
+## Fase 1 Implantação De
+
+### Apis: Container E Cloud
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+### Sumário
+
+### O Que Vem Por Aí? Hands On
+
+### Saiba Mais O Que Você Viu Nesta Aula?
+
+### Referências
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+### O Que Vem Por Aí?
+Agora que temos uma API robusta no ambiente local, v amos aprender a implantar nossa API com Docker e colocá -la em produção no Render!
+Abram o VSCode, assistam os vídeos e se preparem, hoje vamos até o deploy!
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+### Hands On
+Prepare m-se para mais uma aula hands on , onde vamos melhorar nossa API
+FastAPI e explorar conteinerização da API (Docker), além do deploy em nuvem com um exemplo prático!
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+### Saiba Mais
+Implantação de APIs: Container e Cloud
+O primeiro passo para levar uma API de Machine Learnin g do ambiente de desenvolvimento para produção é a conteinerização da aplicação. O principal problema que queremos resolver é: funciona na minha máquina, mas não funciona no servidor!
+Figura 1 – Docker
+Fonte: Google Imagens (2026)
+Containers são uma forma leve de empacotar a aplicação junto com todas as suas dependências e configurações, isolando -a de outras aplicações no sistema.
+Diferente de uma máquina virtual completa, um contêiner compartilha o kernel do sistema host, consumindo bem menos recursos e permitindo uma execução mais eficiente. O Docker , por exemplo , empacota sua API Python + as bibliotecas utilizadas em uma “caixa” que roda em qualquer computador ou servidor.
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+Tabela 1 – Características, máquinas virtuais e containers
+Fonte: Elaborado pelo autor (2026)
+Para nossa API Iris, o Docker garante que ela vai funcionar no Render, AWS,
+Azure ou qualquer outro lugar, exatamente como funciona na sua máquina.
+Dockerfile
+Para conteinerização da nossa API FastAPI de ML, criamos um arquivo
+Dockerfile descrevendo como montar a imagem. Nele definimo s, por exemplo: a imagem base do Python, o diretório de trabalho, instalamos as dependências do requirements.txt e copiamos o código da aplicação para dentro do contêiner. Por fim,
+especificamos o comando de inicialização da API quando o contêiner for exec utado.
+Em cenários de produção com maior carga, é comum integrar o Gunicorn como gerenciador de processos para rodar múltiplos workers Uvicorn em paralelo
+(aproveitando vários núcleos de CPU). Assim, o Dockerfile poderia usar um comando como gunicorn -k uvicorn.workers.UvicornWorker -w 4 -b 0.0.0.0:80 app.main:app,
+onde o Gunicorn inicia 4 processos Uvicorn, combinando alta concorrência assíncrona com monitoramento de processos.
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+Hands On - Preparando a API Iris para Produção
+O primeiro passo vai ser organ izar o nosso projeto, afinal não queremos que a aplicação seja um monolito de difícil manutenção.
+Estrutura de pastas do projeto:
+api-iris-producao/
+├── app/
+│ ├── __init__.py
+│ ├── main.py # Arquivo principal da API FastAPI
+│ ├── auth.py # Módulo com funções para JWT (JSON Web Token)
+│ └── models/
+│ ├── modelo_iris.pkl # Arquivo do modelo de machine learning (Iris)
+│ └── classes_iris.pkl # Arquivo com as classes do modelo (Iris)
+├── requirements.txt # Lista de dependências do projeto
+├── Dockerfile # Instruções para a criação da imagem Docker
+├── .env.example # Exemplo de arquivo de variáveis de ambiente
+└── README.md # Documentação principal do projeto
+Arquivo requirements.txt
+Aqui vamos listar todas as dependências do projeto com versões fixas para podermos reproduzir com segurança.
+Figura 2 - Requirements.txt
+Fonte: Elaborado pelo autor (2026)
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+Se você ainda não tiver o Docker Desktop instalado, faça download no site oficial para seu sistema operacional. O Docker é gratuito para estudantes e pequenas empresas e vai ser necessário para montarmos o Dockerfile.
+Figura 3 - Docker – Desktop
+Fonte: Elaborado pelo autor (2026)
+Vamos seguir a modularização com nosso arquivo auth.py, que agora vai conter as funções para criar e validar os tokens jwt:
+"""
+Modulo de Autenticacao JWT
+Funcoes para criar e validar tokens JWT
+"""
+import os from datetime import datetime, timedelta import jwt from fastapi import Depends, HTTPException from fastapi.security import HTTPBearer,
+HTTPAuthorizationCredentials
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+
+# CONFIGURACOES
+
+SECRET_KEY = os.getenv("JWT_SECRET", "dev -secret-change-
+in-production")
+### Algorithm = "Hs256"
+
+### Token_Expire_Minutes =
+int(os.getenv("TOKEN_EXPIRE_MINUTES", "30"))
+# Usuarios (em producao, use banco de dados!)
+
+### Users_Db = {
+ "admin": {"password": os.getenv("ADMIN_PASSWORD",
+"admin123"), "role": "admin"},
+ "user": {"password": os.getenv("USER_PA SSWORD",
+"user123"), "role": "user"},
+}
+
+# SEGURANCA
+
+security = HTTPBearer()
+def create_token (username: str, role: str) -> str:
+ """Cria um token JWT com expiracao."""
+ expire = datetime.utcnow() + timedelta(minutes=TOKEN_EXPIRE_MINUTES)
+ payload = {"sub": username, "role": role, "exp":
+expire} return jwt.encode(payload, SECRET_KEY,
+algorithm=ALGORITHM)
+def get_current_user(credentials:
+HTTPAuthorizationCredentials = Depends(security)) -> dict:
+ """Valida o token JWT e retorna o usuario."""
+ token = credentials.credentials try:
+ payload = jwt.decode(token, SECRET_KEY ,
+algorithms=[ALGORITHM])
+ return {"username": payload["sub"], "role":
+payload["role"]}
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs except jwt.ExpiredSignatureError:
+ raise HTTPException(status_code=401, detail="Token expirado")
+ except jwt.InvalidTokenError:
+ raise HTTPException(status_code=401, detail="Token invalido")
+def authenticate_user(username: str, password: str) -> dict
+| None:
+ """Verifica credenciais do usuario."""
+ user = USERS_DB.get(username)
+ if user and user["password"] == password:
+ return {"username": username, "role": user["role"]} return None
+Código -fonte 1 – Arquivo auth.py com funções para criar e validar os tokens jwt
+Fonte: Elaborado pelo autor (2026)
+No arquivo main.py vamos manter todas as rotas e configurações .
+Posteriormente também iremos modularizar ele, mas para simplificar o exemplo do docker manteremos elas no mesmo arquivo:
+"""
+API Iris com JWT - Versao Producao (Modularizada)
+Pronta para de ploy em container/cloud
+"""
+import os import pickle import logging from pathlib import Path import numpy as np from fastapi import Depends, FastAPI, HTTPException from pydantic import BaseModel, Field
+# Importa funcoes do modulo auth
+from app.auth import ( create_token,
+ get_current_user,
+ authenticate_user,
+### Token_Expire_Minutes,
+)
+
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+# CONFIGURACOES
+
+ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
+
+# LOGGING
+
+logging.basicConfig( level=logging.INFO,
+ format="%(asctime)s | %(levelname)s | %(message)s"
+)
+logger = logging.getLogger(__name__)
+
+# SCHEMAS
+
+class LoginRequest(BaseModel):
+ username: str password: str class TokenResponse (BaseModel):
+ access_token: str token_type: str = "bearer"
+ expires_in: int class IrisRequest(BaseModel):
+ sepal_length: float = Field(..., ge=0, le=10,
+description="Comprimento da sepala (cm)")
+ sepal_width: float = Field(..., ge=0, le=1 0,
+description="Largura da sepala (cm)")
+ petal_length: float = Field(..., ge=0, le=10,
+description="Comprimento da petala (cm)")
+ petal_width: float = Field(..., ge=0, le=10,
+description="Largura da petala (cm)")
+class IrisResponse(BaseModel):
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs sucesso: bool classe: str probabilidades: dict usuario: str
+
+# CARREGAMENTO DO MODELO
+
+### Model_Paths = [
+ Path("app/models/modelo_iris.pkl"), # Estrutura modularizada
+ Path("models/modelo_iris.pkl"), # Alternativa
+ Path("/app/app/models/modelo _iris.pkl"), # Dentro do container
+ Path("modelo_iris.pkl"), # Raiz
+(fallback)
+]
+modelo = None classes = None for model_path in MODEL_PATHS:
+ if model_path.exists():
+ with open(model_path, 'rb') as f:
+ modelo = p ickle.load(f)
+ classes_path = model_path.parent /
+"classes_iris.pkl"
+ if classes_path.exists():
+ with open(classes_path, 'rb') as f:
+ classes = pickle.load(f)
+ logger.info(f"Modelo carregado de: {model_path}")
+ break
+MODELO_OK = modelo is not None and classes is not None if not MODELO_OK:
+ logger.warning("Modelo NAO encontrado! API funcionara sem predicao.")
+
+# APLICACAO FASTAPI
+
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs app = FastAPI( title="API Iris com JWT",
+ description="API de classificacao de flores Iris com autenticacao JWT. Deploy em producao.",
+ version="2.0.0",
+ docs_url="/docs",
+ redoc_url="/redoc",
+)
+@app.get("/")
+def home():
+ """Informacoes da API."""
+ return {
+ "api": "Iris Classifier",
+ "versao": "2.0.0",
+ "ambiente": ENVIRONMENT,
+ "modelo_carregado": MODELO_OK,
+ "docs": "/docs",
+ }
+@app.get("/health")
+def health():
+ """Health check para monitoramento."""
+ return {
+ "status": "healthy" if MODELO_OK el se "degraded",
+ "modelo": MODELO_OK,
+ "ambiente": ENVIRONMENT,
+ }
+@app.post("/login", response_model=TokenResponse)
+def login(credentials: LoginRequest):
+ """Faz login e retorna token JWT."""
+ user = authenticate_user(credentials.username,
+credentials.password)
+ if not user:
+ logger.warning(f"Login falhou para:
+{credentials.username}")
+ raise HTTPException(status_code=401,
+detail="Usuario ou senha incorretos")
+ token = creat e_token(user["username"], user["role"])
+ logger.info(f"Login bem -sucedido: {user['username']}")
+ return TokenResponse(access_token=token,
+expires_in=TOKEN_EXPIRE_MINUTES * 60)
+@app.get("/me")
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs def get_me(current_user: dict = Depends(get_current_user )):
+ """Retorna informacoes do usuario logado."""
+ return current_user
+@app.post("/predict", response_model=IrisResponse)
+def predict(payload: IrisRequest, current_user: dict =
+Depends(get_current_user)):
+ """Faz predicao (requer autenticacao)." ""
+ if not MODELO_OK:
+ raise HTTPException(status_code=503,
+detail="Modelo nao disponivel")
+ features = np.array([[ payload.sepal_length, payload.sepal_width,
+ payload.petal_length, payload.petal_width
+ ]])
+ pred_idx = modelo.predict(features)[0]
+ probs = modelo.predict_proba(features)[0]
+ classe = classes[pred_idx]
+ logger.info(f"Predicao: {classe} por
+{current_user['username']}")
+ return IrisResponse( sucesso=True,
+ classe=classe,
+ probabilidades={classes[i]: round(float(p), 4) for i, p in enumerate(probs)},
+ usuario=current_user["username"]
+ )
+Código -fonte 2 – Arquivo main.py
+Fonte: Elaborado pelo autor (2026)
+Criando o Dockerfile
+Agora vamos criar o nosso Dockerfile ; essa é a “receita” para construir o container:
+FROM # Imagem base (Python)
+WORKDIR # Diretorio de trabalho
+COPY # Copiar arquivos
+RUN # Executar comandos (pip install)
+EXPOSE # Porta que a API usa
+CMD # Comando para iniciar a API
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+ Código -fonte 3 – Dockerfile (DSL do Docker)
+Fonte: Elaborado pelo autor (2026)
+Figura 4 – Dockerfile
+Fonte: Elaborado pelo autor (2026)
+Agora que temos nosso Docker configurado, vamos testar localmente antes de fazer o deploy no Render.
+```bash
+# 1. Construir a imagem
+docker build -t api-iris-jwt .
+# 2. Rodar o container
+docker run -d -p 8000:8000 --name iris -container api -iris-
+jwt
+# 3. Testar
+curl http://localhost:8000/ curl http://localhost:8000/health
+# 4. Ver logs
+docker logs iris -container
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+# 5. Parar e remover
+docker stop iris -container docker rm iris -container
+Código -fonte 4 – Teste local (bash)
+Fonte: Elaborado pelo autor (2026)
+Figura 5 - Docker build
+Fonte: Elaborado pelo autor (2026)
+Figura 6 - Docker RUN
+Fonte: Elaborado pelo autor (2026)
+Podemos verificar no terminal o container rodando com o comando docker ps,
+mas também é possível monitorar pelo aplicativo docker desktop:
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+Figura 7 - Docker desktop
+Fonte: Elaborado pelo autor (2026)
+Opções de Deploy em Nuvem
+Com nossa API containerizada e validada localmente, o próximo passo é implantá -la em ambiente cloud real. Há diversas estratégias para deploy na nuvem,
+desde infraestrutura -como -Serviço (IaaS) até Plataformas -como -Serviço (PaaS) e soluções server less. É importante entender as diferenças para escolher a mais adequada .
+A implantação de APIs pode ser feita em diferentes modelos de infraestrutura,
+cada um com suas vantagens e desvantagens:
+Máquinas Virtuais (IaaS):
+• Descrição: consiste em provisionar e gerenciar uma Máquina Virtual (VM)
+em um provedor de nuvem (como AWS EC2, Azure VM, Google Cloud VM)
+para rodar a API.
+• Controle e Flexibilidade: oferece o máximo controle sobre o ambiente
+(sistema operacional, hardware virtual), permitindo rodar o contêin er Docker da API diretamente na VM (após instalar o Docker Engine) ou fazer o deploy manual do código.
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+• Desvantagens: exige maior esforço de configuração e manutenção,
+incluindo gestão de atualizações do SO, escalabilidade manual (usando mais VMs atrás de um load balancer) e configurações de rede/segurança.
+Além disso, gera custos fixos, pois o servidor precisa estar conti nuamente ativo, mesmo quando a aplicação está ociosa.
+Plataformas Serverless (FaaS):
+• Descrição: utiliza computação sob demanda, como AWS Lambda com API
+Gateway. O código da API (função) é executado apenas em resposta às requisições, sem a necessidade de um servidor fixo rodando continuamente.
+• Vantagens: auto-escalabilidade e modelo de pagamento por uso (apenas pelo tempo de execução), eliminando custos de inatividade.
+• Integração com FastAPI: embora o FastAPI exija servidores ASGI persistentes, pode ser adap tado para rodar em ambientes Lambda usando handlers como a biblioteca Mangum, que traduz eventos do API Gateway para chamadas ASGI.
+• Desafios: limites de tempo de execução (Lambda tipicamente até 15 minutos), o fenômeno cold start (atraso na inicialização a pós um período de inatividade) e a necessidade de otimizar a aplicação para inicialização rápida. É atraente para aplicações com uso intermitente ou escalabilidade imprevisível.
+Plataformas como Serviço (PaaS):
+• Descrição: serviços gerenciados (ex .: Heroku, Railway, Render, Azure App
+Services) que fornecem um meio -termo, abstraindo grande parte da gestão de infraestrutura.
+• Facilidade de Deploy: o usuário entrega o código -fonte ou uma imagem
+Docker e a plataforma se encarrega de provisionar e gerenciar os contêineres (dynos) e a infraestrutura subjacente (servidores web, SO,
+certificados HTTPS). Por exemplo, o Heroku simplifica o deploy ao aceitar a imagem Docker ou construir a aplicação a partir de um Dockerfile .
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+• Trade -off: menor controle sobre o ambiente em comparação com IaaS.
+Embora ofereça escalonamento automatizado opcional, pode ter custos mais altos para cargas de trabalho constantes, pois cobra por instâncias ativas continuamente.
+Conteinerização como Facilitador
+A conteinerização padroniza o ambiente da API, facilitando a portabilidade entre essas opções de deploy . Uma mesma imagem Docker pode ser usada em testes locais, em uma VM, em um cluster Kubernetes ou enviada para um PaaS que suporte conteineres. Essa uniformidade entre desenvolvimento e produ ção minimiza erros de configuração. A escolha final dependerá dos requisitos específicos de escala e do nível de gerenciamento de infraestrutura desejado.
+Deploy no Render (Minha preferência Gratuita)
+O Render é uma plataforma PaaS (Platform as a Service) moderna que oferece recursos cruciais para a implantação de APIs:
+• Gratuidade: possui um plano gratuito, ideal para projetos de pequeno porte.
+• Integração com Git: realiza deploy automático, diretamente via GitH ub.
+• Suporte a Container: oferece suporte nativo ao Docker.
+• Segurança: inclui SSL gratuito (HTTPS) para conexões seguras.
+• Monitoramento: apresenta logs em tempo real.
+Opções de Implantação (Deploy) no Render
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+Tabela 2 – Opções de Implantação (Deploy) no Render
+Fonte: Elaborado pelo autor (2026)
+Método de Implantação Escolhido
+Neste projeto, será utilizado o Docker . Como o Dockerfile já foi criado, o processo no Render será o seguinte:
+• Detecção do Dockerfile no repositório.
+• Execução do docker build (o mesmo comando utilizado localmente).
+• Execução do container na nuvem.
+Importante: o arquivo render.yaml é opcional e serve para a configuração via método "Blueprint". Se o Web Service for criado manualmente e o Dockerfile estiver presente, o Render automaticamente adota o método de implantação via Docker.
+O arquivo render.yaml acaba não sendo utilizado no n osso caso , mas ele está presente em nosso projeto como referência:
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+Figura 8 - Arquivo render.yaml
+Fonte: Elaborado pelo autor (2026)
+• Caso ainda não tenha uma conta no Render , é só seguir esses passos:
+Acesse o site oficial: https://render.com
+• Clique no botão "Get Started for Free".
+• Recomendamos fazer login utilizando sua conta GitHub para simplificar o processo.
+Criar o Serviço Web (Web Service)
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+ Figura 9 - Serviço Web (Web Service)
+Fonte: Elaborado pelo autor (2026)
+• No dashboard do Render, clique em "New +" e selecione a opção "Web
+Service".
+• Conecte a plataforma ao seu repositório no GitHub.
+• Escolha o repositório que contém o código da sua API.
+• Defina as configurações do serviço:
+o Nome: api-iris-jwt;
+o Região: Oregon (US West) ;
+o Branch: main ;
+o Diretório Raiz (Root Directory): Defina como aula_06 apenas se os arquivos de deploy estiverem localizados nessa sub pasta ;
+o Runtime: O Render detectará automaticamente o Docker ;
+o Finalize clicando em "Create Web Service".
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+Figura 10 – New Web Service
+Fonte: Elaborado pelo autor (2026)
+Atenção: se o arquivo Dockerfile não estiver na raiz do repositório, mas sim em uma subpasta (ex: aula_06/ ), é obrigatório configurar o Root Directory nas Settings do serviço para o caminho correto.
+ Figura 11 - Root Directory
+Fonte: Elaborado pelo autor (2026)
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+Figura 12 – Build & Deploy
+Fonte: Elaborado pelo autor (2026)
+Não se esqueça de configurar as variáveis de ambiente:
+Figura 13 – Variáveis de Ambiente
+Fonte: Elaborado pelo autor (2026)
+Depois de configurado, o render vai executar o docker build com nosso
+Dockerfile . Podemos acompanhar os logs em tempo real, agora basta aguardar o
+Deploy.
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+Figura 14 – Deploy
+Fonte: Elaborado pelo autor (2026)
+Figura 15 – Render
+Fonte: Elaborado pelo autor (2026)
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+Figura 16 – Estilos de Formatação
+Fonte: Elaborado pelo autor (2026)
+Figura 17 – API Iris com JWT
+Fonte: Elaborado pelo autor (2026)
+Parabéns! Agora nossa API está implantada na nuvem e é acessível ao público em uma URL pública gratuita.
+Implementação de APIs: CI/CD e Implantação Contínua Automatizada
+Ao mover uma API para um ambiente de produção, é altamente recomendável adotar práticas de CI/CD (Integração Contínua/Entrega Contínua) . O objetivo é otimizar as atualizações e manter a qualidade do serviço.
+Essencialmente, o CI/CD estabelece um pipeline automatizado: a cada nova alteração de código (por exemplo, um push para o branch principal), o sistema integra as modificações, executa testes rigorosos e, se aprovados, realiza a implantação
+(deploy) automática na nuvem. Este méto do elimina a necessidade de deploys
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs manuais e propensos a erros, garantindo que o ambiente de produção esteja sempre com a versão mais recente e verificada do código.
+Ferramentas e Exemplo Prático (GitHub Actions e Heroku)
+Ferramentas como GitHub Actions (ou alternativas como GitL ab CI, Jenkins)
+são comumente utilizadas para configurar esse fluxo. O processo envolve a criação de um workflow em formato YAML que define os passos ( jobs) de construção ( build ),
+teste e implantação.
+Em um cenário com Docker, o pipeline pode incluir o pus h da imagem para um registry (Docker Hub, ECR etc.) antes da implantação.
+Exemplo de Workflow YAML para Deploy no Heroku:
+O trecho YAML a seguir ilustra a configuração do GitHub Actions para um deploy no Heroku:
+jobs:
+ build:
+ runs-on: ubuntu -latest steps:
+• uses: actions/checkout@v2
+• name: Install Heroku CLI run: | curl https://cli -assets.heroku.com/install.sh | sh with:
+ heroku\_api\_key: ${{ secrets.HEROKU \_API \_KEY }} heroku \_app \_name: "NOME -DO-APP"
+ heroku \_email: "SEU -EMAIL"
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+Neste workflow , o job é executado em um ambiente Ubuntu a cada push . O fluxo inclui:
+• Checkout do código.
+• Instalação da CLI do Heroku.
+• Execução da Ação de Deploy (heroku -deploy), onde são fornecidos dados sensíveis como o API key do Heroku, o nome do aplicativo e o e -mail de login.
+É crucial notar que dados sensíveis (como a chave de API) são armazenados e referenciados de forma s egura nos Secrets do GitHub (${{ secrets.HEROKU_API_KEY }} ).
+Com esse pipeline ativo, um simples push no GitHub desencadeia a CI
+(execução de testes) seguida da entrega contínua (o deploy ), reduzindo drasticamente o tempo de lançamento de features e minimi zando o risco de falhas humanas.
+Alternativas e Escopo Profissional
+Embora plataformas como Heroku ofereçam integração nativa ( auto-deploy ),
+configurar um pipeline YAML próprio oferece maior nível de personalização.
+Em ambientes profissionais, etapas adic ionais são comuns, como a execução de linters , testes unitários e de integração, construção de imagens Docker e implementação de estratégias avançadas de entrega gradual (como blue-green deployments ). Contudo, um fluxo básico de "teste -> build -> deploy " já proporciona ganhos significativos em agilidade e confiabilidade no ciclo de vida da API.
+Monitoramento e Manutenção Pós -Deploy
+Com a API rodando na nuvem, fechamos o ciclo desenvolver -> implantar -> operar. Porém, o trabalho não termina no deploy: é crucial monitorar a aplicação em produção e estar preparado (a) para manter e atualizar . Os pilares principais são:
+• Logs Acessíveis e Estruturados:
+o Habilitar e acompanhar logs (via CLI ou add -ons/ferramentas cloud).
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs o Foco em erros e exceções não tratadas para análise de causa raiz (RCA).
+o Centralização com soluções de observabilidade é a prática ideal.
+• Métricas de Desempenho:
+o Monitorar CPU, memória, tempo de resposta (latência), throughput (RPS)
+e taxa de erros.
+o Utilizar dashboards da plataforma (Heroku Metrics, CloudWatch) ou APMs
+(NewRelic, Datadog).
+o Configurar alertas proativos para desvios de performance.
+• Disponibilidade e Tratamento de Erros:
+o Monitorar o uptime (serviços como Pingdom) para garantir que o endpoint responda 200 OK.
+o Integrar ferramentas de captura de exceções ( Sentry , Rollbar ) para erros no backend .
+o Ter visibilidade de falhas (códigos de erro da plataforma, ex .: H10, R14 no Heroku) para rápida correção.
+• Escalabilidade e Otimização Contínua:
+o Estar atento (a) à carga real de uso para escalar horizontalmente (mais instâncias/dynos).
+o Monitorar uso de recursos (memória, conexões de banco) para evitar falhas (OOM kill ).
+o Ajustar configurações ( workers , cache ) com base nas métricas observadas ( afinamento contínuo ).
+• Manutenção e Segurança:
+o Manter rotina de aplicação de patches de segurança e atualização de dependências (com testes prévios).
+o Planejar mecanismos de backup e documentar processos de rollback e monitoração.
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+Na próxima aula, vamos nos aprofundar em exemplos práticos de como configurar alertas, interpretar métricas de latência e taxa de erros e explorar as ferramentas de observabilidade mais comuns para garantir a estabilidade e a qualidade de serviço da nossa API em produção.
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+## O Que Você Viu Nesta Aula?
+Nesta aula, você aprendeu as etapas cruciais para migrar uma API de Machine
+Learning do ambiente local para a produção em escala , focando em conteinerização e deploy em nuvem.
+Primeiro, você compreendeu a importância da Conteiner ização com Docker ,
+que empacota a API e suas dependências, resolvendo o problema de "funciona na minha máquina" e garantindo portabilidade.
+Você montou o Dockerfile e testou a imagem Docker localmente. Em seguida,
+vimos as Opções de Deploy em Nuvem : IaaS (Máquinas Virtuais): oferece controle máximo, mas exige alta gestão de infraestrutura ; FaaS (Serverless): oferece pagamento por uso e auto -escalabilidade, sendo ideal para cargas intermitentes ;
+PaaS (Plataformas como Serviço): abstrai a infraestrutura, sendo o método escolhido no exemplo prático com o Render devido à sua facilidade, suporte nativo a Docker e plano gratuito.
+O ciclo de vida da API foi complementado pela introdução à CI/CD (Integração
+Contínua/Entrega Contínua) , mostrando como automatizar testes e deploys para garantir que as atualizações sejam rápidas e confiáveis.
+Por fim, você viu que o trabalho continua após a implantação, ressaltando a importância do Monitoramento e Manutenção Pós -Deploy . O objetivo desta aula foi fornecer o conhecimento prático para implantar sua API de ML em um ambiente real de produção de forma padronizada e robusta.
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+### Referências
+GÉRÓN, A. Hands -On Machine Learning with Scikit -Learn, Keras, and
+TensorFlow . Beijing: O’Reilly Media, 2023.
+GIFT, N.; DEZA, A. Practical MLOps: Operationalizing Machine Learning Models.
+Sebastopol: O’Reilly Media, 2021.
+LUBANOVIC, B. FastAPI: Modern Python Web Development. Sebastopol: O’Reilly
+Media, 2023.
+NEWMAN, S. Building Microservices: Designing Fine -Grained Syst ems.
+Sebastopol: O’Reilly Media, 2021.
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
+### Palavras -Chave
+JWT. Token . API. WEB HTTP . REST . API RESTful . GraphQL . gRPC . JSON .
+MLOps.
+Implantação de APIs: Container e Cloud
+Segurança e Boas Práticas em APIs
