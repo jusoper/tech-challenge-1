@@ -23,6 +23,9 @@ dependencies = [
     "ipykernel>=6.29",
     "pytest>=8.0",
     "pandera>=0.18",
+    "fastapi>=0.109",
+    "uvicorn[standard]>=0.27",
+    "httpx>=0.26",
 ]
 
 [project.optional-dependencies]
