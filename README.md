@@ -68,6 +68,28 @@ make run
 | `/predict` | POST | JSON com pelo menos `tenure`, `MonthlyCharges`; demais colunas alinhadas ao Telco (ver `TelcoInferenceRow` em `src/telco_churn/api/schemas.py`) |
 | `/docs` | GET | Swagger UI (OpenAPI) |
 
+### Deploy em nuvem (bônus FIAP — endpoint público)
+
+API servida no **Google Cloud Run** (projeto `tech-challenge-1-495400`, região `southamerica-east1`, serviço `telco-churn-api`):
+
+| | |
+|--|--|
+| **URL base** | `https://telco-churn-api-3kxqsbcqwq-rj.a.run.app` |
+| **Health check** | `GET /health` |
+
+Exemplo (substitua pela URL atual se o serviço for recriado):
+
+```bash
+curl -sS "https://telco-churn-api-3kxqsbcqwq-rj.a.run.app/health"
+```
+
+Para obter a URL novamente após um novo deploy:
+
+```bash
+gcloud run services describe telco-churn-api --region southamerica-east1 \
+  --project tech-challenge-1-495400 --format='value(status.url)'
+```
+
 **Variáveis de ambiente (ordem de precedência):**
 
 | Variável | Conteúdo do `.joblib` |
@@ -181,7 +203,7 @@ O `Makefile` usa `.venv/bin/python` se existir; caso contrário, `python3`.
 | 1 | EDA, baselines, ML Canvas, MLflow no notebook |
 | 2 | MLP PyTorch, comparação de modelos, trade-off de custo |
 | 3 | Refatoração `src/`, pipeline sklearn, API FastAPI, testes, Makefile, ruff |
-| 4 | Model Card, deploy batch vs real-time, plano de monitoramento, README (este arquivo); vídeo STAR e deploy em nuvem conforme disciplina |
+| 4 | Model Card, deploy batch vs real-time, plano de monitoramento, README (este arquivo); vídeo STAR e deploy em nuvem conforme disciplina ([URL pública](#deploy-em-nuvem-bônus-fiap--endpoint-público)) |
 
 ---
 

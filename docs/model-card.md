@@ -16,6 +16,7 @@ Documento alinhado a *Ciclo de Vida dos Modelos — Aula 03* (Model Card: perfor
 | **Famílias de modelo** | Baselines Scikit-learn (dummy estratificado, regressão logística balanceada, Random Forest, HistGradientBoosting) e **MLP** (`ChurnMLP`) em PyTorch, conforme `telco_churn.evaluation.holdout.compare_models_holdout`. |
 | **Saída principal** | Probabilidade da classe positiva (churn); decisão binária depende de **limiar** operacional (padrão de métricas no código: 0,5 para F1 e acurácia). |
 | **API FastAPI** | Por padrão (sem artefatos em disco) sobe uma **MLP** treinada em dados sintéticos (`default_synthetic_mlp`). Em produção: definir **`TELCO_MLP_BUNDLE_PATH`** com `TelcoMlpPredictor` (prep + `ChurnMLP` alinhados ao treino). Opcional: **`TELCO_SKLEARN_PIPELINE_PATH`** para servir só sklearn. O melhor desempenho da tabela de pesquisa continua dependendo do experimento / MLflow — versionar o artefato servido. |
+| **Deploy público (bônus)** | **Google Cloud Run** — URL base: **`https://telco-churn-api-3kxqsbcqwq-rj.a.run.app`** (`GET /health` para verificação). Projeto GCP `tech-challenge-1-495400`, região `southamerica-east1`, serviço `telco-churn-api`. Se o serviço for redeployado e a URL mudar, atualize esta linha e o [README](../README.md#deploy-em-nuvem-bônus-fiap--endpoint-público). |
 
 ---
 
