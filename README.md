@@ -64,11 +64,20 @@ make run
 
 | Rota | Método | Descrição |
 |------|--------|-----------|
-| `/health` | GET | Liveness e origem do modelo (`model_source`: `joblib_file` ou `default_synthetic`) |
+| `/health` | GET | Liveness e origem do modelo (`model_source`: ver variáveis abaixo) |
 | `/predict` | POST | JSON com pelo menos `tenure`, `MonthlyCharges`; demais colunas alinhadas ao Telco (ver `TelcoInferenceRow` em `src/telco_churn/api/schemas.py`) |
 | `/docs` | GET | Swagger UI (OpenAPI) |
 
-**Variável de ambiente:** `TELCO_SKLEARN_PIPELINE_PATH` — caminho absoluto ou relativo para um arquivo **`.joblib`** contendo um `sklearn.Pipeline` treinado. Se ausente ou inválido, a API sobe com pipeline treinado em **dados sintéticos** (apenas desenvolvimento).
+**Variáveis de ambiente (ordem de precedência):**
+
+| Variável | Conteúdo do `.joblib` |
+|----------|------------------------|
+| **`TELCO_MLP_BUNDLE_PATH`** | **`TelcoMlpPredictor`** (MLP PyTorch + pipeline de features Telco). Preferencial para produção alinhada ao desafio. |
+| **`TELCO_SKLEARN_PIPELINE_PATH`** | `sklearn.Pipeline` completo (alternativa, ex.: logística servindo só sklearn). |
+
+Se **nenhuma** apontar para um arquivo válido, a API treina uma **MLP pequena em dados sintéticos** ao subir (`model_source`: `default_synthetic_mlp`) — apenas desenvolvimento/testes.
+
+Para gravar um bundle após treinar no notebook ou script Python: `from telco_churn.api.mlp_predictor import TelcoMlpPredictor, save_mlp_predictor` — instanciar com `prep` (features) fitado + `ChurnMLP` treinada; depois `save_mlp_predictor("models/telco_mlp.joblib", predictor)`.
 
 Exemplo de chamada:
 
@@ -92,7 +101,7 @@ mlflow ui --backend-store-uri file:$(pwd)/mlruns
 
 ### Uso programático do pacote
 
-Com o pacote instalado (`pip install -e .`), o módulo importável é `telco_churn` (código em [`src/telco_churn/`](src/telco_churn/)). Funções úteis: `prepare_telco_features`, `compare_models_holdout`, `train_churn_mlp`, `log_compare_models_to_mlflow` (ver `src/telco_churn/__init__.py`).
+Com o pacote instalado (`pip install -e .`), o módulo importável é `telco_churn` (código em [`src/telco_churn/`](src/telco_churn/)). Funções úteis: `prepare_telco_features`, `compare_models_holdout`, `compare_models_stratified_cv` (k-fold estratificado OOF, baselines + MLP), `compare_sklearn_baselines_stratified_cv`, `train_churn_mlp`, `log_compare_models_to_mlflow` (ver `src/telco_churn/__init__.py`).
 
 ---
 

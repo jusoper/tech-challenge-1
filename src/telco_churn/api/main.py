@@ -4,10 +4,9 @@ from __future__ import annotations
 
 import logging
 from contextlib import asynccontextmanager
-from typing import Optional
+from typing import Any
 
 from fastapi import FastAPI, HTTPException, Request
-from sklearn.pipeline import Pipeline
 
 from telco_churn.api.logging_config import configure_api_logging
 from telco_churn.api.middleware import LatencyRequestMiddleware
@@ -57,7 +56,7 @@ def predict(row: TelcoInferenceRow, request: Request) -> PredictResponse:
     O corpo JSON deve incluir pelo menos `tenure`, `MonthlyCharges` e pode incluir
     quaisquer outras colunas aceitas pelo `ColumnTransformer` (ex.: `gender`, `Partner`).
     """
-    model: Optional[Pipeline] = getattr(request.app.state, "model", None)
+    model: Any = getattr(request.app.state, "model", None)
     if model is None:
         raise HTTPException(status_code=503, detail="modelo não inicializado")
     try:

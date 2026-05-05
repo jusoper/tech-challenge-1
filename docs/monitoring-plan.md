@@ -125,14 +125,14 @@ N1–N2 **não** substituem alertas técnicos: são **lag** altos e confundidos 
 ### 4.5 Latência ou 5xx na API (A2, A3)
 
 1. Verificar saúde de dependências (DB, se houver) e saturation de CPU.  
-2. Confirmar que o processo carregou o artefato correto (`TELCO_SKLEARN_PIPELINE_PATH`).  
+2. Confirmar que o processo carregou o artefato correto (`TELCO_MLP_BUNDLE_PATH` ou `TELCO_SKLEARN_PIPELINE_PATH`).  
 3. Escalar horizontalmente ou reduzir concorrência por instância conforme desenho.  
 4. Se ataque ou pico anômalo: rate limit + WAF; ver [Model Card](model-card.md) §7.
 
 ### 4.6 Artefato errado ou fallback sintético em produção
 
-1. Health check deve expor **identidade do modelo** (versão, hash, origem `joblib_file` vs `default_synthetic`).  
-2. Se `default_synthetic` em produção: **P1** — trocar imediatamente para artefato aprovado ou degradar tráfego.  
+1. Health check deve expor **identidade do modelo** (versão, hash, `model_source`: `mlp_bundle_joblib` / `sklearn_joblib` / `default_synthetic_mlp`).  
+2. Se `default_synthetic_mlp` em produção: **P1** — trocar imediatamente para bundle aprovado ou degradar tráfego.  
 3. Auditoria de variáveis de ambiente e pipeline de deploy.
 
 ---

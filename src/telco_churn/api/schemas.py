@@ -45,4 +45,8 @@ class PredictResponse(BaseModel):
 
 class HealthResponse(BaseModel):
     status: str
-    model_source: str = Field(description="default_synthetic | joblib_file")
+    model_source: str = Field(
+        description=(
+            "Origem: default_synthetic_mlp | mlp_bundle_joblib | sklearn_joblib"
+        ),
+    )

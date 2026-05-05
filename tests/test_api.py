@@ -46,7 +46,11 @@ def test_health_ok(client: TestClient) -> None:
     assert r.status_code == 200
     body = r.json()
     assert body["status"] == "ok"
-    assert body["model_source"] in ("default_synthetic", "joblib_file")
+    assert body["model_source"] in (
+        "default_synthetic_mlp",
+        "mlp_bundle_joblib",
+        "sklearn_joblib",
+    )
 
 
 def test_predict_valid_row(client: TestClient) -> None:
@@ -79,6 +83,39 @@ def test_predict_validation_error_missing_monthly(client: TestClient) -> None:
     assert r.status_code == 422
 
 
+def test_load_mlp_bundle_from_joblib_env(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from telco_churn.api.mlp_predictor import save_mlp_predictor
+    from telco_churn.api.model_runtime import (
+        fit_default_synthetic_mlp,
+        load_or_fit_serving_pipeline,
+    )
+
+    pred = fit_default_synthetic_mlp(seed=3)
+    bundle_path = tmp_path / "telco_mlp.joblib"
+    save_mlp_predictor(bundle_path, pred)
+    monkeypatch.setenv("TELCO_MLP_BUNDLE_PATH", str(bundle_path))
+    monkeypatch.delenv("TELCO_SKLEARN_PIPELINE_PATH", raising=False)
+    model, src = load_or_fit_serving_pipeline()
+    assert src == "mlp_bundle_joblib"
+    row = pd.DataFrame(
+        [
+            {
+                "tenure": 12.0,
+                "MonthlyCharges": 55.0,
+                "TotalCharges": 600.0,
+                "gender": "Male",
+                "Partner": "Yes",
+                "PhoneService": "Yes",
+            }
+        ]
+    )
+    prob = model.predict_proba(row)[0, 1]
+    assert 0.0 <= float(prob) <= 1.0
+
+
 def test_load_pipeline_from_joblib_env(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
@@ -101,11 +138,12 @@ def test_load_pipeline_from_joblib_env(
     pipe.fit(X, y)
     path = tmp_path / "pipe.joblib"
     joblib.dump(pipe, path)
+    monkeypatch.delenv("TELCO_MLP_BUNDLE_PATH", raising=False)
     monkeypatch.setenv("TELCO_SKLEARN_PIPELINE_PATH", str(path))
     from telco_churn.api.model_runtime import load_or_fit_serving_pipeline
 
     model, src = load_or_fit_serving_pipeline()
-    assert src == "joblib_file"
+    assert src == "sklearn_joblib"
     row = pd.DataFrame(
         [
             {

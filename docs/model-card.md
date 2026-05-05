@@ -15,7 +15,7 @@ Documento alinhado a *Ciclo de Vida dos Modelos — Aula 03* (Model Card: perfor
 | **Tarefa** | Classificação binária: estimar probabilidade de churn por cliente. |
 | **Famílias de modelo** | Baselines Scikit-learn (dummy estratificado, regressão logística balanceada, Random Forest, HistGradientBoosting) e **MLP** (`ChurnMLP`) em PyTorch, conforme `telco_churn.evaluation.holdout.compare_models_holdout`. |
 | **Saída principal** | Probabilidade da classe positiva (churn); decisão binária depende de **limiar** operacional (padrão de métricas no código: 0,5 para F1 e acurácia). |
-| **API FastAPI** | Por padrão serve um **pipeline sklearn** (logística + pré-processamento) carregado de `TELCO_SKLEARN_PIPELINE_PATH` ou, na ausência do arquivo, um pipeline treinado em **dados sintéticos** para desenvolvimento (`model_runtime.load_or_fit_serving_pipeline`). **Isso não é necessariamente a MLP nem o melhor modelo da tabela abaixo** — veja seção 6. |
+| **API FastAPI** | Por padrão (sem artefatos em disco) sobe uma **MLP** treinada em dados sintéticos (`default_synthetic_mlp`). Em produção: definir **`TELCO_MLP_BUNDLE_PATH`** com `TelcoMlpPredictor` (prep + `ChurnMLP` alinhados ao treino). Opcional: **`TELCO_SKLEARN_PIPELINE_PATH`** para servir só sklearn. O melhor desempenho da tabela de pesquisa continua dependendo do experimento / MLflow — versionar o artefato servido. |
 
 ---
 
@@ -26,7 +26,7 @@ Documento alinhado a *Ciclo de Vida dos Modelos — Aula 03* (Model Card: perfor
 | **Fonte** | IBM Telco Customer Churn (público), obtido via `scripts/download_data.py`; CSV em `data/raw/` (não versionado). |
 | **Granularidade** | Uma linha por cliente; variáveis tabulares (serviços, contrato, cobranças, demografia simplificada). |
 | **Pré-processamento** | `TelcoTableSanitizer`, imputação, `StandardScaler` em numéricos, `OneHotEncoder(handle_unknown="ignore")` em categóricas (`prepare_telco_features`, `build_telco_feature_transform_pipeline`). |
-| **Split reportado** | Holdout **estratificado** 80/20, `random_state=42`, `test_size=0.2` — mesma convenção de `compare_models_holdout`. |
+| **Split reportado** | Holdout **estratificado** 80/20 (`compare_models_holdout`) e, para estimativa com menor viés de amostra única, **CV estratificada k-fold OOF** (`compare_models_stratified_cv` / `compare_sklearn_baselines_stratified_cv`) com `StratifiedKFold` (padrão: 5 folds, `shuffle=True`, `random_state=42`), alinhado ao notebook Etapa 1. |
 | **Desbalanceamento** | No snapshot avaliado: **n = 7 043**, taxa de churn **≈ 26,5%** (classe positiva minoritária). |
 
 ---
@@ -63,10 +63,10 @@ Métricas produzidas por `telco_churn.evaluation.metrics.compute_binary_metrics`
 
 1. **Generalização temporal e de mercado:** o dataset é **histórico** e de contexto específico; mudanças de oferta, concorrência ou regulamentação degradam o modelo sem re-treino e monitoramento.  
 2. **Proxy de valor:** métricas técnicas não incorporam sozinhas **LTV**, custo de contato nem taxa de sucesso da ação — exigem camada de negócio (ver ML Canvas).  
-3. **Validação única em holdout:** não substitui **validação cruzada estratificada** nem conjunto de produção com janela temporal; estimativas têm variância amostral.  
+3. **Variância amostral:** holdout 80/20 e métricas OOF por k-fold respondem a perguntas ligeiramente diferentes; nenhum substitui conjunto de **produção** com janela temporal nem drift observado.  
 4. **Variáveis não observadas:** fatores comportamentais, qualidade de rede ou insatisfação qualitativa podem não estar nas features.  
 5. **Limiar fixo 0,5:** é convenção para F1/acurácia no código; o limiar operacional deve ser escolhido com **matriz de custo** (FP vs FN).  
-6. **API padrão vs pesquisa:** endpoint de produção pode estar com pipeline **sintético** ou **joblib** genérico — desempenho em Telco real exige artefato versionado e testado de ponta a ponta.
+6. **API vs experimento de pesquisa:** sem `TELCO_MLP_BUNDLE_PATH`, a API usa MLP **sintética** (não reflete o CSV completo). Desempenho em Telco real exige bundle ou pipeline sklearn versionado e testado de ponta a ponta.
 
 ---
 
@@ -86,7 +86,7 @@ Métricas produzidas por `telco_churn.evaluation.metrics.compute_binary_metrics`
 | **Deriva de dados (data drift)** | Queda de ROC-AUC/PR-AUC, PSI/KS fora do limiar | Retreino calendarizado, features estáveis, comparação de distribuições. |
 | **Categorias novas / schema quebrado** | Erros de validação (Pandera/Pydantic) ou OHE com massa em “unknown” | Contrato de dados, versão de schema, fila DLQ, fallback seguro. |
 | **Valores fora de domínio** | Inputs inválidos na API | Validação na borda, rejeição com código 4xx e logging estruturado. |
-| **Indisponibilidade do artefato** | `TELCO_SKLEARN_PIPELINE_PATH` inválido → fallback sintético | Alertas, health check, implantação imutável de modelo versionado. |
+| **Indisponibilidade do artefato** | `TELCO_MLP_BUNDLE_PATH` / `TELCO_SKLEARN_PIPELINE_PATH` inválidos → MLP sintética | Alertas, health check, implantação imutável de bundle versionado. |
 | **Ataque / carga anormal** | Latência alta ou erros em cascata | Rate limiting, autenticação, SLO de latência (ver ML Canvas). |
 | **Expectativa de causalidade** | Negócio interpreta score como “causa” | Documentação e treinamento; escopo claramente preditivo. |
 

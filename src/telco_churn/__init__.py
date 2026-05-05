@@ -17,6 +17,12 @@ from telco_churn.data.preprocessing import TelcoTableSanitizer, prepare_telco_fe
 from telco_churn.data.transformers import TelcoSklearnFeatureEncoder
 from telco_churn.evaluation.holdout import compare_models_holdout
 from telco_churn.evaluation.metrics import compute_binary_metrics
+from telco_churn.evaluation.stratified_cv import (
+    compare_models_stratified_cv,
+    compare_sklearn_baselines_stratified_cv,
+    make_stratified_kfold,
+    stratified_cv_meta,
+)
 from telco_churn.modeling.mlp import ChurnMLP, churn_binary_loss
 from telco_churn.tracking.mlflow_compare import log_compare_models_to_mlflow
 from telco_churn.training.train_mlp import EarlyStopping, TrainConfig, train_churn_mlp
@@ -38,6 +44,10 @@ __all__ = [
     "build_telco_feature_transform_pipeline",
     "churn_binary_loss",
     "compare_models_holdout",
+    "compare_models_stratified_cv",
+    "compare_sklearn_baselines_stratified_cv",
+    "make_stratified_kfold",
+    "stratified_cv_meta",
     "compare_thresholds_report",
     "compute_binary_metrics",
     "log_compare_models_to_mlflow",

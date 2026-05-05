@@ -6,7 +6,10 @@ import pandas as pd
 from telco_churn import (
     TrainConfig,
     compare_models_holdout,
+    compare_models_stratified_cv,
+    compare_sklearn_baselines_stratified_cv,
     compute_binary_metrics,
+    make_stratified_kfold,
     prepare_telco_features,
 )
 
@@ -76,6 +79,42 @@ def test_compare_models_holdout_includes_mlp_and_sklearn() -> None:
     for col in ["roc_auc", "pr_auc", "f1", "accuracy"]:
         assert col in table.columns
         assert table[col].notna().all()
+
+
+def test_compare_sklearn_baselines_stratified_cv_oof() -> None:
+    df = _toy_telco_like(n=300, seed=1)
+    X, y = prepare_telco_features(df)
+    cv = make_stratified_kfold(n_splits=3, random_state=0)
+    table = compare_sklearn_baselines_stratified_cv(X, y, cv=cv, n_jobs=1)
+    assert table.shape[0] == 4
+    for col in ["roc_auc", "pr_auc", "f1", "accuracy"]:
+        assert col in table.columns
+        assert table[col].notna().all()
+
+
+def test_compare_models_stratified_cv_includes_mlp_oof() -> None:
+    df = _toy_telco_like(n=320, seed=2)
+    X, y = prepare_telco_features(df)
+    cv = make_stratified_kfold(n_splits=3, random_state=1)
+    table = compare_models_stratified_cv(
+        X,
+        y,
+        cv=cv,
+        mlp_hidden_dims=(16, 8),
+        mlp_train_config=TrainConfig(
+            batch_size=64,
+            max_epochs=20,
+            patience=5,
+            learning_rate=0.05,
+            seed=99,
+        ),
+        device="cpu",
+        include_mlp=True,
+        n_jobs_sklearn=1,
+    )
+    assert table.shape[0] == 5
+    assert "churn_mlp" in table.index
+    assert table["roc_auc"].notna().all()
 
 
 def test_prepare_telco_features_yes_no_churn() -> None:
